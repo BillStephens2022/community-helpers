@@ -16,6 +16,14 @@ body {
   overflow-x: hidden;
 }
 
+.root {
+  background-image: linear-gradient(to bottom, #3498DB, #FFC107);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

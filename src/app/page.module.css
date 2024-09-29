@@ -1,10 +1,4 @@
-.page {
-  background-image: linear-gradient(to bottom, #3498DB, #FFC107);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  height: 100vh;
-  margin: 0;
-}
+
 
 .main {
   display: flex;
@@ -69,3 +63,29 @@
   background-color: #ffc107;
   border-radius: 5px;
 }
+
+.get_started_link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 3rem;
+  padding: 8px 8px;
+  background-color: #3498db;
+  color: #ffc107;
+  margin: 1rem;
+  border-radius: 5px;
+  border: 2px solid white;
+  font-size: 1.25rem;
+  font-weight: 700;   
+  letter-spacing: 0.2rem;
+  box-shadow: 2px 2px 5px #a59c9c;
+  transition: all 0.3s;
+}
+
+.get_started_link:hover {
+  background-color: #ffc107;
+  color: #3498db;
+  border: 2px solid #3498db;
+  box-shadow: 2px 2px 5px #3498db;
+} 
