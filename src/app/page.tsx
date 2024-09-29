@@ -1,8 +1,9 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import chlogo from "./images/chlogo.jpeg";
-import Header from "./_components/Header";
-import Footer from "./_components/Footer";
+import Header from "./_components/layout/Header";
+import Footer from "./_components/layout/Footer";
+import LoginButton from "./_components/ui/LoginButton";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
             height={500}
             priority
           />
+          <LoginButton>Let's Go!</LoginButton>
         </div>
         <div className={styles.home_right}>
         <h3 className={styles.home_h3}>Need a job done?</h3>
