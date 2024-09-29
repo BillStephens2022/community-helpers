@@ -1,0 +1,19 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.navbar_ul {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    list-style: none;
+}
+
+.navbar_link {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+}
