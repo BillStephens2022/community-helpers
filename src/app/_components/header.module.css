@@ -1,0 +1,22 @@
+.header_div {
+    color: black;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0;
+    font-size: 2rem;
+}
+
+.header_h1 {
+    color: #ffc107;
+    letter-spacing: 1rem;
+    transition: 0.3s ease-int;
+    font-weight: 900;
+    text-shadow: 5px 5px 5px #000;
+}
+
+.header_h1:hover {
+    color: orangered;
+    letter-spacing: 1.4rem;
+    text-shadow: 5px 5px 5px #000;
+}

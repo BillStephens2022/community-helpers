@@ -1,0 +1,32 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: #3498db;
+  color: #ffc107;
+  font-size: 1.5rem;
+  font-weight: 300;
+  padding: 1rem;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-top: 1px solid #e9ecef;
+}
+
+.link {
+    font-weight: 900;
+  text-decoration: none;
+  color: #fff;
+  transition: 0.3s ease-in;
+}
+
+.link:hover {
+    cursor: pointer;
+    color: #3498db;
+    background-color: #ffc107;
+    border-radius: 5px;
+    transform: scale(1.1);
+    padding: 0.5rem;
+}
