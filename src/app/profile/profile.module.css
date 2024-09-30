@@ -1,0 +1,20 @@
+.profile_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80vh;
+}
+
+.profile_h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.profile_p {
+    font-size: 1.15rem;
+    color: white;
+    font-weight: 500;
+    margin: 0.75rem 0;
+}

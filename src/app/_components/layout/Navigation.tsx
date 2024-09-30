@@ -2,13 +2,17 @@ import Link from "next/link";
 import styles from "./navigation.module.css";
 
 export default async function Navigation() {
-
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbar_ul}>
         <li>
           <Link href="/about" className={styles.navbar_link}>
             About
+          </Link>
+        </li>
+        <li>
+          <Link href="/profile" className={styles.navbar_link}>
+            Profile
           </Link>
         </li>
         <li>
