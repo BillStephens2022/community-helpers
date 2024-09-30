@@ -1,15 +1,14 @@
-import LoginButton from "../_components/ui/LoginButton";
+import SignupForm from "../_components/forms/signupForm";
 
 export const metadata = {
-  title: "Log in",
+  title: "Sign up / Log in",
 };
 
 export default function Page() {
   return (
     <>
       <h2>Sign up / Sign In</h2>
-      <LoginButton>Sign Up</LoginButton>
-      <LoginButton>Sign In</LoginButton>
+      <SignupForm />
     </>
   );
 }
