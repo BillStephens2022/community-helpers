@@ -16,7 +16,7 @@ export default function Home() {
             height={500}
             priority
           />
-          <Link href="/login" className={styles.get_started_link}>Let's Go!</Link>
+          <Link href="/login" className={styles.get_started_link}>Let&apos;s Go!</Link>
         </div>
         <div className={styles.home_right}>
           <h3 className={styles.home_h3}>Need a job done?</h3>

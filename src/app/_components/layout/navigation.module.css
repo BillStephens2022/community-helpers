@@ -17,3 +17,13 @@
     font-weight: 700;
     color: white;
 }
+
+.navbar_login {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+}

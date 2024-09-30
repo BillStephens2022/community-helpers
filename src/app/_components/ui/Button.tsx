@@ -1,4 +1,4 @@
-import styles from "./loginButton.module.css";
+import styles from "./button.module.css";
 
 type LoginButtonProps = {
   children: React.ReactNode;
@@ -10,15 +10,15 @@ type LoginButtonProps = {
 export default function LoginButton({
   children,
   onClick,
-  type = "button",
+  type,
   disabled = false,
 }: LoginButtonProps) {
   return (
     <button
       className={styles.login_button}
       onClick={onClick}
-      type={type}
       disabled={disabled}
+      type={type}
     >
       {children}
     </button>

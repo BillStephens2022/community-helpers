@@ -1,7 +1,22 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import styles from "./navigation.module.css";
+import Modal from "../ui/Modal";
+import SignupForm from "../forms/signupForm";
 
-export default async function Navigation() {
+export default function Navigation() {
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbar_ul}>
@@ -16,11 +31,12 @@ export default async function Navigation() {
           </Link>
         </li>
         <li>
-          <Link href="/login" className={styles.navbar_link}>
-            Log in / Sign Up
-          </Link>
+          <button type="button" onClick={openModal} className={styles.navbar_login}>Sign Up / Log In</button>
         </li>
       </ul>
+      {isModalOpen && (
+        <Modal onClose={closeModal} title="Sign Up / Log In" content={<SignupForm />} />
+      )}
     </nav>
   );
 }
