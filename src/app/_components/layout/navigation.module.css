@@ -27,3 +27,15 @@
     border: none;
     text-transform: uppercase;
 }
+
+@media (max-width: 767px) {
+    .navbar_link {
+        font-size: 1rem;
+        text-transform: capitalize;
+    }
+
+    .navbar_login {
+        font-size: 1rem;
+        text-transform: capitalize;
+    }
+}
