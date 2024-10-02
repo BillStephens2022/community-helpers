@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./navigation.module.css";
 import Modal from "../ui/Modal";
-import SignupForm from "../forms/signupForm";
+import LoginWrapper from "../forms/loginWrapper";
 
 export default function Navigation() {
   
@@ -35,7 +35,7 @@ export default function Navigation() {
         </li>
       </ul>
       {isModalOpen && (
-        <Modal onClose={closeModal} title="Sign Up / Log In" content={<SignupForm />} />
+        <Modal onClose={closeModal} title="Sign Up / Log In" content={<LoginWrapper />} />
       )}
     </nav>
   );

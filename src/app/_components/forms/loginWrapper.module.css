@@ -1,0 +1,20 @@
+.formLinks {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+}
+
+.formLink {
+    text-transform: capitalize;
+    font-size: 1.15rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    background-color: white;
+    color: #3498db;
+    letter-spacing: 0.2rem;
+}
+
+.active {
+    border-bottom: 2px solid #3498db;
+}
