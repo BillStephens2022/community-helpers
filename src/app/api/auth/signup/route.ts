@@ -1,10 +1,12 @@
-import { hashPassword } from "../../_lib/auth";
-import dbConnect from "../../_lib/db";
-import User from "../../_models/User";
+import { NextApiRequest, NextApiResponse } from "next";
+import { hashPassword } from "../../../_lib/auth";
+import { dbConnect } from "../../../_lib/db";
+import User from "../../../_models/User";
 
+console.log('Signup route hit!');
 dbConnect();
-console.log('Model imported in signup.js!');
-const handler = async (req, res) => {
+console.log('Model imported in signup.ts!');
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const data = req.body;
     const { email, password } = data;
