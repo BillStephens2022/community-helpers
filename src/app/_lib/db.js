@@ -16,9 +16,11 @@ if (!cached) {
 
 export const dbConnect = async () => {
   if (cached.conn) {
+    console.log('Using existing connection');
     return cached.conn;
   }
   if (!cached.promise) {
+    console.log('Creating new connection');
     const opts = {
       bufferCommands: false,
     };
@@ -32,6 +34,6 @@ export const dbConnect = async () => {
     cached.promise = null;
     throw e;
   }
-
+  console.log('DB connected successfully');
   return cached.conn;
 }

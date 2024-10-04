@@ -38,6 +38,7 @@ const LoginForm = ({ closeModal } : LoginFormProps) => {
     });
 
     if (result?.error) {
+      console.error("Login error:", result.error);
       setError(result.error);
     } else {
       console.log("Logged in successfully!");
