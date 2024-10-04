@@ -4,6 +4,16 @@ import { useState } from "react";
 import LoginButton from "../ui/LoginButton";
 import styles from "./signup.module.css";
 
+const SignupForm = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    confirmedPassword: "",
+  });
+
+  
 const createUser = async (email: string, firstName: string, lastName: string, password: string) => {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
@@ -18,15 +28,7 @@ const createUser = async (email: string, firstName: string, lastName: string, pa
   }
   return data;
 };
-
-const SignupForm = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirmedPassword: "",
-  });
+ 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target;
