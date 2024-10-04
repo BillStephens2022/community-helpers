@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "./navigation.module.css";
 import Modal from "../ui/Modal";
 import LoginWrapper from "../forms/loginWrapper";
+import { signOut } from "next-auth/react";
 
 export default function Navigation() {
   
@@ -15,6 +16,10 @@ export default function Navigation() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleLogoff = async () => {
+    await signOut({ redirect: true, callbackUrl: '/' }); // Redirect to homepage after logging out
   };
 
   return (
@@ -33,9 +38,12 @@ export default function Navigation() {
         <li>
           <button type="button" onClick={openModal} className={styles.navbar_login}>Sign Up / Log In</button>
         </li>
+        <li>
+          <button type="button" onClick={handleLogoff} className={styles.navbar_logout}>Log Out</button>
+        </li>
       </ul>
       {isModalOpen && (
-        <Modal onClose={closeModal} title="Sign Up / Log In" content={<LoginWrapper />} />
+        <Modal onClose={closeModal} title="Sign Up / Log In" content={<LoginWrapper closeModal={closeModal} />} />
       )}
     </nav>
   );

@@ -18,7 +18,7 @@
     color: white;
 }
 
-.navbar_login {
+.navbar_login, .navbar_logout {
     font-size: 1.25rem;
     font-weight: 700;
     color: white;
@@ -27,6 +27,7 @@
     border: none;
     text-transform: uppercase;
 }
+
 
 @media (max-width: 767px) {
     .navbar_link {

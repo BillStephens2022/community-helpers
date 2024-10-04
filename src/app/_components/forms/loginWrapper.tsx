@@ -3,7 +3,12 @@ import SignupForm from "./signupForm";
 import LoginForm from "./loginForm";
 import styles from "./loginWrapper.module.css";
 
-export default function LoginWrapper() {
+
+interface LoginWrapperProps {
+  closeModal: () => void; // Define the type for closeModal
+}
+
+export default function LoginWrapper({ closeModal } : LoginWrapperProps ) {
   const [formSelect, setFormSelect] = useState("login");
 
   return (
@@ -26,7 +31,7 @@ export default function LoginWrapper() {
           Signup
         </span>
       </div>
-      {formSelect === "signup" ? <SignupForm /> : <LoginForm />}
+      {formSelect === "signup" ? <SignupForm closeModal={closeModal} /> : <LoginForm closeModal={closeModal} />}
     </>
   );
 }
