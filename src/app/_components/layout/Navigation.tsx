@@ -9,13 +9,14 @@ import { signOut, useSession } from "next-auth/react";
 
 
 export default function Navigation() {
-  const session = useSession();
+  const {data: session, status} = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  console.log("Session: ", session);  
+  console.log("Session Data:", session);
+  console.log("Session Status:", status);
 
   const closeModal = () => {
     setIsModalOpen(false);

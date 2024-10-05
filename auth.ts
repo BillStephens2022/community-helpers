@@ -1,27 +1,15 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { MongoClient } from "mongodb";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import { dbConnect}  from "./src/app/_lib/db";
+import clientPromise from "./src/app/_lib/dbMongoDb";
 import User from "./src/app/_models/User";
 import { verifyPassword } from "./src/app/_lib/auth";
 
 console.log("Model imported in [...nextauth].js!");
 
-let client;
-
-async function getClient() {
-  if (!client) {
-    client = await MongoClient.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  }
-  return client;
-}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: MongoDBAdapter(getClient),
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     Credentials({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
@@ -31,9 +19,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-
-        // logic to verify if the user exists
-        const user = await User.findOne({ email: credentials.email }).exec();
+        const client = await clientPromise;
+        const db = client.db();
+        // Query the database using the native MongoDB client
+        const user = await db.collection("users").findOne({ email: credentials.email });
+        console.log("User found: ", user);
 
         if (!user) {
           throw new Error("No user found!");    
@@ -49,10 +39,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         // return user object with their profile data
-        return user;
+        return {
+          id: user._id.toString(), // MongoDB uses ObjectId, so convert it to string
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        };
       },
     }),
   ],
+  session: {
+    strategy: "jwt", // Ensure JWT strategy is enabled
+  },
   callbacks: {
     async session({ session, token }) {
       if (token) {
@@ -65,6 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Include user information in JWT token
       if (user) {
         token.id = user.id as string;
+        token.email = user.email as string;
       }
       return token;
     },

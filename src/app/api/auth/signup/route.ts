@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hashPassword } from "../../../_lib/auth";
-import { dbConnect } from "../../../_lib/db";
+import { dbConnect } from "../../../_lib/dbMongoose";
 import User from "../../../_models/User";
 
 

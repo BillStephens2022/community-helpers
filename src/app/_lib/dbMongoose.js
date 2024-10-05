@@ -1,3 +1,5 @@
+// this is the main connection to the DB for most functions, with the exception of user authentication
+// AuthJS has no mongoose adapter, so it uses a different connection (dbMongoDb.ts file)
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
