@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "./src/app/_lib/dbMongoDb";
-import User from "./src/app/_models/User";
 import { verifyPassword } from "./src/app/_lib/auth";
 
 console.log("Model imported in [...nextauth].js!");
@@ -56,14 +55,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token) {
         session.user.id = token.id as string || "";
         session.user.email = token.email as string || "";
+        session.user.name = token.name as string || "";
       }
       return session;
     },
     async jwt({ token, user }) {
       // Include user information in JWT token
       if (user) {
+        const customUser = user as { id: string; email: string; firstName: string; lastName: string };
         token.id = user.id as string;
         token.email = user.email as string;
+        token.name = `${customUser.firstName} ${customUser.lastName}`;
       }
       return token;
     },
