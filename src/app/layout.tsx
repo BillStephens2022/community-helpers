@@ -5,6 +5,7 @@ import Header from "./_components/layout/Header";
 import Footer from "./_components/layout/Footer";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "../../auth";
+import ClientLayout from "./clientLayout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +23,6 @@ export const metadata: Metadata = {
   description: "Neighbors with skills helping neighbors in need",
 };
 
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -32,11 +32,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} root`}>
-        <SessionProvider session={session}>
+        <ClientLayout session={session}>
           <Header />
           {children}
           <Footer />
-        </SessionProvider>
+        </ClientLayout>
       </body>
     </html>
   );
