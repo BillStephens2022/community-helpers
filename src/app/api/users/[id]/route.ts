@@ -6,7 +6,7 @@ console.log("Get user route hit!");
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: { id: string } }
 ) {
   console.log("params: ", params);
   const { id } = params;
