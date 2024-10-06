@@ -24,8 +24,21 @@ const EditProfileForm = ({ closeModal, user }: EditProfileFormProps) => {
   });
   const [error, setError] = useState("");
 
+  // Define the skillset options in an array
+  const skillsetOptions = [
+    "Handyman",
+    "Landscaping",
+    "Housekeeping",
+    "Technology",
+    "Finance/Accounting",
+    "Auto Repair",
+    "Child / Senior Care",
+    "Pet Sitting",
+    "Tutoring"
+  ];
+
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -107,18 +120,25 @@ const EditProfileForm = ({ closeModal, user }: EditProfileFormProps) => {
           />
         </div>
         <div>
-          <label htmlFor="skillset" className={styles.label}>
+        <label htmlFor="skillset" className={styles.label}>
             Skillset
           </label>
-          <input
-            type="text"
+          <select
             name="skillset"
-            placeholder="skillset"
             className={styles.input}
             id="skillset"
             onChange={handleChange}
             value={formData.skillset}
-          />
+          >
+            <option value="">Select a skillset</option>
+            {skillsetOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          </div>
+          <div>
           <label htmlFor="aboutText" className={styles.label}>
             About me
           </label>
