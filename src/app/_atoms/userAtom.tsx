@@ -1,10 +1,5 @@
 import { atom } from "recoil";
-
-interface User {
-  firstName: string;
-  lastName: string;
-  skills: string[];
-}
+import { User } from "../_lib/types"
 
 export const userState = atom<User | null>({
     key: 'userState', // unique ID for this atom

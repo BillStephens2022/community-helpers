@@ -22,7 +22,11 @@ export async function GET(
       {
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
+        skillset: user.skillset,
         skills: user.skills,
+        aboutText: user.aboutText,
+        isWorker: user.isWorker
       },
       { status: 200 }
     );
