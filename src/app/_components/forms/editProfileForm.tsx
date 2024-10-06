@@ -6,6 +6,7 @@ import Button from "../ui/Button";
 import styles from "./editProfileForm.module.css";
 import { User } from "../../_lib/types";
 
+
 interface EditProfileFormProps {
   closeModal: () => void;
   user: User;
@@ -49,29 +50,28 @@ const EditProfileForm = ({ closeModal, user }: EditProfileFormProps) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const {
-      firstName,
-      lastName,
-      email,
-      skillset,
-      skills,
-      aboutText,
-      isWorker,
-    } = formData;
-    // const result = await signIn("credentials", {
-    //   redirect: false,
-    //   email,
-    //   password,
-    // });
-
-    // if (result?.error) {
-    //   console.error("Login error:", result.error);
-    //   setError(result.error);
-    // } else {
-    //   console.log("Logged in successfully!");
-    //   closeModal();
-    //   router.push("/profile");
-    // }
+  
+    try {
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Send form data as JSON
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || "Failed to update user.");
+      } else {
+        // Success: close modal and refresh profile page
+        closeModal();
+        router.push("/profile"); // Or any other route to refresh the user data
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setError("An error occurred while updating the user.");
+    }
   };
 
   return (

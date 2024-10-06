@@ -2,6 +2,8 @@
 
 import { SessionProvider } from "next-auth/react";
 import { RecoilRoot } from "recoil";
+import { MantineProvider } from "@mantine/core";
+import '@mantine/core/styles.css';
 
 interface ClientLayoutProps {
   session: any;
@@ -12,7 +14,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ session, children }) => {
   return (
     <SessionProvider session={session}>
       <RecoilRoot>
-        {children}
+        <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
       </RecoilRoot>
     </SessionProvider>
   );
