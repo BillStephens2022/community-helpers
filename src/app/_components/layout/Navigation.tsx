@@ -42,6 +42,11 @@ export default function Navigation() {
               </Link>
             </li>
             <li>
+              <Link href="/community" className={styles.navbar_link}>
+                Community
+              </Link>
+            </li>
+            <li>
               <button
                 type="button"
                 onClick={handleLogoff}
