@@ -16,7 +16,7 @@
 }
 
 .link {
-    font-weight: 900;
+  font-weight: 900;
   text-decoration: none;
   color: #fff;
   transition: 0.3s ease-in;
@@ -29,4 +29,10 @@
     border-radius: 5px;
     transform: scale(1.1);
     padding: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .footer {
+    font-size: 1rem;
+  }
 }

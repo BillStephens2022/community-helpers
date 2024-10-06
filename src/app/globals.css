@@ -20,7 +20,8 @@ body {
   background-image: linear-gradient(to bottom, #3498DB, #FFC107);
   background-attachment: fixed;
   background-repeat: no-repeat;
-  height: 100vh;
+  min-height: 100vh;
+  max-height: 300vh;
   margin: 0;
 }
 
@@ -46,5 +47,12 @@ a {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+@media (max-width: 767px) {
+  .root {
+    min-height: 150vh;
+    max-height: 300vh;
   }
 }

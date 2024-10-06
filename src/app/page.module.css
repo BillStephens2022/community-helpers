@@ -90,8 +90,47 @@
   box-shadow: 2px 2px 5px #3498db;
 } 
 
+
+@media (max-width: 1366px) {
+  .home_left {
+    width: 100%;
+    padding: 1rem;
+  }
+  .home_right {
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
+  }
+  .logo {
+    width: 75%;
+    height: 75%;
+  }
+}
+
+
 @media (max-width: 767px) {
   .main {
     flex-direction: column;
+  }
+  .home_left {
+    padding: 0;
+  }
+  .home_right {
+    padding: 0 1rem;
+  }
+  .home_h3 {
+    font-size: 1.25rem;
+    letter-spacing: normal;
+    margin: 0;
+  }
+  .home_h4 {
+    font-size: 1.15rem;
+    letter-spacing: normal;
+    text-align: center;
+  }
+  .home_li {
+    font-size: 1rem;
+    margin: 0.125rem 0;
+    padding: 0.125rem;
   }
 }
