@@ -23,6 +23,8 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1.15rem;
+  background-color: whitesmoke;
+  color: black;
 }   
 
 .button_div {

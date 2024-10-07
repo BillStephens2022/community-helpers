@@ -22,16 +22,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: aliceblue;
+  background-color: rgba(249, 243, 243, 0.1);
   border: 2px solid white;
-  border-radius: 5px;
+  border-radius: 15px;
   margin: 1rem;
   padding: 1rem;
   width: 50%;
 }
-.profile_aboutMe p, .profile_aboutMe h2 {
-  color: black;
+
+.profile_aboutMe h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: white;
 }
+
+.profile_aboutMe p {
+  font-size: 1.15rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.profile_skillset, .profile_aboutText {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.profile_editIcon {
+  position: absolute;
+  top: 0rem;
+  right: 0.5rem;
+  color: white;
+}
+
+.profile_aboutMe p, .profile_aboutMe h2 {
+  text-align: center;
+}
+
 .profile_switch {
   color: black;
   letter-spacing: 0.1rem;

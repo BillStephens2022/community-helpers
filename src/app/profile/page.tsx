@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../_atoms/userAtom";
@@ -9,6 +9,9 @@ import Button from "../_components/ui/Button";
 import Modal from "../_components/ui/Modal";
 import EditProfileForm from "../_components/forms/editProfileForm";
 import { Switch } from "@mantine/core";
+import { MdOutlineEdit } from "react-icons/md";
+import EditSkillsetForm from "../_components/forms/editSkillsetForm";
+import EditAboutTextForm from "../_components/forms/editAboutTextForm";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -16,9 +19,20 @@ export default function Profile() {
   const user = useRecoilValue(userState);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
+  const [modalTitle, setModalTitle] = useState<string>("");
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = (title: string, content: ReactNode) => {
+    setModalTitle(title);
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalTitle("");
+    setModalContent(null);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -125,26 +139,55 @@ export default function Profile() {
         />
 
         <div className={styles.profile_aboutMe}>
-          <h2 className={styles.profile_h2}>{skillset}</h2>
-
-          <p className={styles.profile_p}>{aboutText}</p>
+          <div className={styles.profile_skillset}>
+            <MdOutlineEdit
+              className={styles.profile_editIcon}
+              onClick={() =>
+                openModal(
+                  "Edit Skillset",
+                  <EditSkillsetForm closeModal={closeModal} user={user} />
+                )
+              }
+            />
+            <h2 className={styles.profile_h2}>{skillset}</h2>
+          </div>
+          <div className={styles.profile_aboutText}>
+            <p className={styles.profile_p}>{aboutText}</p>
+            <MdOutlineEdit
+              className={styles.profile_editIcon}
+              onClick={() =>
+                openModal(
+                  "Edit About Me",
+                  <EditAboutTextForm closeModal={closeModal} user={user} />
+                )
+              }
+            />
+          </div>
         </div>
 
         <p className={styles.profile_p}>Skills:</p>
         <ul className={styles.profile_ul}>
           {skills?.map((skill, index) => (
-            <li key={index}>{skill}</li> // Add key to each list item
+            <li key={index}>{skill}</li>
           ))}
         </ul>
-        <Button type="button" onClick={() => openModal()}>
+        <Button
+          type="button"
+          onClick={() =>
+            openModal(
+              "Edit Profile",
+              <EditProfileForm closeModal={closeModal} user={user} />
+            )
+          }
+        >
           Edit Profile
         </Button>
 
         {isModalOpen && (
           <Modal
             onClose={closeModal}
-            title="Edit Profile"
-            content={<EditProfileForm closeModal={closeModal} user={user} />}
+            title={modalTitle}
+            content={modalContent}
           />
         )}
       </div>
