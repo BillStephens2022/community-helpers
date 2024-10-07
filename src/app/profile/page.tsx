@@ -3,6 +3,8 @@
 import { ReactNode, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
+import { CldUploadWidget } from "next-cloudinary";
+import { CldImage } from "next-cloudinary";
 import { userState } from "../_atoms/userAtom";
 import styles from "./profile.module.css";
 import Button from "../_components/ui/Button";
@@ -21,6 +23,7 @@ export default function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
 
   const openModal = (title: string, content: ReactNode) => {
     setModalTitle(title);
@@ -57,6 +60,7 @@ export default function Profile() {
             skills: data.skills,
             aboutText: data.aboutText,
             isWorker: data.isWorker,
+            profileImage: data.profileImage,
           });
           setLoading(false); // Set loading to false once data is fetched
         } catch (error) {
@@ -68,6 +72,37 @@ export default function Profile() {
 
     fetchUserData();
   }, [session, setUser]);
+
+  const handleImageUpload = async (imageUrl: string) => {
+    setUploadedImageUrl(imageUrl); // Update the uploaded image URL state
+    try {
+      const userId = user?.id; // Get the user's ID from the Recoil state
+  
+      // API call to update the user's profile image
+      const res = await fetch(`/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ profileImage: imageUrl }), // Send the new image URL
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to update profile image.");
+      }
+  
+      // Optionally, update the Recoil state with the new profile image
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser; // In case prevUser is null, do nothing
+        return {
+          ...prevUser, // Spread all existing properties
+          profileImage: imageUrl, // Update the profileImage field
+        };
+      });
+    } catch (error) {
+      console.error("Error updating profile image:", error);
+    }
+  };
 
   const toggleIsWorker = async () => {
     try {
@@ -109,6 +144,7 @@ export default function Profile() {
   }
 
   if (user) {
+    console.log("user from profile page: ", user);  
     const {
       id,
       firstName,
@@ -118,6 +154,7 @@ export default function Profile() {
       skills,
       aboutText,
       isWorker,
+      profileImage,
     } = user;
 
     return (
@@ -137,6 +174,35 @@ export default function Profile() {
           labelPosition="left"
           className={styles.profile_switch}
         />
+        <div className={styles.profile_upload_div}>
+          <CldUploadWidget
+            uploadPreset="community_helpers"
+            onSuccess={(result, { widget }) => {
+              const imageInfo = result.info;
+              if (imageInfo && typeof imageInfo !== 'string') { // Ensure imageInfo is not a string or undefined
+                handleImageUpload(imageInfo.secure_url); // Access secure_url safely
+              }
+            }}
+            onQueuesEnd={(result, { widget }) => {
+              widget.close();
+            }}
+          >
+            {({ open }) => {
+              return <button onClick={() => open()}>Upload an Image</button>;
+            }}
+          </CldUploadWidget>
+        </div>
+        {profileImage && (
+        <CldImage
+          src={profileImage} // Use this sample image or upload your own via the Media Explorer
+          alt="sample image"
+          width="500" // Transform the image: auto-crop to square aspect_ratio
+          height="500"
+          crop={{
+            type: "auto",
+            source: true,
+          }}
+        />)}
 
         <div className={styles.profile_aboutMe}>
           <div className={styles.profile_skillset}>

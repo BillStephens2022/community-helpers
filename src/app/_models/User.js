@@ -37,7 +37,10 @@ const userSchema = new Schema({
   },
   skills: [{ 
     type: String 
-  }]
+  }],
+  profileImage: { 
+    type: String 
+  },
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

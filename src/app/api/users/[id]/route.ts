@@ -26,7 +26,8 @@ export async function GET(
         skillset: user.skillset,
         skills: user.skills,
         aboutText: user.aboutText,
-        isWorker: user.isWorker
+        isWorker: user.isWorker,
+        profileImage: user.profileImage,
       },
       { status: 200 }
     );

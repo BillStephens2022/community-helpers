@@ -7,5 +7,6 @@ export interface User {
     skills?: string[];
     aboutText?: string;
     isWorker?: boolean;
+    profileImage?: string;
   }
   

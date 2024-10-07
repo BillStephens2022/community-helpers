@@ -18,6 +18,11 @@
   margin-bottom: 0.25rem;
   color: white;
 }
+
+.profile_upload_div {
+  margin: 1rem;
+}
+
 .profile_aboutMe {
   display: flex;
   flex-direction: column;
