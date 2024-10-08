@@ -77,7 +77,7 @@ export default function Profile() {
     setUploadedImageUrl(imageUrl); // Update the uploaded image URL state
     try {
       const userId = user?.id; // Get the user's ID from the Recoil state
-  
+
       // API call to update the user's profile image
       const res = await fetch(`/api/users/${userId}`, {
         method: "PUT",
@@ -86,11 +86,11 @@ export default function Profile() {
         },
         body: JSON.stringify({ profileImage: imageUrl }), // Send the new image URL
       });
-  
+
       if (!res.ok) {
         throw new Error("Failed to update profile image.");
       }
-  
+
       // Optionally, update the Recoil state with the new profile image
       setUser((prevUser) => {
         if (!prevUser) return prevUser; // In case prevUser is null, do nothing
@@ -144,7 +144,7 @@ export default function Profile() {
   }
 
   if (user) {
-    console.log("user from profile page: ", user);  
+    console.log("user from profile page: ", user);
     const {
       id,
       firstName,
@@ -179,7 +179,8 @@ export default function Profile() {
             uploadPreset="community_helpers"
             onSuccess={(result, { widget }) => {
               const imageInfo = result.info;
-              if (imageInfo && typeof imageInfo !== 'string') { // Ensure imageInfo is not a string or undefined
+              if (imageInfo && typeof imageInfo !== "string") {
+                // Ensure imageInfo is not a string or undefined
                 handleImageUpload(imageInfo.secure_url); // Access secure_url safely
               }
             }}
@@ -192,51 +193,58 @@ export default function Profile() {
             }}
           </CldUploadWidget>
         </div>
-        {profileImage && (
-        <CldImage
-          src={profileImage} // Use this sample image or upload your own via the Media Explorer
-          alt="sample image"
-          width="500" // Transform the image: auto-crop to square aspect_ratio
-          height="500"
-          crop={{
-            type: "auto",
-            source: true,
-          }}
-        />)}
+        <div className={styles.profile_card}>
+          {profileImage && (
+            <CldImage
+              src={profileImage} // Use this sample image or upload your own via the Media Explorer
+              alt="sample image"
+              width="500" // Transform the image: auto-crop to square aspect_ratio
+              height="500"
+              crop={{
+                type: "auto",
+                source: true,
+              }}
+            />
+          )}
 
-        <div className={styles.profile_aboutMe}>
-          <div className={styles.profile_skillset}>
-            <MdOutlineEdit
-              className={styles.profile_editIcon}
-              onClick={() =>
-                openModal(
-                  "Edit Skillset",
-                  <EditSkillsetForm closeModal={closeModal} user={user} />
-                )
-              }
-            />
-            <h2 className={styles.profile_h2}>{skillset}</h2>
-          </div>
-          <div className={styles.profile_aboutText}>
-            <p className={styles.profile_p}>{aboutText}</p>
-            <MdOutlineEdit
-              className={styles.profile_editIcon}
-              onClick={() =>
-                openModal(
-                  "Edit About Me",
-                  <EditAboutTextForm closeModal={closeModal} user={user} />
-                )
-              }
-            />
+          <div className={styles.profile_aboutMe}>
+            <div className={styles.profile_skillset}>
+              <MdOutlineEdit
+                className={styles.profile_editIcon}
+                onClick={() =>
+                  openModal(
+                    "Edit Skillset",
+                    <EditSkillsetForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+              <h2 className={styles.profile_h2}>{skillset}</h2>
+            </div>
+            <div className={styles.profile_aboutText}>
+              <p className={styles.profile_p}>{aboutText}</p>
+              <MdOutlineEdit
+                className={styles.profile_editIcon}
+                onClick={() =>
+                  openModal(
+                    "Edit About Me",
+                    <EditAboutTextForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+            </div>
+            <div className={styles.profile_skills}>
+              <h3 className={styles.profile_h3}>Skills</h3>
+              <ul className={styles.profile_ul}>
+                {skills?.map((skill) => (
+                  <li key={skill} className={styles.profile_li}>
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        <p className={styles.profile_p}>Skills:</p>
-        <ul className={styles.profile_ul}>
-          {skills?.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
         <Button
           type="button"
           onClick={() =>

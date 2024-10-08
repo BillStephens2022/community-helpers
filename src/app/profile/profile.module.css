@@ -19,16 +19,28 @@
   color: white;
 }
 
+.profile_h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+
 .profile_upload_div {
   margin: 1rem;
 }
 
+.profile_card {
+  display: flex;
+  border: 15px solid black;
+  border-radius: 15px;
+  background-color: #333;
+}
 .profile_aboutMe {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(249, 243, 243, 0.1);
-  border: 2px solid white;
+  background-color: rgba(249, 243, 243, 0.7);
   border-radius: 15px;
   margin: 1rem;
   padding: 1rem;
@@ -69,9 +81,8 @@
   color: black;
   letter-spacing: 0.1rem;
   font-weight: 700;
-
-
 }
+
 .profile_group {
   display: flex;
   flex-direction: row;
