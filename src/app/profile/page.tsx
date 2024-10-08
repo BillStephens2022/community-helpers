@@ -14,6 +14,7 @@ import { Switch } from "@mantine/core";
 import { MdOutlineEdit } from "react-icons/md";
 import EditSkillsetForm from "../_components/forms/editSkillsetForm";
 import EditAboutTextForm from "../_components/forms/editAboutTextForm";
+import AddSkillForm from "../_components/forms/addSkillForm";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -23,7 +24,6 @@ export default function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
 
   const openModal = (title: string, content: ReactNode) => {
     setModalTitle(title);
@@ -74,7 +74,6 @@ export default function Profile() {
   }, [session, setUser]);
 
   const handleImageUpload = async (imageUrl: string) => {
-    setUploadedImageUrl(imageUrl); // Update the uploaded image URL state
     try {
       const userId = user?.id; // Get the user's ID from the Recoil state
 
@@ -234,6 +233,15 @@ export default function Profile() {
             </div>
             <div className={styles.profile_skills}>
               <h3 className={styles.profile_h3}>Skills</h3>
+              <MdOutlineEdit
+                className={styles.profile_addSkillIcon}
+                onClick={() =>
+                  openModal(
+                    "Add Skill",
+                    <AddSkillForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
               <ul className={styles.profile_ul}>
                 {skills?.map((skill) => (
                   <li key={skill} className={styles.profile_li}>

@@ -89,11 +89,23 @@
   gap: 1rem;
 }
 
+.profile_skills {
+  position: relative;
+  padding: 0 1.5rem;
+}
+
 .profile_p {
     font-size: 1.15rem;
     color: white;
     font-weight: 500;
     margin-bottom: 1rem ;
+}
+
+.profile_addSkillIcon {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  color: white;
 }
 
 
