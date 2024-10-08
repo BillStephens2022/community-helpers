@@ -24,6 +24,7 @@
   font-weight: 700;
   margin-bottom: 0.25rem;
   color: white;
+  text-align: center;
 }
 
 .profile_upload_div {
@@ -89,9 +90,9 @@
   gap: 1rem;
 }
 
-.profile_skills {
+.profile_skills_header {
   position: relative;
-  padding: 0 1.5rem;
+  padding: 0;
 }
 
 .profile_p {
@@ -104,7 +105,7 @@
 .profile_addSkillIcon {
   position: absolute;
   top: 0rem;
-  right: 0rem;
+  right: 2.5rem;
   color: white;
 }
 

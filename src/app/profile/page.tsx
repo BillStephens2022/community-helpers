@@ -11,7 +11,8 @@ import Button from "../_components/ui/Button";
 import Modal from "../_components/ui/Modal";
 import EditProfileForm from "../_components/forms/editProfileForm";
 import { Switch } from "@mantine/core";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineEdit} from "react-icons/md";
+import { FaRegTrashCan } from "react-icons/fa6";
 import EditSkillsetForm from "../_components/forms/editSkillsetForm";
 import EditAboutTextForm from "../_components/forms/editAboutTextForm";
 import AddSkillForm from "../_components/forms/addSkillForm";
@@ -134,6 +135,36 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteSkill = async (skillToDelete: string) => {
+    try {
+      const userId = user?.id;
+  
+      // API call to delete the skill from the backend
+      const res = await fetch(`/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ skill: skillToDelete }), // Send the skill to delete
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to delete skill.");
+      }
+  
+      // Update Recoil state to remove the deleted skill
+      setUser((prevUser) => {
+        if (!prevUser || !prevUser.skills) return prevUser; // Guard clause
+        return {
+          ...prevUser,
+          skills: prevUser.skills.filter((skill) => skill !== skillToDelete), // Filter out the deleted skill
+        };
+      });
+    } catch (error) {
+      console.error("Error deleting skill:", error);
+    }
+  };
+
   if (!session) {
     return <div>Access Denied</div>;
   }
@@ -232,6 +263,7 @@ export default function Profile() {
               />
             </div>
             <div className={styles.profile_skills}>
+              <div className={styles.profile_skills_header}>
               <h3 className={styles.profile_h3}>Skills</h3>
               <MdOutlineEdit
                 className={styles.profile_addSkillIcon}
@@ -242,10 +274,11 @@ export default function Profile() {
                   )
                 }
               />
+              </div>
               <ul className={styles.profile_ul}>
                 {skills?.map((skill) => (
                   <li key={skill} className={styles.profile_li}>
-                    {skill}
+                    {skill} <FaRegTrashCan color="white" className={styles.profile_trashIcon} onClick={() => handleDeleteSkill(skill)} />
                   </li>
                 ))}
               </ul>

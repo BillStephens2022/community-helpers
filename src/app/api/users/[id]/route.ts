@@ -44,7 +44,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log("Update user route hit!");
+  console.log("Delete user route hit!");
   const { id } = params;
 
   try {
@@ -67,6 +67,46 @@ export async function PUT(
       {
         message: "User updated successfully",
         user: updatedUser,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
+  try {
+    await dbConnect();
+
+    // Get the skill from the request body (you could also send it as a query parameter)
+    const { skill } = await req.json();
+
+    // Find the user by ID
+    const user = await User.findById(id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Remove the skill from the user's skills array
+    user.skills = user.skills.filter((s: string) => s !== skill);
+    
+    // Save the updated user back to the database
+    await user.save();
+
+    return NextResponse.json(
+      {
+        message: "Skill deleted successfully",
+        skills: user.skills, // Optionally return the updated skills array
       },
       { status: 200 }
     );
