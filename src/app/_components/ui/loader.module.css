@@ -4,10 +4,10 @@
   background: rgb(38, 48, 21);
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  min-height: 80vh;
+  max-height: 75vh;
 }
 
 .box h2 {
