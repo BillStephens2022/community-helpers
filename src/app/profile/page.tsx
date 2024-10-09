@@ -11,7 +11,8 @@ import Button from "../_components/ui/Button";
 import Modal from "../_components/ui/Modal";
 import EditProfileForm from "../_components/forms/editProfileForm";
 import { Switch } from "@mantine/core";
-import { MdOutlineEdit} from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRegTrashCan } from "react-icons/fa6";
 import EditSkillsetForm from "../_components/forms/editSkillsetForm";
 import EditAboutTextForm from "../_components/forms/editAboutTextForm";
@@ -138,7 +139,7 @@ export default function Profile() {
   const handleDeleteSkill = async (skillToDelete: string) => {
     try {
       const userId = user?.id;
-  
+
       // API call to delete the skill from the backend
       const res = await fetch(`/api/users/${userId}`, {
         method: "DELETE",
@@ -147,11 +148,11 @@ export default function Profile() {
         },
         body: JSON.stringify({ skill: skillToDelete }), // Send the skill to delete
       });
-  
+
       if (!res.ok) {
         throw new Error("Failed to delete skill.");
       }
-  
+
       // Update Recoil state to remove the deleted skill
       setUser((prevUser) => {
         if (!prevUser || !prevUser.skills) return prevUser; // Guard clause
@@ -189,10 +190,6 @@ export default function Profile() {
 
     return (
       <div className={styles.profile_page}>
-        <h1 className={styles.profile_h1}>
-          {firstName} {lastName}
-        </h1>
-
         <Switch
           size="xl"
           checked={isWorker}
@@ -219,7 +216,14 @@ export default function Profile() {
             }}
           >
             {({ open }) => {
-              return <button onClick={() => open()}>Upload an Image</button>;
+              return (
+                <button
+                  onClick={() => open()}
+                  className={styles.upload_widget_button}
+                >
+                  {profileImage ? "Edit" : "Upload a"} Profile Photo
+                </button>
+              );
             }}
           </CldUploadWidget>
         </div>
@@ -238,6 +242,9 @@ export default function Profile() {
           )}
 
           <div className={styles.profile_aboutMe}>
+            <h1 className={styles.profile_h1}>
+              {firstName} {lastName}
+            </h1>
             <div className={styles.profile_skillset}>
               <MdOutlineEdit
                 className={styles.profile_editIcon}
@@ -264,39 +271,35 @@ export default function Profile() {
             </div>
             <div className={styles.profile_skills}>
               <div className={styles.profile_skills_header}>
-              <h3 className={styles.profile_h3}>Skills</h3>
-              <MdOutlineEdit
-                className={styles.profile_addSkillIcon}
-                onClick={() =>
-                  openModal(
-                    "Add Skill",
-                    <AddSkillForm closeModal={closeModal} user={user} />
-                  )
-                }
-              />
+                <h3 className={styles.profile_h3}>Skills</h3>
               </div>
               <ul className={styles.profile_ul}>
                 {skills?.map((skill) => (
                   <li key={skill} className={styles.profile_li}>
-                    {skill} <FaRegTrashCan color="white" className={styles.profile_trashIcon} onClick={() => handleDeleteSkill(skill)} />
+                    {skill}{" "}
+                    <FaRegTrashCan
+                      color="white"
+                      className={styles.profile_trashIcon}
+                      onClick={() => handleDeleteSkill(skill)}
+                    />
                   </li>
                 ))}
               </ul>
+              <div className={styles.profile_add_skill_div}>
+                <IoMdAddCircleOutline
+                  className={styles.profile_addSkillIcon}
+                  onClick={() =>
+                    openModal(
+                      "Add Skill",
+                      <AddSkillForm closeModal={closeModal} user={user} />
+                    )
+                  }
+                />
+                <span className={styles.profile_add_skill_span}>Add Skill</span>
+              </div>
             </div>
           </div>
         </div>
-
-        <Button
-          type="button"
-          onClick={() =>
-            openModal(
-              "Edit Profile",
-              <EditProfileForm closeModal={closeModal} user={user} />
-            )
-          }
-        >
-          Edit Profile
-        </Button>
 
         {isModalOpen && (
           <Modal
