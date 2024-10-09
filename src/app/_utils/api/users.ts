@@ -1,4 +1,15 @@
 // api/users.ts
+
+// Fetch all users
+export const fetchUsers = async () => {
+  const res = await fetch("/api/users");
+  if (!res.ok) {
+    throw new Error("Failed to fetch users.");
+  }
+  const data = await res.json();
+  return data.users;
+};
+
 // Fetch user data by user ID
 export const fetchUserData = async (userId: string) => {
   const res = await fetch(`/api/users/${userId}`);
