@@ -1,47 +1,8 @@
-.profile_page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 80vh;
-}
-
-.profile_h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  color: white;
-}
-
-.profile_h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  color: white;
-  text-align: center;
-}
-
-.profile_upload_div {
-  margin: 1rem;
-}
-
-.upload_widget_button {
-  background-color: #3498DB;
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;  
-  letter-spacing: 1px;
-  box-shadow: 2px 2px 3px black;
-}
-
 .profile_card {
   display: flex;
   border: 15px solid #333;
   border-radius: 15px;
-  background-image: linear-gradient(to bottom, #FFC107, #3498DB);
+  background-image: linear-gradient(to bottom, #ffc107, #3498db);
 }
 
 .profile_aboutMe {
@@ -93,22 +54,16 @@
   color: white;
 }
 
-.profile_aboutMe p,
-.profile_aboutMe h2 {
-  text-align: center;
-}
-
-.profile_switch {
-  color: black;
-  letter-spacing: 0.1rem;
-  font-weight: 700;
-}
-
 .profile_p {
   font-size: 1.15rem;
   color: white;
   font-weight: 500;
   margin-bottom: 1rem;
+}
+
+.profile_aboutMe p,
+.profile_aboutMe h2 {
+  text-align: center;
 }
 
 .profile_skills {

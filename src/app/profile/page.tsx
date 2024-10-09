@@ -4,19 +4,18 @@ import { ReactNode, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { CldUploadWidget } from "next-cloudinary";
-import { CldImage } from "next-cloudinary";
+// import { CldImage } from "next-cloudinary";
 import { userState } from "../_atoms/userAtom";
 import styles from "./profile.module.css";
-import Button from "../_components/ui/Button";
-import Modal from "../_components/ui/Modal";
-import EditProfileForm from "../_components/forms/editProfileForm";
+// import Modal from "../_components/ui/Modal";
 import { Switch } from "@mantine/core";
-import { MdOutlineEdit } from "react-icons/md";
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { FaRegTrashCan } from "react-icons/fa6";
-import EditSkillsetForm from "../_components/forms/editSkillsetForm";
-import EditAboutTextForm from "../_components/forms/editAboutTextForm";
-import AddSkillForm from "../_components/forms/addSkillForm";
+// import { MdOutlineEdit } from "react-icons/md";
+// import { IoMdAddCircleOutline } from "react-icons/io";
+// import { FaRegTrashCan } from "react-icons/fa6";
+// import EditSkillsetForm from "../_components/forms/editSkillsetForm";
+// import EditAboutTextForm from "../_components/forms/editAboutTextForm";
+// import AddSkillForm from "../_components/forms/addSkillForm";
+import ProfileCard from "../_components/ProfileCard";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -227,7 +226,7 @@ export default function Profile() {
             }}
           </CldUploadWidget>
         </div>
-        <div className={styles.profile_card}>
+        {/* <div className={styles.profile_card}>
           {profileImage && (
             <CldImage
               src={profileImage} // Use this sample image or upload your own via the Media Explorer
@@ -299,15 +298,16 @@ export default function Profile() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        <ProfileCard user={user} isProfilePage={true} />
 
-        {isModalOpen && (
+        {/* {isModalOpen && (
           <Modal
             onClose={closeModal}
             title={modalTitle}
             content={modalContent}
           />
-        )}
+        )} */}
       </div>
     );
   }
