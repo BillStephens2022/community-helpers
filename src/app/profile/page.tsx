@@ -5,111 +5,91 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { CldUploadWidget } from "next-cloudinary";
 import { userState } from "../_atoms/userAtom";
-import styles from "./profile.module.css";
 import { Switch } from "@mantine/core";
 import ProfileCard from "../_components/ProfileCard";
 import Loader from "../_components/ui/Loader";
+import {
+  fetchUserData,
+  updateProfileImage,
+  updateIsWorkerStatus,
+} from "../_utils/api/users";
+import styles from "./profile.module.css";
 
 export default function Profile() {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const user = useRecoilValue(userState);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       if (session) {
-        try {
-          const userId = session?.user?.id;
-          const res = await fetch(`/api/users/${userId}`);
-          if (!res.ok) {
-            throw new Error("Failed to fetch user data.");
+        const userId = session?.user?.id;
+        if (userId) {
+          try {
+            // get the logged in user's data
+            const data = await fetchUserData(userId);
+            // Update Recoil state with user data
+            setUser({
+              id: userId || "",
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              skillset: data.skillset,
+              skills: data.skills,
+              aboutText: data.aboutText,
+              isWorker: data.isWorker,
+              profileImage: data.profileImage,
+            });
+            setLoading(false); // Set loading to false once data is fetched
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            setLoading(false); // Set loading to false even in case of error
           }
-
-          const data = await res.json();
-          console.log("data: ", data);
-
-          // Update Recoil state with user data
-          setUser({
-            id: userId || "",
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            skillset: data.skillset,
-            skills: data.skills,
-            aboutText: data.aboutText,
-            isWorker: data.isWorker,
-            profileImage: data.profileImage,
-          });
-          setLoading(false); // Set loading to false once data is fetched
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setLoading(false); // Set loading to false even in case of error
         }
       }
     };
-
-    fetchUserData();
+    fetchData();
   }, [session, setUser]);
 
   const handleImageUpload = async (imageUrl: string) => {
-    try {
-      const userId = user?.id; // Get the user's ID from the Recoil state
-
-      // API call to update the user's profile image
-      const res = await fetch(`/api/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ profileImage: imageUrl }), // Send the new image URL
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update profile image.");
+    const userId = user?.id; // Get the user's ID from the Recoil state
+    if (userId) {
+      try {
+        // API call to update the user profile image
+        await updateProfileImage(userId, imageUrl);
+        // Update the Recoil state with the new profile image
+        setUser((prevUser) => {
+          if (!prevUser) return prevUser; // In case prevUser is null, do nothing
+          return {
+            ...prevUser, // Spread all existing properties
+            profileImage: imageUrl, // Update the profileImage field
+          };
+        });
+      } catch (error) {
+        console.error("Error updating profile image:", error);
       }
-
-      // Optionally, update the Recoil state with the new profile image
-      setUser((prevUser) => {
-        if (!prevUser) return prevUser; // In case prevUser is null, do nothing
-        return {
-          ...prevUser, // Spread all existing properties
-          profileImage: imageUrl, // Update the profileImage field
-        };
-      });
-    } catch (error) {
-      console.error("Error updating profile image:", error);
     }
   };
 
   const toggleIsWorker = async () => {
-    try {
-      const userId = user?.id;
-      const updatedIsWorker = !user?.isWorker;
-
-      // API call to update the user profile
-      const res = await fetch(`/api/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ isWorker: updatedIsWorker }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update isWorker status.");
+    const userId = user?.id; // Get the user's ID from the Recoil state
+    if (userId) {
+      try {
+        const updatedIsWorker = !user?.isWorker;
+        // API call to update the user profile
+        await updateIsWorkerStatus(userId, updatedIsWorker);
+        // Update Recoil state with the new value
+        setUser((prevUser) => {
+          if (!prevUser) return prevUser; // In case prevUser is null, do nothing
+          return {
+            ...prevUser, // Spread all existing properties
+            isWorker: updatedIsWorker, // Update only the isWorker field
+          };
+        });
+      } catch (error) {
+        console.error("Error updating isWorker:", error);
       }
-
-      // Update Recoil state with the new value
-      setUser((prevUser) => {
-        if (!prevUser) return prevUser; // In case prevUser is null, do nothing
-        return {
-          ...prevUser, // Spread all existing properties
-          isWorker: updatedIsWorker, // Update only the isWorker field
-        };
-      });
-    } catch (error) {
-      console.error("Error updating isWorker:", error);
     }
   };
 
@@ -123,10 +103,7 @@ export default function Profile() {
 
   if (user) {
     console.log("user from profile page: ", user);
-    const {
-      isWorker,
-      profileImage,
-    } = user;
+    const { isWorker, profileImage } = user;
 
     return (
       <div className={styles.profile_page}>
@@ -167,9 +144,7 @@ export default function Profile() {
             }}
           </CldUploadWidget>
         </div>
-
         <ProfileCard user={user} isProfilePage={true} />
-
       </div>
     );
   }
