@@ -16,27 +16,28 @@ import { Switch } from "@mantine/core";
 // import EditAboutTextForm from "../_components/forms/editAboutTextForm";
 // import AddSkillForm from "../_components/forms/addSkillForm";
 import ProfileCard from "../_components/ProfileCard";
+import Loader from "../_components/ui/Loader";
 
 export default function Profile() {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const user = useRecoilValue(userState);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
-  const [modalTitle, setModalTitle] = useState<string>("");
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [modalContent, setModalContent] = useState<ReactNode | null>(null);
+  // const [modalTitle, setModalTitle] = useState<string>("");
 
-  const openModal = (title: string, content: ReactNode) => {
-    setModalTitle(title);
-    setModalContent(content);
-    setIsModalOpen(true);
-  };
+  // const openModal = (title: string, content: ReactNode) => {
+  //   setModalTitle(title);
+  //   setModalContent(content);
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalTitle("");
-    setModalContent(null);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  //   setModalTitle("");
+  //   setModalContent(null);
+  // };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -135,54 +136,54 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteSkill = async (skillToDelete: string) => {
-    try {
-      const userId = user?.id;
+  // const handleDeleteSkill = async (skillToDelete: string) => {
+  //   try {
+  //     const userId = user?.id;
 
-      // API call to delete the skill from the backend
-      const res = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ skill: skillToDelete }), // Send the skill to delete
-      });
+  //     // API call to delete the skill from the backend
+  //     const res = await fetch(`/api/users/${userId}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ skill: skillToDelete }), // Send the skill to delete
+  //     });
 
-      if (!res.ok) {
-        throw new Error("Failed to delete skill.");
-      }
+  //     if (!res.ok) {
+  //       throw new Error("Failed to delete skill.");
+  //     }
 
-      // Update Recoil state to remove the deleted skill
-      setUser((prevUser) => {
-        if (!prevUser || !prevUser.skills) return prevUser; // Guard clause
-        return {
-          ...prevUser,
-          skills: prevUser.skills.filter((skill) => skill !== skillToDelete), // Filter out the deleted skill
-        };
-      });
-    } catch (error) {
-      console.error("Error deleting skill:", error);
-    }
-  };
+  //     // Update Recoil state to remove the deleted skill
+  //     setUser((prevUser) => {
+  //       if (!prevUser || !prevUser.skills) return prevUser; // Guard clause
+  //       return {
+  //         ...prevUser,
+  //         skills: prevUser.skills.filter((skill) => skill !== skillToDelete), // Filter out the deleted skill
+  //       };
+  //     });
+  //   } catch (error) {
+  //     console.error("Error deleting skill:", error);
+  //   }
+  // };
 
   if (!session) {
     return <div>Access Denied</div>;
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (user) {
     console.log("user from profile page: ", user);
     const {
-      id,
-      firstName,
-      lastName,
-      email,
-      skillset,
-      skills,
-      aboutText,
+      // id,
+      // firstName,
+      // lastName,
+      // email,
+      // skillset,
+      // skills,
+      // aboutText,
       isWorker,
       profileImage,
     } = user;
