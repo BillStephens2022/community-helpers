@@ -1,15 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { fetchUsers } from "../_utils/api/users";
-import { User } from "../_lib/types";
+import { usersState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileCard from "../_components/ProfileCard";
 import styles from "./page.module.css"
 
 export default function Community() {
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useRecoilState(usersState);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -25,7 +26,7 @@ export default function Community() {
     };
 
     getUsers();
-  }, []);
+  }, [setUsers]);
 
   if (loading) {
     return <Loader />; 
@@ -37,8 +38,7 @@ export default function Community() {
         <p>This is the community page.</p>
         <div className={styles.users_div}>
           {users.map(user => ( 
-            <div key={user.id}><ProfileCard user={user} isProfilePage={false} /></div>
-    
+            <ProfileCard key={user.id} user={user} isProfilePage={false} />
           ))}
           </div>
       </div>
