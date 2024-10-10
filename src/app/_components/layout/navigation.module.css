@@ -1,41 +1,48 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0;
+  background-color: #3498db;
+  box-shadow: 5px 2px 5px #333;
 }
 
 .navbar_ul {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    list-style: none;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  list-style: none;
 }
 
 .navbar_link {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 3px;
+  text-transform: capitalize;
 }
 
-.navbar_login, .navbar_logout {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
-    text-transform: uppercase;
+.navbar_login,
+.navbar_logout {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  text-transform: capitalize;
+  letter-spacing: 3px;
 }
 
 @media (max-width: 767px) {
-    .navbar_link {
-        font-size: 1rem;
-        text-transform: capitalize;
-    }
+  .navbar_link {
+    font-size: 1rem;
+    text-transform: capitalize;
+  }
 
-    .navbar_login, .navbar_logout {
-        font-size: 1rem;
-        text-transform: capitalize;
-    }
+  .navbar_login,
+  .navbar_logout {
+    font-size: 1rem;
+    text-transform: capitalize;
+  }
 }

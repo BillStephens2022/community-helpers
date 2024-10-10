@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 0;
+  padding-bottom: 1.5rem;
 }
 
 .header_h1 {
@@ -48,5 +48,4 @@
     letter-spacing: 0.35rem;
     text-shadow: 5px 5px 5px #000;
   }
-
 }
