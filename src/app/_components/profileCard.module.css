@@ -1,8 +1,7 @@
 .profile_card {
   display: flex;
-  border: 15px solid #333;
-  border-radius: 15px;
   background-image: linear-gradient(to bottom, #ffc107, #3498db);
+  box-shadow: 3px 3px 8px navy;
 }
 
 .profile_aboutMe {
@@ -17,6 +16,11 @@
   width: 50%;
 }
 
+.profile_summary_div {
+  display: flex;
+  flex-direction: column;
+}
+
 .profile_h1 {
   font-size: 2.5rem;
   font-weight: 900;
@@ -24,12 +28,18 @@
   color: darkslateblue;
   text-shadow: 2px 2px 3px white;
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .profile_aboutMe h2 {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
+  color: white;
+}
+
+.profile_h3 {
+  font-size: 1.4rem;
   color: white;
 }
 
@@ -108,6 +118,72 @@
 
 .hideIcons .profile_editIcon,
 .hideIcons .profile_trashIcon,
-.hideIcons .profile_addSkillIcon {
+.hideIcons .profile_addSkillIcon,
+.hideIcons .profile_add_skill_span {
   display: none;
+}
+
+/* Styles for small card */
+.small {
+  transform: scale(0.7); /* Scale down the component */
+  border-width: 10px; /* Adjust the border for smaller size */
+  width: 1000px;
+  background-color: white;
+}
+
+.small .profile_card {
+  background-color: white;
+}
+
+.small .profile_aboutMe {
+  flex-direction: row;
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.small .profile_h1 {
+  font-size: 1.5rem;
+}
+
+.small .profile_h2 {
+  font-size: 1.25rem;
+  color: darkslateblue;
+  text-shadow: 2px 2px 3px white;
+  letter-spacing: 1px;
+}
+
+.small .profile_h3 {
+  font-size: 1.25rem;
+}
+
+.small .profile_p {
+  font-size: 1.15rem;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  margin-top: 1rem;
+}
+
+.small .profile_li {
+  font-size: 1.15rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.small .profile_skills {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 0 0 0.25rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.small .profile_summary_div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem 0 1rem;
 }

@@ -144,7 +144,7 @@ export default function Profile() {
             }}
           </CldUploadWidget>
         </div>
-        <ProfileCard user={user} isProfilePage={true} />
+        <ProfileCard user={user} size='large' isProfilePage={true} />
       </div>
     );
   }

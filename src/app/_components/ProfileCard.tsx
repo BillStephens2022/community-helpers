@@ -15,10 +15,11 @@ import styles from "./profileCard.module.css";
 
 interface ProfileCardProps {
   user: User;
+  size: 'large' | 'small'
   isProfilePage: boolean;
 }
 
-const ProfileCard = ({ user, isProfilePage = false }: ProfileCardProps) => {
+const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) => {
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
@@ -67,13 +68,13 @@ const ProfileCard = ({ user, isProfilePage = false }: ProfileCardProps) => {
 
   return (
     <>
-      <div className={`${styles.profile_card} ${isProfilePage ? "" : styles.hideIcons}`}>
+      <div className={`${styles.profile_card} ${isProfilePage ? "" : styles.hideIcons} ${size === "small" ? styles.small : ""}`}>
         {profileImage && (
           <CldImage
             src={profileImage}
             alt="sample image"
-            width="500" 
-            height="500"
+            width={size === "small" ? 300 : 500}
+            height={size === "small" ? 300 : 500}
             crop={{
               type: "auto",  // Transform the image: auto-crop to square aspect_ratio
               source: true,
@@ -82,6 +83,7 @@ const ProfileCard = ({ user, isProfilePage = false }: ProfileCardProps) => {
         )}
 
         <div className={styles.profile_aboutMe}>
+          <div className={`${styles.profile_summary_div}`}>
           <h1 className={styles.profile_h1}>
             {firstName} {lastName}
           </h1>
@@ -108,6 +110,7 @@ const ProfileCard = ({ user, isProfilePage = false }: ProfileCardProps) => {
                 )
               }
             />
+          </div>
           </div>
           <div className={styles.profile_skills}>
             <div className={styles.profile_skills_header}>

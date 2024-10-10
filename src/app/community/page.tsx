@@ -34,11 +34,11 @@ export default function Community() {
 
   return (
       <div className={styles.community_page}>
-        <h1>Community</h1>
-        <p>This is the community page.</p>
+        <h1 className={styles.community_h1}>My Community</h1>
+        <h2 className={styles.community_h2}>Find a neighbor with the skills you need!</h2>
         <div className={styles.users_div}>
           {users.map(user => ( 
-            <ProfileCard key={user.id} user={user} isProfilePage={false} />
+            <ProfileCard key={user.id} user={user} size='small' isProfilePage={false} />
           ))}
           </div>
       </div>
