@@ -1,5 +1,6 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -12,18 +13,33 @@ import EditAboutTextForm from "../_components/forms/editAboutTextForm";
 import AddSkillForm from "../_components/forms/addSkillForm";
 import { deleteUserSkill } from "../_utils/api/users";
 import styles from "./profileCard.module.css";
+import SendMessageForm from "./forms/sendMessageForm";
 
 interface ProfileCardProps {
   user: User;
-  size: 'large' | 'small'
+  size: "large" | "small";
   isProfilePage: boolean;
 }
 
-const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) => {
+const ProfileCard = ({
+  user,
+  size,
+  isProfilePage = false,
+}: ProfileCardProps) => {
+  const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
+
+  const loggedInUserId = session?.user?.id;
+  const loggedInUsername = session?.user?.name;
+
+  useEffect(() => {
+    if (session) {
+      console.log("Session:", session);
+    }
+  }, [session]);
 
   const openModal = (title: string, content: ReactNode) => {
     setModalTitle(title);
@@ -37,14 +53,8 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
     setModalContent(null);
   };
 
-  const {
-    firstName,
-    lastName,
-    skillset,
-    skills,
-    aboutText,
-    profileImage,
-  } = user;
+  const { firstName, lastName, skillset, skills, aboutText, profileImage } =
+    user;
 
   const handleDeleteSkill = async (skillToDelete: string) => {
     try {
@@ -68,7 +78,11 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
 
   return (
     <>
-      <div className={`${styles.profile_card} ${isProfilePage ? "" : styles.hideIcons} ${size === "small" ? styles.small : ""}`}>
+      <div
+        className={`${styles.profile_card} ${
+          isProfilePage ? "" : styles.hideIcons
+        } ${size === "small" ? styles.small : ""}`}
+      >
         {profileImage && (
           <CldImage
             src={profileImage}
@@ -76,41 +90,40 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
             width={size === "small" ? 300 : 500}
             height={size === "small" ? 300 : 500}
             crop={{
-              type: "auto",  // Transform the image: auto-crop to square aspect_ratio
+              type: "auto", // Transform the image: auto-crop to square aspect_ratio
               source: true,
             }}
           />
         )}
         <div className={styles.profile_aboutMe}>
           <div className={`${styles.profile_summary_div}`}>
-          <h1 className={styles.profile_h1}>
-            {firstName} {lastName}
-          </h1>
-          <div className={styles.profile_skillset}>
-            <MdOutlineEdit
-              className={styles.profile_editIcon}
-              onClick={() =>
-                openModal(
-                  "Edit Skillset",
-                  <EditSkillsetForm closeModal={closeModal} user={user} />
-                )
-              }
-            />
-            <h2 className={styles.profile_h2}>{skillset}</h2>
-          </div>
-          <div className={styles.profile_aboutText}>
-            <p className={styles.profile_p}>{aboutText}</p>
-            <MdOutlineEdit
-              className={styles.profile_editIcon}
-              onClick={() =>
-                openModal(
-                  "Edit About Me",
-                  <EditAboutTextForm closeModal={closeModal} user={user} />
-                )
-              }
-            />
-            
-          </div>
+            <h1 className={styles.profile_h1}>
+              {firstName} {lastName}
+            </h1>
+            <div className={styles.profile_skillset}>
+              <MdOutlineEdit
+                className={styles.profile_editIcon}
+                onClick={() =>
+                  openModal(
+                    "Edit Skillset",
+                    <EditSkillsetForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+              <h2 className={styles.profile_h2}>{skillset}</h2>
+            </div>
+            <div className={styles.profile_aboutText}>
+              <p className={styles.profile_p}>{aboutText}</p>
+              <MdOutlineEdit
+                className={styles.profile_editIcon}
+                onClick={() =>
+                  openModal(
+                    "Edit About Me",
+                    <EditAboutTextForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+            </div>
           </div>
           <div className={styles.profile_skills}>
             <div className={styles.profile_skills_header}>
@@ -142,14 +155,21 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
             </div>
           </div>
           <div className={styles.profile_card_message_icon}>
-          <div className={styles.message_icon_container}>
-            <FaRegMessage color="white" size={30} aria-label="Send Message"/>
-            <span className={styles.tooltip_text}></span>
+            <div className={styles.message_icon_container}>
+              <FaRegMessage
+                color="white"
+                size={30}
+                aria-label="Send Message"
+                onClick={() =>
+                  openModal(
+                    "Send Message",
+                    <SendMessageForm closeModal={closeModal} user={user} loggedInUserId={loggedInUserId} loggedInUsername={loggedInUsername || ""} />
+                  )
+                }
+              />
+              <span className={styles.tooltip_text}></span>
             </div>
           </div>
-      
-        
-        
         </div>
       </div>
       {isModalOpen && (
