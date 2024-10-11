@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
+import { skillsetOptions } from "../../_lib/constants";
 import Button from "../ui/Button";
 import styles from "./editSkillsetForm.module.css";
 
@@ -20,19 +21,6 @@ const EditSkillsetForm = ({ closeModal, user }: EditSkillsetFormProps) => {
   });
   const [error, setError] = useState("");
   const setUser = useSetRecoilState(userState);
-
-  // Define the skillset options in an array
-  const skillsetOptions = [
-    "Handyman",
-    "Landscaping",
-    "Housekeeping",
-    "Technology",
-    "Finance/Accounting",
-    "Auto Repair",
-    "Child / Senior Care",
-    "Pet Sitting",
-    "Tutoring",
-  ];
 
   const handleChange = (
     event: React.ChangeEvent<

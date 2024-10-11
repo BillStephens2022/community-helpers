@@ -3,6 +3,7 @@
   background-image: linear-gradient(to bottom, #ffc107, rgb(159, 166, 185), #3498db);
   box-shadow: 3px 3px 8px #333;
   margin-top: 1rem;
+  max-width: 47vw;
 }
 
 .profile_card:hover {
@@ -141,11 +142,12 @@
   transform: scale(0.7); /* Scale down the component */
   border-width: 10px; /* Adjust the border for smaller size */
   width: 1000px;
-  background-image: linear-gradient(to bottom, #ffc107, #b6b38b, #ffc107);
+  background-image: linear-gradient(to bottom, #3498db, #b0acac, #3498db);
+  
 }
 
-.small:nth-child(odd) {
-  background-image: linear-gradient(to bottom, #3498db, #b0acac, #3498db);
+.small:nth-child(even) {
+  background-image: linear-gradient(to bottom, #ffc107, #b6b38b, #ffc107);
 }
 
 
