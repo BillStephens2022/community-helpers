@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import { CldImage } from "next-cloudinary";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan, FaRegMessage } from "react-icons/fa6";
 import { User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import Modal from "../_components/ui/Modal";
@@ -81,7 +81,6 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
             }}
           />
         )}
-
         <div className={styles.profile_aboutMe}>
           <div className={`${styles.profile_summary_div}`}>
           <h1 className={styles.profile_h1}>
@@ -110,6 +109,7 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
                 )
               }
             />
+            
           </div>
           </div>
           <div className={styles.profile_skills}>
@@ -141,6 +141,15 @@ const ProfileCard = ({ user, size, isProfilePage = false }: ProfileCardProps) =>
               <span className={styles.profile_add_skill_span}>Add Skill</span>
             </div>
           </div>
+          <div className={styles.profile_card_message_icon}>
+          <div className={styles.message_icon_container}>
+            <FaRegMessage color="white" size={30} aria-label="Send Message"/>
+            <span className={styles.tooltip_text}></span>
+            </div>
+          </div>
+      
+        
+        
         </div>
       </div>
       {isModalOpen && (
