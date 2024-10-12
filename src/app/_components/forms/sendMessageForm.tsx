@@ -6,7 +6,7 @@ import { useSetRecoilState } from "recoil";
 import { User, Message } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
 import Button from "../ui/Button";
-import styles from "./editProfileForm.module.css";
+import styles from "./sendMessageForm.module.css";
 
 
 interface SendMessageFormProps {
@@ -19,6 +19,7 @@ interface SendMessageFormProps {
 const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }: SendMessageFormProps) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    messageSubject: "",
     messageText: "",
   });
   const [error, setError] = useState("");
@@ -39,39 +40,41 @@ const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }:
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch(`/api/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData), // Send form data as JSON
-      });
+    console.log(formData)
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to update user.");
-      } else {
-         // Success: clear any error messages, reset user state, and refresh profile page
-         setError("");
+    // try {
+    //   const response = await fetch(`/api/users/${user.id}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formData), // Send form data as JSON
+    //   });
 
-         // Update Recoil state directly with new skillset to reflect changes immediately
-         setUser((prevUser) => {
-           if (!prevUser) return prevUser; // If prevUser is null, do nothing
+    //   if (!response.ok) {
+    //     const errorData = await response.json();
+    //     setError(errorData.message || "Failed to update user.");
+    //   } else {
+    //      // Success: clear any error messages, reset user state, and refresh profile page
+    //      setError("");
+
+    //      // Update Recoil state directly with new skillset to reflect changes immediately
+    //      setUser((prevUser) => {
+    //        if (!prevUser) return prevUser; // If prevUser is null, do nothing
  
-           return {
-             ...prevUser, // Spread the existing user properties
-             aboutText: formData.messageText, // Update only the skillset field
-           };
-         });
+    //        return {
+    //          ...prevUser, // Spread the existing user properties
+    //          aboutText: formData.messageText, // Update only the skillset field
+    //        };
+    //      });
  
-         closeModal();
-         router.refresh();
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      setError("An error occurred while updating the user.");
-    }
+    //      closeModal();
+    //      router.refresh();
+    //   }
+    // } catch (error) {
+    //   console.error("Error updating user:", error);
+    //   setError("An error occurred while updating the user.");
+    // }
   };
 
   return (
@@ -79,11 +82,24 @@ const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }:
       <form className={styles.form}>
       <div className={styles.static_field}>
           <label className={styles.label}>From:</label>
-          <p>{loggedInUsername}</p> {/* Not editable */}
+          <p className={styles.form_p1}>{loggedInUsername}</p> {/* Not editable */}
         </div>
         <div className={styles.static_field}>
           <label className={styles.label}>To:</label>
-          <p>{user.firstName} {user.lastName}</p> {/* Not editable */}
+          <p className={styles.form_p2}>{user.firstName} {user.lastName}</p> {/* Not editable */}
+        </div>
+        <div>
+          <label htmlFor="messageSubject" className={styles.label}>
+            Subject
+          </label>
+          <input
+            name="messageSubject"
+            placeholder="subject"
+            className={styles.input}
+            id="messageSubject"
+            onChange={handleChange}
+            value={formData.messageSubject}
+          />
         </div>
         <div>
           <label htmlFor="messageText" className={styles.label}>
@@ -92,7 +108,7 @@ const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }:
           <textarea
             name="messageText"
             placeholder="message text"
-            className={styles.input}
+            className={styles.textarea}
             id="messageText"
             onChange={handleChange}
             value={formData.messageText}
