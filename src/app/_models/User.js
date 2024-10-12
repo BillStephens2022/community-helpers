@@ -1,4 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+// even though not explicitly used in this file, it is needed so that Message model 
+// is registered before using it to populate messages.  Will get errors on profile 3
+// page if import isn't here.
+import Message from './Message'; 
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({

@@ -8,6 +8,8 @@ export interface User {
   aboutText?: string;
   isWorker?: boolean;
   profileImage?: string;
+  receivedMessages: any[],
+  sentMessages: any[]
 }
 
 export interface MessageBody {

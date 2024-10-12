@@ -14,7 +14,15 @@ export async function GET(
   try {
     await dbConnect();
     console.log("getting userId: ", id);
-    const user = await User.findById(id);
+    const user = await User.findById(id)
+      .populate({
+        path: "receivedMessages",
+        populate: { path: "from", select: "firstName lastName email" }, // Populate the 'from' field of messages
+      })
+      .populate({
+        path: "sentMessages",
+        populate: { path: "to", select: "firstName lastName email" }, // Populate the 'to' field of messages
+      });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
@@ -28,6 +36,9 @@ export async function GET(
         aboutText: user.aboutText,
         isWorker: user.isWorker,
         profileImage: user.profileImage,
+        receivedMessages: user.receivedMessages || [], 
+        sentMessages: user.sentMessages || [], 
+
       },
       { status: 200 }
     );
@@ -99,7 +110,7 @@ export async function DELETE(
 
     // Remove the skill from the user's skills array
     user.skills = user.skills.filter((s: string) => s !== skill);
-    
+
     // Save the updated user back to the database
     await user.save();
 
