@@ -41,6 +41,8 @@ const userSchema = new Schema({
   profileImage: { 
     type: String 
   },
+  sentMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
+  receivedMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
