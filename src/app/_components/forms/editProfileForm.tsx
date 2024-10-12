@@ -52,7 +52,7 @@ const EditProfileForm = ({ closeModal, user }: EditProfileFormProps) => {
     event.preventDefault();
   
     try {
-      const response = await fetch(`/api/users/${user.id}`, {
+      const response = await fetch(`/api/users/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

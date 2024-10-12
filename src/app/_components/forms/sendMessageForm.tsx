@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { User, Message } from "../../_lib/types";
+import { User, MessageBody } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
+import { messagesState } from "../../_atoms/messageAtom";
 import Button from "../ui/Button";
 import styles from "./sendMessageForm.module.css";
-
 
 interface SendMessageFormProps {
   closeModal: () => void;
@@ -16,77 +15,100 @@ interface SendMessageFormProps {
   loggedInUsername?: string;
 }
 
-const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }: SendMessageFormProps) => {
-  const router = useRouter();
+const SendMessageForm = ({
+  closeModal,
+  user,
+  loggedInUserId,
+  loggedInUsername,
+}: SendMessageFormProps) => {
   const [formData, setFormData] = useState({
     messageSubject: "",
     messageText: "",
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<{ subject?: string; message?: string }>(
+    {}
+  );
   const setUser = useSetRecoilState(userState);
-
+  const setMessages = useSetRecoilState(messagesState);
+  console.log("user in form: ", user)
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const validateFields = () => {
+    const newErrors: { subject?: string; message?: string } = {};
+
+    if (!formData.messageSubject.trim()) {
+      newErrors.subject = "Subject is required.";
+    }
+
+    if (!formData.messageText.trim()) {
+      newErrors.message = "Message text is required.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    console.log(formData)
+    if (!validateFields()) {
+      return; // Stop if validation fails
+    }
+    console.log("form data: ", formData);
+    console.log("from: ", loggedInUserId);
+    console.log("to: ", user._id);
+    try {
+      const response = await fetch(`/api/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: loggedInUserId,
+          to: user._id,
+          messageSubject: formData.messageSubject,
+          messageText: formData.messageText,
+        }), // Send form data as JSON
+      });
 
-    // try {
-    //   const response = await fetch(`/api/users/${user.id}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData), // Send form data as JSON
-    //   });
-
-    //   if (!response.ok) {
-    //     const errorData = await response.json();
-    //     setError(errorData.message || "Failed to update user.");
-    //   } else {
-    //      // Success: clear any error messages, reset user state, and refresh profile page
-    //      setError("");
-
-    //      // Update Recoil state directly with new skillset to reflect changes immediately
-    //      setUser((prevUser) => {
-    //        if (!prevUser) return prevUser; // If prevUser is null, do nothing
- 
-    //        return {
-    //          ...prevUser, // Spread the existing user properties
-    //          aboutText: formData.messageText, // Update only the skillset field
-    //        };
-    //      });
- 
-    //      closeModal();
-    //      router.refresh();
-    //   }
-    // } catch (error) {
-    //   console.error("Error updating user:", error);
-    //   setError("An error occurred while updating the user.");
-    // }
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrors({ message: errorData.message || "Failed to send message." });
+      } else {
+        const newMessage: MessageBody = await response.json();
+        // Update Recoil messages state
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        // Clear form data and close modal
+        setFormData({ messageSubject: "", messageText: "" });
+        closeModal();
+      }
+    } catch (error) {
+      setErrors({ message: "An error occurred while sending the message." });
+    }
   };
 
   return (
     <>
       <form className={styles.form}>
-      <div className={styles.static_field}>
+        <div className={styles.static_field}>
           <label className={styles.label}>From:</label>
-          <p className={styles.form_p1}>{loggedInUsername}</p> {/* Not editable */}
+          <p className={styles.form_p1}>{loggedInUsername}</p>{" "}
+          {/* Not editable */}
         </div>
         <div className={styles.static_field}>
           <label className={styles.label}>To:</label>
-          <p className={styles.form_p2}>{user.firstName} {user.lastName}</p> {/* Not editable */}
+          <p className={styles.form_p2}>
+            {user.firstName} {user.lastName}
+          </p>{" "}
+          {/* Not editable */}
         </div>
         <div>
           <label htmlFor="messageSubject" className={styles.label}>
@@ -100,6 +122,7 @@ const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }:
             onChange={handleChange}
             value={formData.messageSubject}
           />
+          {errors.subject && <p className={styles.error}>{errors.subject}</p>}
         </div>
         <div>
           <label htmlFor="messageText" className={styles.label}>
@@ -114,12 +137,11 @@ const SendMessageForm = ({ closeModal, user, loggedInUserId, loggedInUsername }:
             value={formData.messageText}
             rows={5}
           />
+          {errors.message && <p className={styles.error}>{errors.message}</p>}
         </div>
-        {/* If error, display the error message */}
-        {error && <p className={styles.error}>{error}</p>}{" "}
         <div className={styles.button_div}>
           <Button onClick={handleSubmit} type="submit">
-            Submit
+            Send Message
           </Button>
         </div>
       </form>

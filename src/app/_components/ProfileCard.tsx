@@ -58,7 +58,7 @@ const ProfileCard = ({
 
   const handleDeleteSkill = async (skillToDelete: string) => {
     try {
-      const userId = user?.id;
+      const userId = user?._id;
 
       // api call to delete the skill
       await deleteUserSkill(userId, skillToDelete);

@@ -36,7 +36,7 @@ const AddSkillForm = ({ closeModal, user }: AddSkillFormProps) => {
       // Create the updated skills array with the newly added skill
       const updatedSkills = [...existingSkills, newSkill];
       // Send the updated skills array to the server to update the user in database
-      const response = await fetch(`/api/users/${user.id}`, {
+      const response = await fetch(`/api/users/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -10,7 +10,7 @@ export interface User {
   profileImage?: string;
 }
 
-export interface Message {
+export interface MessageBody {
   from: string;
   to: string;
   messageSubject: string;

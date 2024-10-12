@@ -31,7 +31,7 @@ export default function Profile() {
             const data = await fetchUserData(userId);
             // Update Recoil state with user data
             setUser({
-              id: userId || "",
+              _id: userId || "",
               firstName: data.firstName,
               lastName: data.lastName,
               email: data.email,
@@ -53,7 +53,7 @@ export default function Profile() {
   }, [session, setUser]);
 
   const handleImageUpload = async (imageUrl: string) => {
-    const userId = user?.id; // Get the user's ID from the Recoil state
+    const userId = user?._id; // Get the user's ID from the Recoil state
     if (userId) {
       try {
         // API call to update the user profile image
@@ -73,7 +73,7 @@ export default function Profile() {
   };
 
   const toggleIsWorker = async () => {
-    const userId = user?.id; // Get the user's ID from the Recoil state
+    const userId = user?._id; // Get the user's ID from the Recoil state
     if (userId) {
       try {
         const updatedIsWorker = !user?.isWorker;

@@ -19,6 +19,7 @@ export default function Community() {
       setLoading(true);
       try {
         const data = await fetchUsers();
+        console.log("data: ", data);
         setUsers(data);
       } catch (error) {
         console.error("Failed to fetch users:", error);
@@ -68,7 +69,7 @@ export default function Community() {
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
             <ProfileCard
-              key={user.id}
+              key={user._id}
               user={user}
               size="small"
               isProfilePage={false}
