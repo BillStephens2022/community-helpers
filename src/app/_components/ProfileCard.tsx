@@ -154,7 +154,7 @@ const ProfileCard = ({
               <span className={styles.profile_add_skill_span}>Add Skill</span>
             </div>
           </div>
-          <div className={styles.profile_card_message_icon}>
+          {!isProfilePage && <div className={styles.profile_card_message_icon}>
             <div className={styles.message_icon_container}>
               <FaRegMessage
                 color="white"
@@ -169,7 +169,7 @@ const ProfileCard = ({
               />
               <span className={styles.tooltip_text}></span>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
       {isModalOpen && (
