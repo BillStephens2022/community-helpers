@@ -1,0 +1,42 @@
+.profile_table_title_received {
+  margin-top: 2rem;
+  color: black;
+}
+
+.profile_table_title_sent {
+  color: black;
+}
+
+.messageTable_received {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.messageTable_sent {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
+}
+
+.messageTable_received th,
+.messageTable_received td,
+.messageTable_sent th,
+.messageTable_sent td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  color: black;
+}
+
+.messageTable_received th,
+.messageTable_sent th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.no_messages_p {
+  color: black;
+  margin-bottom: 5rem;
+}

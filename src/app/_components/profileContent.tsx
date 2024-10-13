@@ -1,11 +1,12 @@
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { CldUploadWidget } from "next-cloudinary";
-import { userState } from "../_atoms/userAtom";
 import { Switch } from "@mantine/core";
-import ProfileCard from "../_components/ProfileCard";
-import { updateProfileImage, updateIsWorkerStatus } from "../_utils/api/users";
-import styles from "../profile/profile.module.css";
+import { userState } from "../_atoms/userAtom";
 import { User } from "../_lib/types";
+import ProfileCard from "./ProfileCard";
+import { updateProfileImage, updateIsWorkerStatus } from "../_utils/api/users";
+import styles from "./profileContent.module.css";
+
 
 interface ProfileContentProps {
   user: User;
