@@ -77,9 +77,9 @@ export default function Profile() {
 
   return (
     <div className={styles.profile_page}>
-      <div>
-        <button onClick={() => setView("profile")}>Profile</button>
-        <button onClick={() => setView("messages")}>Messages</button>
+      <div className={styles.view_button_div}>
+        <button className={`${styles.view_button} ${view === "profile" ? styles.active : ""}`} onClick={() => setView("profile")}>Profile</button>
+        <button className={`${styles.view_button} ${view === "messages" ? styles.active : ""}`} onClick={() => setView("messages")}>Messages</button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}
       {view === "messages" && (

@@ -193,3 +193,28 @@
   color: black;
   margin-bottom: 5rem;
 }
+
+.view_button_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.view_button {
+  background-color: transparent;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem 1rem 0.5rem;
+  cursor: pointer;  
+  letter-spacing: 3px;
+  border: none;
+  text-shadow: 2px 2px 3px black; 
+}
+
+.active {
+  /* background-color: red; */
+  border-bottom: 5px solid var(--yellow-primary);
+  color: white;
+}
