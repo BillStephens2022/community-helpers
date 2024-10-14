@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Accordion, AccordionItem } from "@mantine/core";
-import { FaRegEye, FaRegTrashCan, FaReply } from "react-icons/fa6";
+import { FaRegTrashCan, FaReply } from "react-icons/fa6";
 import { MessageBody, User } from "../_lib/types";
-import { deleteMessage } from "../_utils/api/messages";
-import styles from "./messagesContent.module.css";
 import { userState } from "../_atoms/userAtom";
+import { deleteMessage } from "../_utils/api/messages";
+import Modal from "./ui/Modal";
+import styles from "./messagesContent.module.css";
+
 
 interface MessagesTableProps {
   messages: MessageBody[];
@@ -119,7 +121,7 @@ const MessagesTable = ({
                         onClick={() => handleDeleteMessage(message._id)}
                         className={styles.trash_icon}
                       />
-                      <FaReply className={styles.reply_icon} />
+                      <FaReply className={styles.reply_icon} onClick={() => setIsModalOpen(true)}/>
                     </div>
                   </div>
                 </Accordion.Control>
@@ -132,6 +134,9 @@ const MessagesTable = ({
               </AccordionItem>
             ))}
           </Accordion>
+          {isModalOpen && (
+            <Modal onClose={closeModal} title="Reply to..." content={<p>Replying to message...</p>} />
+          )}
         </div>
       ) : (
         <p className={styles.no_messages_p}>No messages sent.</p>
