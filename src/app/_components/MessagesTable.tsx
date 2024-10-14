@@ -15,37 +15,48 @@ interface MessagesTableProps {
 
 const MessagesTable = ({ messages: initialMessages, messageDirection, userId }: MessagesTableProps) => {
   const [user, setUser] = useRecoilState(userState);
-  const [loading, setLoading] = useState<string | null>(null);
   
 
   console.log(messageDirection, " Messages :", initialMessages);
 
   const handleDeleteMessage = async (messageId: string) => {
-    setLoading(messageId); 
+    // Optimistically remove the message from the UI
+    setUser((prevUser) => {
+      if (!prevUser) return prevUser; // Handle potential null user
 
+      const updatedMessages = messageDirection === "Received"
+        ? prevUser.receivedMessages.filter((msg) => msg._id !== messageId)
+        : prevUser.sentMessages.filter((msg) => msg._id !== messageId);
+
+      // Return the updated user with the modified messages
+      return {
+        ...prevUser,
+        [messageDirection === "Received" ? "receivedMessages" : "sentMessages"]: updatedMessages,
+      };
+    });
+
+    // Call the deleteMessage API
     const { success, error } = await deleteMessage(messageId, userId);
 
-    if (success) {
-      // Update the Recoil state based on the message direction (Received or Sent)
-      setUser((prevUser) => {
-        if (!prevUser) return prevUser; // Handle potential null user
-
-        const updatedMessages = messageDirection === "Received"
-          ? prevUser.receivedMessages.filter((msg) => msg._id !== messageId)
-          : prevUser.sentMessages.filter((msg) => msg._id !== messageId);
-
-        // Return the updated user with the modified messages
-        return {
-          ...prevUser,
-          [messageDirection === "Received" ? "receivedMessages" : "sentMessages"]: updatedMessages,
-        };
-      });
-    } else {
+    if (!success) {
       console.error("Failed to delete message:", error);
       alert("Failed to delete message.");
-    }
 
-    setLoading(null);
+      // Revert the optimistic update if the delete fails
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+
+        const revertedMessages = messageDirection === "Received"
+          ? [...prevUser.receivedMessages, initialMessages.find(msg => msg._id === messageId)!]
+          : [...prevUser.sentMessages, initialMessages.find(msg => msg._id === messageId)!];
+
+        // Return the updated user with the reverted messages
+        return {
+          ...prevUser,
+          [messageDirection === "Received" ? "receivedMessages" : "sentMessages"]: revertedMessages,
+        };
+      });
+    }
   };
 
   const messages = messageDirection === "Received" ? user?.receivedMessages : user?.sentMessages;
@@ -86,9 +97,6 @@ const MessagesTable = ({ messages: initialMessages, messageDirection, userId }: 
                     <FaRegTrashCan
                       onClick={() => handleDeleteMessage(message._id)}
                       className={styles.trash_icon}
-                      style={{
-                        color: loading === message._id ? "gray" : "red",
-                      }}
                     />
                     <FaReply className={styles.reply_icon} />
                   </div>
