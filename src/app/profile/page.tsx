@@ -41,8 +41,8 @@ export default function Profile() {
       {view === "profile" && <ProfileContent user={user} />}
       {view === "messages" && (
         <>
-          <MessagesTable messages={user.receivedMessages} messageDirection="Received" />
-          <MessagesTable messages={user.sentMessages} messageDirection="Sent" />
+          <MessagesTable messages={user.receivedMessages || []} messageDirection="Received" userId={user._id} />
+          <MessagesTable messages={user.sentMessages || []} messageDirection="Sent" userId={user._id} />
         </>
       )}
     </div>
