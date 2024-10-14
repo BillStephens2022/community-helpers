@@ -3,42 +3,75 @@
   color: black;
 }
 
-.messageTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-
-.messageTable th,
-.messageTable td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.accordion {
+  width: 750px;
+  margin: 0 auto;
   color: black;
 }
 
-.messageTable th {
-  background-color: #f2f2f2;
-  text-align: left;
-}
-
-.action_div {
+/* Column labels layout */
+.accordion_labels {
   display: flex;
   justify-content: space-between;
-}
-
-.trash_icon {
-  color: red;
-  cursor: pointer;
-}
-
-.reply_icon {
+  padding: 10px;
+  background-color: var(--yellow-primary);
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
   color: white;
+}
+
+/* Ensure labels align with header columns */
+.accordion_labels span {
+  flex: 1;
+  text-align: left;
+  padding: 0 10px;
+}
+
+/* Header Layout */
+.accordion_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+/* Header span styles (date, subject, sender/receiver) */
+.accordion_header span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Align action icons properly */
+.action_div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Trash and reply icon styles */
+.trash_icon,
+.reply_icon {
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
-.no_messages_p {
-  color: black;
-  margin-bottom: 5rem;
+/* Panel content to wrap text properly */
+.accordion_panel {
+  padding: 10px; /* Add some padding for better readability */
+  width: 100%; /* Match the accordion width */
+}
+
+/* Ensure text wraps within the panel */
+.accordion_panel p {
+  margin: 0;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
