@@ -6,7 +6,7 @@ import { useProfileData } from "../_utils/hooks/useProfileData";
 import { userState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileContent from "../_components/ProfileContent";
-import MessagesContent from "../_components/MessagesContent";
+import MessagesTable from "../_components/MessagesTable";
 import styles from "./profile.module.css";
 
 export default function Profile() {
@@ -39,7 +39,12 @@ export default function Profile() {
         </button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}
-      {view === "messages" && <MessagesContent user={user} />}
+      {view === "messages" && (
+        <>
+          <MessagesTable messages={user.receivedMessages} messageDirection="Received" />
+          <MessagesTable messages={user.sentMessages} messageDirection="Sent" />
+        </>
+      )}
     </div>
   );
 }

@@ -13,8 +13,16 @@ export interface User {
 }
 
 export interface MessageBody {
-  from: string;
-  to: string;
+  _id: string;
+  createdAt: string;
+  to: {
+    firstName: string;
+    lastName: string; 
+  };
+  from: {
+    firstName: string;
+    lastName: string;
+  }
   messageSubject: string;
   messageText: string;
 }
