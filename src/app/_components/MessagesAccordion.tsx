@@ -6,20 +6,20 @@ import { MessageBody, User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import { deleteMessage } from "../_utils/api/messages";
 import Modal from "./ui/Modal";
-import styles from "./messagesContent.module.css";
+import styles from "./messagesAccordion.module.css";
 
 
-interface MessagesTableProps {
+interface MessagesAccordionProps {
   messages: MessageBody[];
   messageDirection: "Received" | "Sent";
   userId: string;
 }
 
-const MessagesTable = ({
+const MessagesAccordion = ({
   messages: initialMessages,
   messageDirection,
   userId,
-}: MessagesTableProps) => {
+}: MessagesAccordionProps) => {
   const [user, setUser] = useRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -89,12 +89,12 @@ const MessagesTable = ({
 
   return (
     <>
-      <h2 className={styles.profile_table_title}>
+      <h2 className={styles.profile_accordion_title}>
         {messageDirection} Messages
       </h2>
       {messages && messages.length > 0 ? (
         <div className={styles.accordion}>
-          <Accordion bg="#3498DB">
+          <Accordion bg="transparent">
             {/* Column Labels */}
             <div className={styles.accordion_labels}>
               <span>Date</span>
@@ -106,7 +106,7 @@ const MessagesTable = ({
               <AccordionItem key={message._id} value={message._id}>
                 {/* <div className={styles.accordion_header}> */}
                 <Accordion.Control>
-                  <div className={styles.accordion_header}>
+                  <div className={styles.accordion_header} style={{color: "whitesmoke", fontWeight: "700"}}>
                     <span>
                       {new Date(message.createdAt).toLocaleDateString()}
                     </span>
@@ -145,4 +145,4 @@ const MessagesTable = ({
   );
 };
 
-export default MessagesTable;
+export default MessagesAccordion;

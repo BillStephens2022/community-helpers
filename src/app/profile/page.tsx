@@ -6,7 +6,7 @@ import { useProfileData } from "../_utils/hooks/useProfileData";
 import { userState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileContent from "../_components/ProfileContent";
-import MessagesTable from "../_components/MessagesTable";
+import MessagesAccordion from "../_components/MessagesAccordion";
 import styles from "./profile.module.css";
 
 export default function Profile() {
@@ -41,8 +41,8 @@ export default function Profile() {
       {view === "profile" && <ProfileContent user={user} />}
       {view === "messages" && (
         <>
-          <MessagesTable messages={user.receivedMessages || []} messageDirection="Received" userId={user._id} />
-          <MessagesTable messages={user.sentMessages || []} messageDirection="Sent" userId={user._id} />
+          <MessagesAccordion messages={user.receivedMessages || []} messageDirection="Received" userId={user._id} />
+          <MessagesAccordion messages={user.sentMessages || []} messageDirection="Sent" userId={user._id} />
         </>
       )}
     </div>
