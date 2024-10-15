@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { createReply } from "../../_utils/api/messages";
+import { MessageBody } from "../../_lib/types";
+import Button from "../ui/Button";
+import styles from "./messageReplyForm.module.css";
 
 interface MessageReplyFormProps {
   parentMessageId: string;
   userId: string;
   onClose: () => void;
+  onReplySuccess: (reply: MessageBody) => void;
 }
 
 const MessageReplyForm = ({
   parentMessageId,
   userId,
   onClose,
+  onReplySuccess,
 }: MessageReplyFormProps) => {
   const [messageText, setMessageText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,42 +26,46 @@ const MessageReplyForm = ({
     setLoading(true);
     setError(null);
 
-    const { success, error } = await createReply(
-      parentMessageId,
-      userId,
-      messageText
-    );
+    const {
+      success,
+      reply,
+      error: apiError,
+    } = await createReply(parentMessageId, userId, messageText);
 
-    if (success) {
-      alert("Reply sent successfully!");
-      onClose(); // Close the modal on success
+    if (success && reply) {
+      onReplySuccess(reply); // Optimistically update state
+      onClose();
     } else {
-      setError(error || "Failed to send reply.");
+      setError(apiError || "Failed to send reply.");
     }
 
     setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form className={styles.replyForm}>
+      <div className={styles.replyContainer}>
         <textarea
+          className={styles.replyTextarea}
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           placeholder="Type your reply..."
           required
-          rows={4}
-          style={{ width: "100%", marginBottom: "1rem" }}
+          rows={5}
         />
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Sending..." : "Send Reply"}
-        </button>
-        <button type="button" onClick={onClose} style={{ marginLeft: "1rem" }}>
+      {error && (
+        <p className={styles.error}>
+          {error}
+        </p>
+      )}
+      <div className={styles.buttons_div}>
+        <Button onClick={handleSubmit} type="button" disabled={loading}>
+          {loading ? "Sending..." : "Send"}
+        </Button>
+        <Button type="button" onClick={onClose}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

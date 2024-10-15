@@ -85,6 +85,23 @@ const MessagesAccordion = ({
     }
   };
 
+  const handleReplySuccess = (reply: MessageBody) => {
+    setUser((prevUser) => {
+      if (!prevUser) return prevUser;
+
+      const updatedMessages =
+        messageDirection === "Received"
+          ? [...prevUser.receivedMessages, reply]
+          : [...prevUser.sentMessages, reply];
+
+      return {
+        ...prevUser,
+        [messageDirection === "Received" ? "receivedMessages" : "sentMessages"]:
+          updatedMessages,
+      };
+    });
+  };
+
   const messages =
     messageDirection === "Received"
       ? user?.receivedMessages
@@ -152,6 +169,7 @@ const MessagesAccordion = ({
                   parentMessageId={activeMessageId}
                   userId={userId}
                   onClose={closeModal}
+                  onReplySuccess={handleReplySuccess}
                 />
               }
             />

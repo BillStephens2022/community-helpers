@@ -3,7 +3,6 @@
 import { useState, FormEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import { User, MessageBody } from "../../_lib/types";
-import { userState } from "../../_atoms/userAtom";
 import { messagesState } from "../../_atoms/messageAtom";
 import Button from "../ui/Button";
 import styles from "./sendMessageForm.module.css";
@@ -28,7 +27,7 @@ const SendMessageForm = ({
   const [errors, setErrors] = useState<{ subject?: string; message?: string }>(
     {}
   );
-  const setUser = useSetRecoilState(userState);
+  
   const setMessages = useSetRecoilState(messagesState);
   console.log("user in form: ", user)
   const handleChange = (
@@ -91,6 +90,7 @@ const SendMessageForm = ({
         closeModal();
       }
     } catch (error) {
+      console.error("An error occurred while sending the message: ", error);
       setErrors({ message: "An error occurred while sending the message." });
     }
   };
