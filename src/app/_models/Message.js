@@ -6,6 +6,8 @@ const messageSchema = new Schema({
   to: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   messageSubject: { type: String, required: true },
   messageText: { type: String, required: true },
+  parentMessage: { type: Schema.Types.ObjectId, ref: 'Message', default: null }, // Self-reference
+  replies: [{ type: Schema.Types.ObjectId, ref: 'Message' }], // Child replies
   deletedBySender: { type: Boolean, default: false },
   deletedByReceiver: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
