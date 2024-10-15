@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Accordion, AccordionItem } from "@mantine/core";
 import { FaRegTrashCan, FaReply } from "react-icons/fa6";
-import { MessageBody, User } from "../_lib/types";
+import { MessageBody } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import { deleteMessage } from "../_utils/api/messages";
 import Modal from "./ui/Modal";
+import MessageReplyForm from "./forms/MessageReplyForm";
 import styles from "./messagesAccordion.module.css";
-
 
 interface MessagesAccordionProps {
   messages: MessageBody[];
@@ -22,13 +22,16 @@ const MessagesAccordion = ({
 }: MessagesAccordionProps) => {
   const [user, setUser] = useRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeMessageId, setActiveMessageId] = useState<string | null>(null); 
 
-  const openModal = () => {
+  const openModal = (messageId: string) => {
+    setActiveMessageId(messageId);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setActiveMessageId(null);
   };
 
   const handleDeleteMessage = async (messageId: string) => {
@@ -106,7 +109,10 @@ const MessagesAccordion = ({
               <AccordionItem key={message._id} value={message._id}>
                 {/* <div className={styles.accordion_header}> */}
                 <Accordion.Control>
-                  <div className={styles.accordion_header} style={{color: "whitesmoke", fontWeight: "700"}}>
+                  <div
+                    className={styles.accordion_header}
+                    style={{ color: "whitesmoke", fontWeight: "700" }}
+                  >
                     <span>
                       {new Date(message.createdAt).toLocaleDateString()}
                     </span>
@@ -121,7 +127,10 @@ const MessagesAccordion = ({
                         onClick={() => handleDeleteMessage(message._id)}
                         className={styles.trash_icon}
                       />
-                      <FaReply className={styles.reply_icon} onClick={() => setIsModalOpen(true)}/>
+                      <FaReply
+                        className={styles.reply_icon}
+                        onClick={() => openModal(message._id)}
+                      />
                     </div>
                   </div>
                 </Accordion.Control>
@@ -134,8 +143,18 @@ const MessagesAccordion = ({
               </AccordionItem>
             ))}
           </Accordion>
-          {isModalOpen && (
-            <Modal onClose={closeModal} title="Reply to..." content={<p>Replying to message...</p>} />
+          {isModalOpen && activeMessageId && (
+            <Modal
+              onClose={closeModal}
+              title="Reply to Message"
+              content={
+                <MessageReplyForm
+                  parentMessageId={activeMessageId}
+                  userId={userId}
+                  onClose={closeModal}
+                />
+              }
+            />
           )}
         </div>
       ) : (
