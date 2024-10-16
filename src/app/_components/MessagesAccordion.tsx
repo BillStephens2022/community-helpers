@@ -22,16 +22,16 @@ const MessagesAccordion = ({
 }: MessagesAccordionProps) => {
   const [user, setUser] = useRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeMessageId, setActiveMessageId] = useState<string | null>(null); 
+  const [activeMessage, setActiveMessage] = useState<MessageBody | null>(null);
 
-  const openModal = (messageId: string) => {
-    setActiveMessageId(messageId);
+  const openModal = (message: MessageBody) => {
+    setActiveMessage(message);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setActiveMessageId(null);
+    setActiveMessage(null);
   };
 
   const handleDeleteMessage = async (messageId: string) => {
@@ -89,15 +89,17 @@ const MessagesAccordion = ({
     setUser((prevUser) => {
       if (!prevUser) return prevUser;
 
-      const updatedMessages =
-        messageDirection === "Received"
-          ? [...prevUser.receivedMessages, reply]
-          : [...prevUser.sentMessages, reply];
+      const replyWithRecipient = {
+        ...reply,
+        to: activeMessage?.from || reply.to, // Use original sender as recipient
+        from: activeMessage?.to || reply.from, // Use original recipient as sender
+      };
+
+      const updatedSentMessages = [...(prevUser.sentMessages || []), replyWithRecipient];
 
       return {
         ...prevUser,
-        [messageDirection === "Received" ? "receivedMessages" : "sentMessages"]:
-          updatedMessages,
+        sentMessages: updatedSentMessages,
       };
     });
   };
@@ -146,7 +148,7 @@ const MessagesAccordion = ({
                       />
                       <FaReply
                         className={styles.reply_icon}
-                        onClick={() => openModal(message._id)}
+                        onClick={() => openModal(message)}
                       />
                     </div>
                   </div>
@@ -160,13 +162,13 @@ const MessagesAccordion = ({
               </AccordionItem>
             ))}
           </Accordion>
-          {isModalOpen && activeMessageId && (
+          {isModalOpen && activeMessage && (
             <Modal
               onClose={closeModal}
-              title="Reply to Message"
+              title={`Reply to ${activeMessage.from.firstName}`}
               content={
                 <MessageReplyForm
-                  parentMessageId={activeMessageId}
+                  parentMessageId={activeMessage._id}
                   userId={userId}
                   onClose={closeModal}
                   onReplySuccess={handleReplySuccess}
