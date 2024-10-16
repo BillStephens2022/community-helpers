@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import LoginButton from "../ui/LoginButton";
 import styles from "./signup.module.css";
 
@@ -20,6 +21,8 @@ const SignupForm = ({ closeModal }: SignupFormProps) => {
     password: "",
     confirmedPassword: "",
   });
+
+  const [error, setError] = useState("");
 
   const createUser = async (
     email: string,
@@ -55,17 +58,33 @@ const SignupForm = ({ closeModal }: SignupFormProps) => {
     const { email, firstName, lastName, password, confirmedPassword } =
       formData;
 
-    if (password === confirmedPassword) {
-      try {
-        const result = await createUser(email, firstName, lastName, password);
-        console.log(result);
+    if (password !== confirmedPassword) {
+      setError("Passwords don't match!");
+      return;
+    }
+
+    try {
+      // Step 1: Create the user
+      const result = await createUser(email, firstName, lastName, password);
+
+      // Step 2: Automatically log the user in after signup
+      const loginResult = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (loginResult?.error) {
+        console.error("Login error:", loginResult.error);
+        setError(loginResult.error);
+      } else {
+        console.log("Logged in successfully!");
         closeModal();
-        router.push("/");
-      } catch (error) {
-        console.error(error);
+        router.push("/profile");
       }
-    } else {
-      console.log("Passwords don't match, try again!");
+    } catch (error: any) {
+      console.error("Signup error:", error.message);
+      setError(error.message);
     }
   };
 
@@ -142,6 +161,7 @@ const SignupForm = ({ closeModal }: SignupFormProps) => {
             value={formData.confirmedPassword}
           />
         </div>
+        {error && <p className={styles.error}>{error}</p>}
         <div className={styles.button_div}>
           <LoginButton onClick={handleSubmit} type="submit">
             Submit
