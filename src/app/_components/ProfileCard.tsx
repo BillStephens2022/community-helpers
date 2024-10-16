@@ -110,10 +110,10 @@ const ProfileCard = ({
                   )
                 }
               />
-              <h2 className={styles.profile_h2}>{skillset}</h2>
+              <h2 className={styles.profile_h2}>{skillset ? skillset : "Skillset: "}</h2>
             </div>
             <div className={styles.profile_aboutText}>
-              <p className={styles.profile_p}>{aboutText}</p>
+              <p className={styles.profile_p}>{aboutText ? aboutText : "About Me: "}</p>
               <MdOutlineEdit
                 className={styles.profile_editIcon}
                 onClick={() =>
