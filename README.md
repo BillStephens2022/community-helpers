@@ -11,3 +11,15 @@ Community Helper is a work in process and is built with NextJS, React, TypeScrip
 #### Homepage
 
 ![homepage screenshot](./src/app/images/screenshot1.png)
+
+#### Community Page
+
+![community page screenshot](./src/app/images/screenshot2.png)
+
+#### Profile Page
+
+![profile page screenshot](./src/app/images/screenshot3.png)
+
+#### Messages
+
+![profile messages page screenshot](./src/app/images/screenshot4.png)

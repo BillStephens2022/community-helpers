@@ -1,26 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import styles from "./navigation.module.css";
-import Modal from "../ui/Modal";
-import LoginWrapper from "../forms/loginWrapper";
 import { signOut, useSession } from "next-auth/react";
 
 
 export default function Navigation() {
   const {data: session, status} = useSession();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  console.log("Session Data:", session);
-  console.log("Session Status:", status);
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const handleLogoff = async () => {
     await signOut({ redirect: true, callbackUrl: "/" }); // Redirect to homepage after logging out
@@ -58,23 +44,12 @@ export default function Navigation() {
           </>
         ) : (
           <li>
-            <button
-              type="button"
-              onClick={openModal}
-              className={styles.navbar_login}
-            >
+            <Link href="/login" className={styles.navbar_login}>
               Sign Up / Log In
-            </button>
+            </Link>
           </li>
         )}
       </ul>
-      {isModalOpen && (
-        <Modal
-          onClose={closeModal}
-          title="Sign Up / Log In"
-          content={<LoginWrapper closeModal={closeModal} />}
-        />
-      )}
     </nav>
   );
 }

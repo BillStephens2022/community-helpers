@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SignupForm from "./signupForm";
-import LoginForm from "./loginForm";
+import SignupForm from "./SignupForm";
+import LoginForm from "./LoginForm";
 import styles from "./loginWrapper.module.css";
 
 

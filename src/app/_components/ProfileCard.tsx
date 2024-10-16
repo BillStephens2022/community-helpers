@@ -8,12 +8,12 @@ import { FaRegTrashCan, FaRegMessage } from "react-icons/fa6";
 import { User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import Modal from "../_components/ui/Modal";
-import EditSkillsetForm from "../_components/forms/editSkillsetForm";
-import EditAboutTextForm from "../_components/forms/editAboutTextForm";
-import AddSkillForm from "../_components/forms/addSkillForm";
+import EditSkillsetForm from "./forms/EditSkillsetForm";
+import EditAboutTextForm from "./forms/EditAboutTextForm";
+import AddSkillForm from "./forms/AddSkillForm";
 import { deleteUserSkill } from "../_utils/api/users";
 import styles from "./profileCard.module.css";
-import SendMessageForm from "./forms/sendMessageForm";
+import SendMessageForm from "./forms/SendMessageForm";
 
 interface ProfileCardProps {
   user: User;
