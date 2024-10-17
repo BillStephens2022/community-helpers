@@ -18,10 +18,12 @@ export interface MessageBody {
   to: {
     firstName: string;
     lastName: string; 
+    profileImage?: string;
   };
   from: {
     firstName: string;
     lastName: string;
+    profileImage?: string;
   }
   messageSubject: string;
   messageText: string;

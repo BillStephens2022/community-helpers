@@ -39,11 +39,14 @@
   }
   
   .title {
+    display: flex;
     font-size: 1.25rem;
     font-weight: bold;
     color: white;
     letter-spacing: 0.15rem;
     text-transform: none;
+    padding: 0.75rem 0;
+    align-items: center;
   }
   
   .closeButton {
@@ -55,6 +58,11 @@
     font-size: 20px;
     cursor: pointer;
     color: white;
+  }
+
+  .profileImage {
+    border-radius: 50%;
+    margin-left: 1rem;
   }
   
   @media (max-width: 1024px) {

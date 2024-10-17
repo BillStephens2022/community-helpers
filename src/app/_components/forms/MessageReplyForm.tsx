@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CldImage } from "next-cloudinary";
 import { createReply } from "../../_utils/api/messages";
 import { MessageBody } from "../../_lib/types";
 import Button from "../ui/Button";

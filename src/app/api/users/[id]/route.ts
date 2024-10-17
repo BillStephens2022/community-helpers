@@ -17,11 +17,11 @@ export async function GET(
     const user = await User.findById(id)
       .populate({
         path: "receivedMessages",
-        populate: { path: "from", select: "firstName lastName email" }, // Populate the 'from' field of messages
+        populate: { path: "from", select: "firstName lastName email profileImage" }, // Populate the 'from' field of messages
       })
       .populate({
         path: "sentMessages",
-        populate: { path: "to", select: "firstName lastName email" }, // Populate the 'to' field of messages
+        populate: { path: "to", select: "firstName lastName email profileImage" }, // Populate the 'to' field of messages
       });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

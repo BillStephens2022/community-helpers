@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Accordion, AccordionItem } from "@mantine/core";
 import { FaRegTrashCan, FaReply } from "react-icons/fa6";
-import { MessageBody } from "../_lib/types";
+import { MessageBody, User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import { deleteMessage } from "../_utils/api/messages";
 import Modal from "./ui/Modal";
@@ -23,15 +23,24 @@ const MessagesAccordion = ({
   const [user, setUser] = useRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeMessage, setActiveMessage] = useState<MessageBody | null>(null);
+  const [recipientProfileImage, setRecipientProfileImage] = useState<string | null>(null);
 
   const openModal = (message: MessageBody) => {
     setActiveMessage(message);
+    console.log("Active message: ", message);
+    // Get the relevant user (from or to) based on the message direction
+    const recipient = messageDirection === "Received" ? message.from : message.to;
+
+    // Set the profile image from the recipient's data
+    setRecipientProfileImage(recipient.profileImage || null);
+
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setActiveMessage(null);
+    setRecipientProfileImage(null);
   };
 
   const handleDeleteMessage = async (messageId: string) => {
@@ -166,10 +175,11 @@ const MessagesAccordion = ({
             <Modal
               onClose={closeModal}
               title={`Reply to ${activeMessage.from.firstName}`}
+              profileImage={recipientProfileImage}
               content={
                 <MessageReplyForm
                   parentMessageId={activeMessage._id}
-                  userId={userId}
+                  userId={userId} 
                   onClose={closeModal}
                   onReplySuccess={handleReplySuccess}
                 />
