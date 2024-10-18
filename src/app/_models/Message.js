@@ -21,4 +21,4 @@ messageSchema.pre('save', function (next) {
   next();
 });
 
-export default mongoose.models.Message|| mongoose.model('Message', messageSchema);
+export default mongoose.models.Message || mongoose.model('Message', messageSchema);
