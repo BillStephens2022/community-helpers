@@ -8,11 +8,12 @@ const contractSchema = new Schema({
   jobDescription: { type: String, required: true },
   feeType: { type: String, required: true },
   hourlyRate: { type: Number },
+  hours: { type: Number },
   fixedRate: { type: Number },
   amountDue: { type: Number, required: true },
   additionalNotes: { type: String },
   status: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now, required: true },
 });
 
 messageSchema.pre('save', function (next) {

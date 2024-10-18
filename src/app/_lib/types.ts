@@ -28,3 +28,27 @@ export interface MessageBody {
   messageSubject: string;
   messageText: string;
 }
+
+export interface ContractBody {
+  _id: string;
+  worker: {
+    firstName: string;
+    lastName: string; 
+    profileImage?: string;
+  };
+  client: {
+    firstName: string;
+    lastName: string;
+    profileImage?: string;
+  }
+  jobCategory: string;
+  jobDescription: string;
+  feeType: string;
+  hourlyRate?: number;
+  hours?: number;
+  fixedRate?: number;
+  amountDue: number;
+  additionalNotes?: string;
+  status: string;
+  createdAt: string;
+}
