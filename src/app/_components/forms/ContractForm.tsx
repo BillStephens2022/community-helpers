@@ -25,10 +25,10 @@ const ContractForm = ({
     jobCategory: "",
     jobDescription: "",
     feeType: "",
-    hourlyRate: null,
-    hours: null,
-    fixedRate: null,
-    additionalNotes: null,
+    hourlyRate: "",
+    hours: "",
+    fixedRate: "",
+    additionalNotes: "",
   };
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -86,13 +86,13 @@ const ContractForm = ({
           jobCategory: formData.jobCategory,
           jobDescription: formData.jobDescription,
           feeType: formData.feeType,
-          hourlyRate: formData.hourlyRate ?? null,
-          hours: formData.hours ?? null,
-          fixedRate: formData.fixedRate ?? null,
+          hourlyRate: Number(formData.hourlyRate) ?? null,
+          hours: Number(formData.hours) ?? null,
+          fixedRate: Number(formData.fixedRate) ?? null,
           amountDue:
             formData.hourlyRate && formData.hours
-              ? formData.hourlyRate * formData.hours
-              : formData.fixedRate,
+              ? Number(formData.hourlyRate) * Number(formData.hours)
+              : Number(formData.fixedRate),
           additionalNotes: formData.additionalNotes,
           status: "Draft - Awaiting Client Approval",
         }), // Send form data as JSON
@@ -179,6 +179,79 @@ const ContractForm = ({
           {errors.jobDescription && (
             <p className={styles.error}>{errors.jobDescription}</p>
           )}
+        </div>
+        <div>
+          <label htmlFor="feeType" className={styles.label}>
+            Fee Type
+          </label>
+          <input
+            name="feeType"
+            placeholder="fee type"
+            className={styles.input}
+            id="feeType"
+            onChange={handleChange}
+            value={formData.feeType}
+          />
+          {errors.feeType && (
+            <p className={styles.error}>{errors.feeType}</p>
+          )}
+        </div>
+        {formData.feeType === "hourly" ? (
+          <div>
+          <label htmlFor="hours" className={styles.label}>
+            Estimated Hours
+          </label>
+          <input
+            name="hours"
+            placeholder="estimated hours"
+            className={styles.input}
+            id="hours"
+            onChange={handleChange}
+            value={formData.hours ?? ""}  
+          />
+          {errors.hours && (
+            <p className={styles.error}>{errors.hours}</p>
+          )} 
+          </div>
+          ) : (
+            <div>
+            <label htmlFor="fixedRate" className={styles.label}>
+              Fixed Fee
+            </label>
+            <input
+              name="fixedRate"
+              placeholder="fixed fee amount"
+              className={styles.input}
+              id="fixedRate"
+              onChange={handleChange}
+              value={formData.fixedRate ?? ""}  
+            />
+            {errors.fixedRate && (
+              <p className={styles.error}>{errors.fixedRate}</p>
+            )} 
+            </div>
+          )}
+        <div>
+          <label htmlFor="additionalNotes" className={styles.label}>
+            Additional Notes
+          </label>
+          <textarea
+            name="additionalNotes"
+            placeholder="additional notes"
+            className={styles.textarea}
+            id="additionalNotes"
+            onChange={handleChange}
+            value={formData.additionalNotes}
+            rows={5}
+          />
+          {errors.additionalNotes && (
+            <p className={styles.error}>{errors.additionalNotes}</p>
+          )}
+        </div>
+        <div className={styles.static_field}>
+          <label className={styles.label}>Amount Due upon completion:</label>
+          <p className={styles.form_p1}>{formData.feeType === "hourly" ? Number(formData.hours) * Number(formData.hourlyRate) : Number(formData.fixedRate)}</p>{" "}
+          {/* Not editable */}
         </div>
         <div className={styles.button_div}>
           <Button onClick={handleSubmit} type="submit">
