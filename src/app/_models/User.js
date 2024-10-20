@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // is registered before using it to populate messages.  Will get errors on profile 3
 // page if import isn't here.
 import Message from './Message'; 
+import Contract from './Contract';
 
 const Schema = mongoose.Schema;
 

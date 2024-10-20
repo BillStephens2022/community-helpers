@@ -1,22 +1,21 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { User, ContractBody } from "../../_lib/types";
 import { contractsState } from "../../_atoms/contractAtom";
+import { usersState } from "@/app/_atoms/userAtom";
 import Button from "../ui/Button";
 import styles from "./sendMessageForm.module.css";
 
 interface ContractFormProps {
   closeModal: () => void;
-  user: User;
   loggedInUserId?: string;
   loggedInUsername?: string;
 }
 
 const ContractForm = ({
   closeModal,
-  user,
   loggedInUserId,
   loggedInUsername,
 }: ContractFormProps) => {
@@ -32,9 +31,9 @@ const ContractForm = ({
   };
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const users = useRecoilValue(usersState);
   const setContracts = useSetRecoilState(contractsState);
-  console.log("user in form: ", user);
+ 
   const requiredFields = ["jobCategory", "jobDescription", "feeType"];
 
   const handleChange = (
@@ -74,7 +73,7 @@ const ContractForm = ({
     }
 
     // Validate worker-client difference
-    if (loggedInUserId === user._id) {
+    if (loggedInUserId === formData.client) {
       newErrors.client = "Worker and Client cannot be the same user.";
     }
 
@@ -100,9 +99,6 @@ const ContractForm = ({
 
     const amountDue = calculateAmountDue();
 
-    console.log("form data: ", formData);
-    console.log("from: ", loggedInUserId);
-    console.log("to: ", user._id);
     try {
       const response = await fetch(`/api/contracts`, {
         method: "POST",
@@ -111,7 +107,7 @@ const ContractForm = ({
         },
         body: JSON.stringify({
           worker: loggedInUserId,
-          client: user._id,
+          client: formData.client,
           jobCategory: formData.jobCategory,
           jobDescription: formData.jobDescription,
           feeType: formData.feeType,
@@ -155,10 +151,20 @@ const ContractForm = ({
         </div>
         <div className={styles.static_field}>
           <label className={styles.label}>Client:</label>
-          <p className={styles.form_p2}>
-            {user.firstName} {user.lastName}
-          </p>{" "}
-          {/* Not editable */}
+          <select
+          name="client"
+          id="client"
+          value={formData.client}
+          onChange={handleChange}
+          className={styles.input}
+        >
+          <option value="">Select a client</option>
+          {users.map((user) => (
+            <option key={user._id} value={user._id}>
+              {user.firstName} {user.lastName}
+            </option>
+          ))}
+        </select>
         </div>
         <div>
           <label htmlFor="jobCategory" className={styles.label}>

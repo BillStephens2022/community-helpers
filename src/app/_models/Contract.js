@@ -16,7 +16,7 @@ const contractSchema = new Schema({
   createdAt: { type: Date, default: Date.now, required: true },
 });
 
-messageSchema.pre('save', function (next) {
+contractSchema.pre('save', function (next) {
   // Ensure 'worker' and 'client' fields are different
   if (this.worker.equals(this.client)) {
     return next(new Error("Worker and Client cannot be the same user."));

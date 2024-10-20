@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { Accordion, AccordionItem } from "@mantine/core";
 import { FaRegTrashCan, FaReply } from "react-icons/fa6";
+import { IoDocumentTextOutline } from "react-icons/io5";
 import { MessageBody, User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import { deleteMessage } from "../_utils/api/messages";
 import Modal from "./ui/Modal";
 import MessageReplyForm from "./forms/MessageReplyForm";
 import styles from "./messagesAccordion.module.css";
+import ContractForm from "./forms/ContractForm";
 
 interface MessagesAccordionProps {
   messages: MessageBody[];
@@ -20,12 +23,17 @@ const MessagesAccordion = ({
   messageDirection,
   userId,
 }: MessagesAccordionProps) => {
+  const { data: session } = useSession();
   const [user, setUser] = useRecoilState(userState);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
+  const [isContractModalOpen, setIsContractModalOpen] = useState(false);
   const [activeMessage, setActiveMessage] = useState<MessageBody | null>(null);
   const [recipientProfileImage, setRecipientProfileImage] = useState<string | null>(null);
 
-  const openModal = (message: MessageBody) => {
+  const loggedInUserId = session?.user?.id;
+  const loggedInUsername = session?.user?.name;
+
+  const openReplyModal = (message: MessageBody) => {
     setActiveMessage(message);
     console.log("Active message: ", message);
     // Get the relevant user (from or to) based on the message direction
@@ -34,11 +42,29 @@ const MessagesAccordion = ({
     // Set the profile image from the recipient's data
     setRecipientProfileImage(recipient.profileImage || null);
 
-    setIsModalOpen(true);
+    setIsReplyModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeReplyModal = () => {
+    setIsReplyModalOpen(false);
+    setActiveMessage(null);
+    setRecipientProfileImage(null);
+  };
+
+  const openContractModal = (message: MessageBody) => {
+    setActiveMessage(message);
+    console.log("Active message: ", message);
+    // Get the relevant user (from or to) based on the message direction
+    const recipient = messageDirection === "Received" ? message.from : message.to;
+
+    // Set the profile image from the recipient's data
+    setRecipientProfileImage(recipient.profileImage || null);
+
+    setIsContractModalOpen(true);
+  };
+
+  const closeContractModal = () => {
+    setIsContractModalOpen(false);
     setActiveMessage(null);
     setRecipientProfileImage(null);
   };
@@ -157,8 +183,9 @@ const MessagesAccordion = ({
                       />
                       <FaReply
                         className={styles.reply_icon}
-                        onClick={() => openModal(message)}
+                        onClick={() => openReplyModal(message)}
                       />
+                      <IoDocumentTextOutline className={styles.document_icon} onClick={() => openContractModal(message)}/>
                     </div>
                   </div>
                 </Accordion.Control>
@@ -171,17 +198,31 @@ const MessagesAccordion = ({
               </AccordionItem>
             ))}
           </Accordion>
-          {isModalOpen && activeMessage && (
+          {isReplyModalOpen && activeMessage && (
             <Modal
-              onClose={closeModal}
+              onClose={closeReplyModal}
               title={`Reply to ${activeMessage.from.firstName}`}
               profileImage={recipientProfileImage}
               content={
                 <MessageReplyForm
                   parentMessageId={activeMessage._id}
                   userId={userId} 
-                  onClose={closeModal}
+                  onClose={closeReplyModal}
                   onReplySuccess={handleReplySuccess}
+                />
+              }
+            />
+          )}
+          {isContractModalOpen && activeMessage && (
+            <Modal
+              onClose={closeContractModal}
+              title={`Create contract with ${activeMessage.from.firstName}`}
+              profileImage={recipientProfileImage}
+              content={
+                <ContractForm
+                  loggedInUserId={loggedInUserId}
+                  loggedInUsername={loggedInUsername || ""}
+                  closeModal={closeContractModal}
                 />
               }
             />
