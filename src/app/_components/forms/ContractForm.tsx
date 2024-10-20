@@ -24,7 +24,7 @@ const ContractForm = ({
     client: "",
     jobCategory: "",
     jobDescription: "",
-    feeType: "",
+    feeType: "hourly",
     hourlyRate: "",
     hours: "",
     fixedRate: "",
@@ -61,8 +61,34 @@ const ContractForm = ({
       }
     });
 
+    // Validate numeric fields based on feeType
+    if (
+      formData.feeType === "hourly" &&
+      (!formData.hourlyRate || !formData.hours)
+    ) {
+      newErrors.hourlyRate = "Hourly rate and hours are required.";
+    }
+
+    if (formData.feeType === "fixed" && !formData.fixedRate) {
+      newErrors.fixedRate = "Fixed fee is required.";
+    }
+
+    // Validate worker-client difference
+    if (loggedInUserId === user._id) {
+      newErrors.client = "Worker and Client cannot be the same user.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const calculateAmountDue = () => {
+    if (formData.feeType === "hourly") {
+      return (
+        Number(formData.hourlyRate) * Number(formData.hours) || 0
+      );
+    }
+    return Number(formData.fixedRate) || 0;
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -71,6 +97,9 @@ const ContractForm = ({
     if (!validateFields()) {
       return; // Stop if validation fails
     }
+
+    const amountDue = calculateAmountDue();
+
     console.log("form data: ", formData);
     console.log("from: ", loggedInUserId);
     console.log("to: ", user._id);
@@ -86,55 +115,39 @@ const ContractForm = ({
           jobCategory: formData.jobCategory,
           jobDescription: formData.jobDescription,
           feeType: formData.feeType,
-          hourlyRate: Number(formData.hourlyRate) ?? null,
-          hours: Number(formData.hours) ?? null,
-          fixedRate: Number(formData.fixedRate) ?? null,
-          amountDue:
-            formData.hourlyRate && formData.hours
-              ? Number(formData.hourlyRate) * Number(formData.hours)
-              : Number(formData.fixedRate),
+          hourlyRate: formData.hourlyRate ? Number(formData.hourlyRate) : null,
+          hours: formData.hours ? Number(formData.hours) : null,
+          fixedRate: formData.fixedRate ? Number(formData.fixedRate) : null,
+          amountDue: amountDue,
           additionalNotes: formData.additionalNotes,
           status: "Draft - Awaiting Client Approval",
-        }), // Send form data as JSON
+        }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        // Dynamically set errors based on API response
-        const apiErrors: Record<string, string> = {};
-        for (const [key, value] of Object.entries(errorData)) {
-            if (typeof value === "string") {
-              // If value is a string, assign it directly
-              apiErrors[key] = value;
-            } else if (Array.isArray(value)) {
-              // If value is an array, join it into a single string
-              apiErrors[key] = value.join(", ");
-            } else {
-              // Fallback: Convert non-string/array values to a string
-              apiErrors[key] = JSON.stringify(value);
-            }
-          }
-        setErrors(apiErrors); // Set the errors from API response
+        const apiErrors = Object.fromEntries(
+          Object.entries(errorData).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? value.join(", ") : String(value),
+          ])
+        );
+        setErrors(apiErrors);
       } else {
         const newContract: ContractBody = await response.json();
-        // Update Recoil contracts state
-        setContracts((prevContracts) => [...prevContracts, newContract]);
-        // Clear form data and close modal
+        setContracts((prev) => [...prev, newContract]);
         setFormData(initialFormData);
         closeModal();
       }
     } catch (error) {
-      console.error("An error occurred while creating the contract: ", error);
-      // Set a generic error message if an exception occurs
-      setErrors({
-        contractForm: "An unexpected error occurred. Please try again.",
-      });
+      console.error("An error occurred: ", error);
+      setErrors({ form: "An unexpected error occurred. Please try again." });
     }
   };
 
   return (
     <>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.static_field}>
           <label className={styles.label}>Worker:</label>
           <p className={styles.form_p1}>{loggedInUsername}</p>{" "}
@@ -181,56 +194,47 @@ const ContractForm = ({
           )}
         </div>
         <div>
-          <label htmlFor="feeType" className={styles.label}>
-            Fee Type
-          </label>
+        <label htmlFor="feeType" className={styles.label}>
+          Fee Type
+        </label>
+        <select
+          name="feeType"
+          id="feeType"
+          value={formData.feeType}
+          onChange={handleChange}
+          className={styles.input}
+        >
+          <option value="hourly">Hourly</option>
+          <option value="fixed">Fixed</option>
+        </select>
+      </div>
+      {formData.feeType === "hourly" && (
+        <>
           <input
-            name="feeType"
-            placeholder="fee type"
-            className={styles.input}
-            id="feeType"
+            name="hourlyRate"
+            placeholder="Hourly Rate"
+            value={formData.hourlyRate}
             onChange={handleChange}
-            value={formData.feeType}
+            className={styles.input}
           />
-          {errors.feeType && (
-            <p className={styles.error}>{errors.feeType}</p>
-          )}
-        </div>
-        {formData.feeType === "hourly" ? (
-          <div>
-          <label htmlFor="hours" className={styles.label}>
-            Estimated Hours
-          </label>
           <input
             name="hours"
-            placeholder="estimated hours"
-            className={styles.input}
-            id="hours"
+            placeholder="Hours"
+            value={formData.hours}
             onChange={handleChange}
-            value={formData.hours ?? ""}  
+            className={styles.input}
           />
-          {errors.hours && (
-            <p className={styles.error}>{errors.hours}</p>
-          )} 
-          </div>
-          ) : (
-            <div>
-            <label htmlFor="fixedRate" className={styles.label}>
-              Fixed Fee
-            </label>
-            <input
-              name="fixedRate"
-              placeholder="fixed fee amount"
-              className={styles.input}
-              id="fixedRate"
-              onChange={handleChange}
-              value={formData.fixedRate ?? ""}  
-            />
-            {errors.fixedRate && (
-              <p className={styles.error}>{errors.fixedRate}</p>
-            )} 
-            </div>
-          )}
+        </>
+      )}
+      {formData.feeType === "fixed" && (
+        <input
+          name="fixedRate"
+          placeholder="Fixed Fee"
+          value={formData.fixedRate}
+          onChange={handleChange}
+          className={styles.input}
+        />
+      )}
         <div>
           <label htmlFor="additionalNotes" className={styles.label}>
             Additional Notes
@@ -250,11 +254,11 @@ const ContractForm = ({
         </div>
         <div className={styles.static_field}>
           <label className={styles.label}>Amount Due upon completion:</label>
-          <p className={styles.form_p1}>{formData.feeType === "hourly" ? Number(formData.hours) * Number(formData.hourlyRate) : Number(formData.fixedRate)}</p>{" "}
-          {/* Not editable */}
+           {/* Not editable */}
+          <p className={styles.form_p1}>{calculateAmountDue()}</p>         
         </div>
         <div className={styles.button_div}>
-          <Button onClick={handleSubmit} type="submit">
+          <Button type="submit" onClick={handleSubmit}>
             Create Contract
           </Button>
         </div>
