@@ -93,6 +93,8 @@ const ContractForm = ({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    console.log("Submitting form data:", formData); // Debugging
+
     if (!validateFields()) {
       return; // Stop if validation fails
     }
