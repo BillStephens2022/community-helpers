@@ -7,6 +7,7 @@ import { userState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileContent from "../_components/ProfileContent";
 import MessagesAccordion from "../_components/MessagesAccordion";
+import ContractContent from "../_components/ContractsContent";
 import styles from "./profile.module.css";
 
 export default function Profile() {
@@ -37,6 +38,14 @@ export default function Profile() {
         >
           Messages
         </button>
+        <button
+          className={`${styles.view_button} ${
+            view === "contracts" ? styles.active : ""
+          }`}
+          onClick={() => setView("contracts")}
+        >
+          Contracts
+        </button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}
       {view === "messages" && (
@@ -45,6 +54,7 @@ export default function Profile() {
           <MessagesAccordion messages={user.sentMessages || []} messageDirection="Sent" userId={user._id} />
         </>
       )}
+      {view === "contracts" && <ContractContent user={user}/>}
     </div>
   );
 }

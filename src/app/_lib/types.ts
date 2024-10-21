@@ -9,7 +9,8 @@ export interface User {
   isWorker?: boolean;
   profileImage?: string;
   receivedMessages: any[],
-  sentMessages: any[]
+  sentMessages: any[],
+  contracts: any[]
 }
 
 export interface MessageBody {
