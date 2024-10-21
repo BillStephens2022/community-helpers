@@ -26,6 +26,10 @@ export async function GET(
       .populate({
         path: "contracts",
         populate: { path: "client", select: "firstName lastName email profileImage" }, // Populate the 'client' field of contracts
+      })
+      .populate({
+        path: "contracts",
+        populate: { path: "worker", select: "firstName lastName email profileImage" }, // Populate the 'worker' field of contracts
       });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
