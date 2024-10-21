@@ -4,8 +4,9 @@ import { useState, FormEvent } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { User, ContractBody } from "../../_lib/types";
 import { contractsState } from "../../_atoms/contractAtom";
-import { usersState } from "@/app/_atoms/userAtom";
+import { usersState } from "../../_atoms/userAtom";
 import Button from "../ui/Button";
+import { skillsetOptions } from "../../_lib/constants";
 import styles from "./sendMessageForm.module.css";
 
 interface ContractFormProps {
@@ -172,14 +173,20 @@ const ContractForm = ({
           <label htmlFor="jobCategory" className={styles.label}>
             Job Category
           </label>
-          <input
+          <select
             name="jobCategory"
-            placeholder="job category"
             className={styles.input}
             id="jobCategory"
             onChange={handleChange}
             value={formData.jobCategory}
-          />
+          >
+            <option value="">Select a job category</option>
+            {skillsetOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
           {errors.jobCategory && (
             <p className={styles.error}>{errors.jobCategory}</p>
           )}
