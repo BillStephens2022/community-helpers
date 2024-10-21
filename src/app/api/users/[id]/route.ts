@@ -17,25 +17,26 @@ export async function GET(
     const user = await User.findById(id)
       .populate({
         path: "receivedMessages",
-        populate: { path: "from", select: "firstName lastName email profileImage" }, // Populate the 'from' field of messages
+        populate: { path: "from", select: "_id firstName lastName email profileImage" }, // Populate the 'from' field of messages
       })
       .populate({
         path: "sentMessages",
-        populate: { path: "to", select: "firstName lastName email profileImage" }, // Populate the 'to' field of messages
+        populate: { path: "to", select: "_id firstName lastName email profileImage" }, // Populate the 'to' field of messages
       })
       .populate({
         path: "contracts",
-        populate: { path: "client", select: "firstName lastName email profileImage" }, // Populate the 'client' field of contracts
+        populate: { path: "client", select: "_id firstName lastName email profileImage" }, // Populate the 'client' field of contracts
       })
       .populate({
         path: "contracts",
-        populate: { path: "worker", select: "firstName lastName email profileImage" }, // Populate the 'worker' field of contracts
+        populate: { path: "worker", select: "_id firstName lastName email profileImage" }, // Populate the 'worker' field of contracts
       });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
     return NextResponse.json(
       {
+        id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

@@ -1,0 +1,12 @@
+.contracts_content {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.contracts_content_header {
+    font-size: 2rem;
+    color: lightgoldenrodyellow;
+    text-shadow: 2px 2px 4px #aa9e9e;
+    margin: 1rem auto;
+}

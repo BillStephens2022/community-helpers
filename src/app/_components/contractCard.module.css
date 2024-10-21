@@ -1,0 +1,26 @@
+.contract_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-wrap: wrap;
+  width: 40rem;
+  padding: 1rem;
+  background: transparent;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.contract_card h2 {
+  font-size: 1.25rem;
+  color: black;
+  text-shadow: 2px 2px 4px #aa9e9e;
+  margin: 0.5rem auto;
+}
+
+.contract_card p {
+  font-size: 1.1rem;
+  color: black;
+  text-shadow: 1px 1px 2px #aa9e9e;
+  margin: 0.25rem auto;
+  text-align: center;
+}

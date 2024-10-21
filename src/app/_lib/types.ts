@@ -17,11 +17,13 @@ export interface MessageBody {
   _id: string;
   createdAt: string;
   to: {
+    _id: string;
     firstName: string;
     lastName: string; 
     profileImage?: string;
   };
   from: {
+    _id: string;
     firstName: string;
     lastName: string;
     profileImage?: string;
@@ -33,11 +35,13 @@ export interface MessageBody {
 export interface ContractBody {
   _id: string;
   worker: {
+    _id: string;
     firstName: string;
     lastName: string; 
     profileImage?: string;
   };
   client: {
+    _id: string;
     firstName: string;
     lastName: string;
     profileImage?: string;
