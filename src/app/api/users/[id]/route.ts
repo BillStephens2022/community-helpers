@@ -64,7 +64,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log("Delete user route hit!");
+  console.log("Update user route hit!");
   const { id } = params;
 
   try {
