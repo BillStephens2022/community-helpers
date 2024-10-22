@@ -3,7 +3,6 @@ import ContractCard from "./ContractCard";
 import styles from "./contractsContent.module.css";
 
 
-
 interface ContractContentProps {
   user: User;
 }

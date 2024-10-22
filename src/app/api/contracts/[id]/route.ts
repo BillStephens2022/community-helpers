@@ -18,7 +18,7 @@ export async function PUT(
       const updatedData = await req.json();
   
       // Find the user by ID and update their information
-      const updatedContract = await Contract.findByIdAndUpdate(id, updatedData, {
+      const updatedContract = await Contract.findByIdAndUpdate(id, { ...updatedData }, {
         new: true, // Return the updated document
         runValidators: true, // Validate the update against the model
       });
