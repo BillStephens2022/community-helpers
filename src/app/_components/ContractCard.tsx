@@ -22,17 +22,35 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
       case "Draft - Awaiting Client Approval":
         if (isClient) {
           buttons.push(
-            <Button key="approve" type="button" onClick={approveContract}>
+            <Button
+              key="approve"
+              type="button"
+              onClick={() =>
+                updateContractStatus(
+                  "Approved by Client - Awaiting Work Completion"
+                )
+              }
+            >
               Approve
             </Button>,
-            <Button key="reject" type="button" onClick={rejectContract}>
+            <Button
+              key="reject"
+              type="button"
+              onClick={() =>
+                updateContractStatus("Rejected by Client - Awaiting Revision")
+              }
+            >
               Reject
             </Button>
           );
         }
         if (isWorker) {
           buttons.push(
-            <Button key="delete" type="button" onClick={rejectContract}>
+            <Button
+              key="delete"
+              type="button"
+              onClick={() => updateContractStatus("Deleted")}
+            >
               Delete Contract
             </Button>
           );
@@ -42,7 +60,11 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(
-            <Button key="payment" type="button" onClick={makePayment}>
+            <Button
+              key="payment"
+              type="button"
+              onClick={() => updateContractStatus("Paid")}
+            >
               Make Payment
             </Button>
           );
@@ -52,26 +74,55 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
       case "Approved by Client - Awaiting Work Completion":
         if (isWorker) {
           buttons.push(
-            <Button key="complete" type="button" onClick={completeJob}>
+            <Button
+              key="complete"
+              type="button"
+              onClick={() =>
+                updateContractStatus("Work Completed - Awaiting Payment")
+              }
+            >
               Complete Job
             </Button>
           );
         }
         break;
+
       case "Rejected by Client - Awaiting Revision":
         if (isWorker) {
           buttons.push(
-            <Button key="revise" type="button" onClick={reviseContract}>
+            <Button
+              key="revise"
+              type="button"
+              onClick={() => {
+                updateContractStatus("Revised - Awaiting Client Approval");
+                reviseContract();
+              }}
+            >
               Revise Contract
             </Button>,
-            <Button key="delete" type="button" onClick={rejectContract}>
+            <Button
+              key="delete"
+              type="button"
+              onClick={() => updateContractStatus("Deleted")}
+            >
               Delete Contract
             </Button>
           );
         }
         break;
+      case "Paid":
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="delete"
+              type="button"
+              onClick={() => updateContractStatus("Archived - Work Completed, Paid in Full")}
+            >
+              Archive Contract
+            </Button>
+          );
+        }
 
-      // Add additional cases as needed
       default:
         break;
     }
@@ -79,21 +130,18 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
     return buttons;
   };
 
-  const approveContract = async () => {
+  const updateContractStatus = async (newStatus: string) => {
     let previousUser: User | null = null;
-    // Optimistically update the contract status before api request
+
     setUser((prevUser) => {
       if (!prevUser) return null;
 
-      // Store the previous user state for rollback purposes
       previousUser = prevUser;
 
       return {
         ...prevUser,
         contracts: prevUser.contracts.map((c) =>
-          c._id === contract._id
-            ? { ...c, status: "Approved by Client - Awaiting Work Completion" } // Optimistic update
-            : c
+          c._id === contract._id ? { ...c, status: newStatus } : c
         ),
       };
     });
@@ -104,44 +152,25 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          status: "Approved by Client - Awaiting Work Completion",
-        }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to approve the contract.");
+        throw new Error("Failed to update the contract status.");
       }
 
-      console.log("Contract approved successfully!");
+      console.log(`Contract status updated to "${newStatus}" successfully!`);
     } catch (error) {
-      console.error("Error approving contract:", error);
+      console.error(`Error updating contract status to "${newStatus}":`, error);
 
-      // Revert to the previous state if the API call fails
       if (previousUser) {
         setUser(previousUser);
       }
     }
   };
 
-  const rejectContract = async () => {
-    console.log("Rejecting contract!");
-  };
-
-  const makePayment = async () => {
-    console.log("Making Payment!");
-  };
-
-  const completeJob = async () => {
-    console.log("Completing Job!");
-  };
-
   const reviseContract = async () => {
     console.log("Revising Contract!");
-  };
-
-  const archiveContract = async () => {
-    console.log("Archiving Contract!");
   };
 
   return (
