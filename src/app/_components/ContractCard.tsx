@@ -13,6 +13,72 @@ interface ContractCardProps {
 const ContractCard = ({ contract, user }: ContractCardProps) => {
   const setUser = useSetRecoilState(userState);
 
+  const buttonsToShow = (): JSX.Element[] => {
+    const buttons: JSX.Element[] = [];
+    const isClient = contract.client._id === user._id;
+    const isWorker = contract.worker._id === user._id;
+
+    switch (contract.status) {
+      case "Draft - Awaiting Client Approval":
+        if (isClient) {
+          buttons.push(
+            <Button key="approve" type="button" onClick={approveContract}>
+              Approve
+            </Button>,
+            <Button key="reject" type="button" onClick={rejectContract}>
+              Reject
+            </Button>
+          );
+        }
+        if (isWorker) {
+          buttons.push(
+            <Button key="delete" type="button" onClick={rejectContract}>
+              Delete Contract
+            </Button>
+          );
+        }
+        break;
+
+      case "Work Completed - Awaiting Payment":
+        if (isClient) {
+          buttons.push(
+            <Button key="payment" type="button" onClick={makePayment}>
+              Make Payment
+            </Button>
+          );
+        }
+        break;
+
+      case "Approved by Client - Awaiting Work Completion":
+        if (isWorker) {
+          buttons.push(
+            <Button key="complete" type="button" onClick={completeJob}>
+              Complete Job
+            </Button>
+          );
+        }
+        break;
+      case "Rejected by Client - Awaiting Revision":
+        if (isWorker) {
+          buttons.push(
+            <Button key="revise" type="button" onClick={reviseContract}>
+              Revise Contract
+            </Button>,
+            <Button key="delete" type="button" onClick={rejectContract}>
+              Delete Contract
+            </Button>
+          );
+        }
+        break;
+
+      // Add additional cases as needed
+      default:
+        break;
+    }
+
+    return buttons;
+  };
+
   const approveContract = async () => {
     let previousUser: User | null = null;
     // Optimistically update the contract status before api request
@@ -58,6 +124,26 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
     }
   };
 
+  const rejectContract = async () => {
+    console.log("Rejecting contract!");
+  };
+
+  const makePayment = async () => {
+    console.log("Making Payment!");
+  };
+
+  const completeJob = async () => {
+    console.log("Completing Job!");
+  };
+
+  const reviseContract = async () => {
+    console.log("Revising Contract!");
+  };
+
+  const archiveContract = async () => {
+    console.log("Archiving Contract!");
+  };
+
   return (
     <div key={contract._id} className={styles.contract_card}>
       <h2>
@@ -87,11 +173,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
       </h2>
       <p>Status: {contract.status}</p>
       <p>Created: {formatDate(contract.createdAt)}</p>
-      {contract.client._id === user._id && (
-        <Button type="button" onClick={approveContract}>
-          Approve
-        </Button>
-      )}
+      {buttonsToShow()}
     </div>
   );
 };

@@ -57,8 +57,8 @@ export async function PUT(
       return NextResponse.json({ message: "Contract not found" }, { status: 404 });
     }
 
-    if (contract.status !== "Draft - Awaiting Client Approval") {
-      return NextResponse.json({ message: "Can only delete Draft contracts"})
+    if (contract.status !== "Draft - Awaiting Client Approval" || contract.status === "Rejected by Client - Awaiting Revision") {
+      return NextResponse.json({ message: "Can only delete Draft or Rejected contracts"})
     }
 
     // Check if the user is the worker on the contract
