@@ -36,7 +36,7 @@ export default function Profile() {
           }`}
           onClick={() => setView("messages")}
         >
-          Messages
+          Messages <span className={styles.count_span}>{(user.sentMessages?.length + user.receivedMessages?.length) || 0}</span>
         </button>
         <button
           className={`${styles.view_button} ${
@@ -44,7 +44,7 @@ export default function Profile() {
           }`}
           onClick={() => setView("contracts")}
         >
-          Contracts
+          Contracts <span className={styles.count_span}>{user.contracts?.length || 0}</span>
         </button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}

@@ -147,7 +147,7 @@ const MessagesAccordion = ({
   return (
     <>
       <h2 className={styles.profile_accordion_title}>
-        {messageDirection} Messages
+        {messageDirection} Messages ({messages?.length || 0})
       </h2>
       {messages && messages.length > 0 ? (
         <div className={styles.accordion}>

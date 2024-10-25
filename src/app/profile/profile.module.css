@@ -12,6 +12,7 @@
 }
 
 .view_button {
+  position: relative;
   background-color: transparent;
   color: white;
   font-size: 1.25rem;
@@ -30,5 +31,21 @@
   color: white;
 }
 
-
+.count_span {
+  position: absolute;
+  top: 0.15rem;
+  right: -0.05rem;
+  background-color: red;
+  color: white;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 900;
+  text-shadow: none;
+  padding-left: 2px;
+}
 
