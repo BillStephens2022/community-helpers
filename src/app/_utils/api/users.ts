@@ -52,6 +52,27 @@ export const updateIsWorkerStatus = async (
   }
 };
 
+// src/_utils/api/users.ts
+
+// Function to update user skillset
+export const updateUserSkillset = async (
+  userId: string,
+  skillset: string
+): Promise<void> => {
+  const response = await fetch(`/api/users/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ skillset }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to update user skillset.");
+  }
+};
+
 // Function to update user skills
 export const updateUserSkills = async (
   userId: string,

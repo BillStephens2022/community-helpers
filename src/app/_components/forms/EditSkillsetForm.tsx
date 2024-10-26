@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
+import { updateUserSkillset } from "../../_utils/api/users";
 import { skillsetOptions } from "../../_lib/constants";
 import Button from "../ui/Button";
 import styles from "./editSkillsetForm.module.css";
@@ -38,34 +39,21 @@ const EditSkillsetForm = ({ closeModal, user }: EditSkillsetFormProps) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`/api/users/${user._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData), // Send form data as JSON
+      await updateUserSkillset(user._id, formData.skillset || ""); //set to empty string if no skillset is selected
+      // If successful, clear the error message
+      setError("");
+
+      // Update Recoil state directly with new skillset to reflect changes immediately
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser; // If prevUser is null, do nothing
+
+        return {
+          ...prevUser, // Spread the existing user properties
+          skillset: formData.skillset, // Update only the skillset field
+        };
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to update user.");
-      } else {
-        // Success: clear any error messages, reset user state, and refresh profile page
-        setError("");
-
-        // Update Recoil state directly with new skillset to reflect changes immediately
-        setUser((prevUser) => {
-          if (!prevUser) return prevUser; // If prevUser is null, do nothing
-
-          return {
-            ...prevUser, // Spread the existing user properties
-            skillset: formData.skillset, // Update only the skillset field
-          };
-        });
-
-        closeModal();
-        router.refresh();
-      }
+      closeModal();
+      router.refresh();
     } catch (error) {
       console.error("Error updating user:", error);
       setError("An error occurred while updating the user.");
