@@ -2,6 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
+import { modifyContractStatus } from "../_utils/api/contracts";
 import Button from "./ui/Button";
 import styles from "./contractCard.module.css";
 
@@ -56,7 +57,6 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
           );
         }
         break;
-
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(
@@ -70,7 +70,6 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
           );
         }
         break;
-
       case "Approved by Client - Awaiting Work Completion":
         if (isWorker) {
           buttons.push(
@@ -86,7 +85,6 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
           );
         }
         break;
-
       case "Rejected by Client - Awaiting Revision":
         if (isWorker) {
           buttons.push(
@@ -116,17 +114,17 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             <Button
               key="delete"
               type="button"
-              onClick={() => updateContractStatus("Archived - Work Completed, Paid in Full")}
+              onClick={() =>
+                updateContractStatus("Archived - Work Completed, Paid in Full")
+              }
             >
               Archive Contract
             </Button>
           );
         }
-
       default:
         break;
     }
-
     return buttons;
   };
 
@@ -147,22 +145,10 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
     });
 
     try {
-      const response = await fetch(`/api/contracts/${contract._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update the contract status.");
-      }
-
+      await modifyContractStatus(contract._id, newStatus);
       console.log(`Contract status updated to "${newStatus}" successfully!`);
     } catch (error) {
       console.error(`Error updating contract status to "${newStatus}":`, error);
-
       if (previousUser) {
         setUser(previousUser);
       }
