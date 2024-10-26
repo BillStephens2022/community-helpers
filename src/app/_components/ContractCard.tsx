@@ -2,7 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
-import { modifyContractStatus } from "../_utils/api/contracts";
+import { updateContractStatus } from "../_utils/api/contracts";
 import Button from "./ui/Button";
 import styles from "./contractCard.module.css";
 
@@ -14,121 +14,7 @@ interface ContractCardProps {
 const ContractCard = ({ contract, user }: ContractCardProps) => {
   const setUser = useSetRecoilState(userState);
 
-  const buttonsToShow = (): JSX.Element[] => {
-    const buttons: JSX.Element[] = [];
-    const isClient = contract.client._id === user._id;
-    const isWorker = contract.worker._id === user._id;
-
-    switch (contract.status) {
-      case "Draft - Awaiting Client Approval":
-        if (isClient) {
-          buttons.push(
-            <Button
-              key="approve"
-              type="button"
-              onClick={() =>
-                updateContractStatus(
-                  "Approved by Client - Awaiting Work Completion"
-                )
-              }
-            >
-              Approve
-            </Button>,
-            <Button
-              key="reject"
-              type="button"
-              onClick={() =>
-                updateContractStatus("Rejected by Client - Awaiting Revision")
-              }
-            >
-              Reject
-            </Button>
-          );
-        }
-        if (isWorker) {
-          buttons.push(
-            <Button
-              key="delete"
-              type="button"
-              onClick={() => updateContractStatus("Deleted")}
-            >
-              Delete Contract
-            </Button>
-          );
-        }
-        break;
-      case "Work Completed - Awaiting Payment":
-        if (isClient) {
-          buttons.push(
-            <Button
-              key="payment"
-              type="button"
-              onClick={() => updateContractStatus("Paid")}
-            >
-              Make Payment
-            </Button>
-          );
-        }
-        break;
-      case "Approved by Client - Awaiting Work Completion":
-        if (isWorker) {
-          buttons.push(
-            <Button
-              key="complete"
-              type="button"
-              onClick={() =>
-                updateContractStatus("Work Completed - Awaiting Payment")
-              }
-            >
-              Complete Job
-            </Button>
-          );
-        }
-        break;
-      case "Rejected by Client - Awaiting Revision":
-        if (isWorker) {
-          buttons.push(
-            <Button
-              key="revise"
-              type="button"
-              onClick={() => {
-                updateContractStatus("Revised - Awaiting Client Approval");
-                reviseContract();
-              }}
-            >
-              Revise Contract
-            </Button>,
-            <Button
-              key="delete"
-              type="button"
-              onClick={() => updateContractStatus("Deleted")}
-            >
-              Delete Contract
-            </Button>
-          );
-        }
-        break;
-      case "Paid":
-        if (isWorker) {
-          buttons.push(
-            <Button
-              key="delete"
-              type="button"
-              onClick={() =>
-                updateContractStatus("Archived - Work Completed, Paid in Full")
-              }
-            >
-              Archive Contract
-            </Button>
-          );
-        }
-      default:
-        break;
-    }
-    return buttons;
-  };
-
-  const updateContractStatus = async (newStatus: string) => {
+  const changeContractStatus = async (newStatus: string) => {
     let previousUser: User | null = null;
 
     setUser((prevUser) => {
@@ -145,7 +31,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
     });
 
     try {
-      await modifyContractStatus(contract._id, newStatus);
+      await updateContractStatus(contract._id, newStatus);
       console.log(`Contract status updated to "${newStatus}" successfully!`);
     } catch (error) {
       console.error(`Error updating contract status to "${newStatus}":`, error);
@@ -157,6 +43,120 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
 
   const reviseContract = async () => {
     console.log("Revising Contract!");
+  };
+
+  const buttonsToShow = (): JSX.Element[] => {
+    const buttons: JSX.Element[] = [];
+    const isClient = contract.client._id === user._id;
+    const isWorker = contract.worker._id === user._id;
+
+    switch (contract.status) {
+      case "Draft - Awaiting Client Approval":
+        if (isClient) {
+          buttons.push(
+            <Button
+              key="approve"
+              type="button"
+              onClick={() =>
+                changeContractStatus(
+                  "Approved by Client - Awaiting Work Completion"
+                )
+              }
+            >
+              Approve
+            </Button>,
+            <Button
+              key="reject"
+              type="button"
+              onClick={() =>
+                changeContractStatus("Rejected by Client - Awaiting Revision")
+              }
+            >
+              Reject
+            </Button>
+          );
+        }
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="delete"
+              type="button"
+              onClick={() => changeContractStatus("Deleted")}
+            >
+              Delete Contract
+            </Button>
+          );
+        }
+        break;
+      case "Work Completed - Awaiting Payment":
+        if (isClient) {
+          buttons.push(
+            <Button
+              key="payment"
+              type="button"
+              onClick={() => changeContractStatus("Paid")}
+            >
+              Make Payment
+            </Button>
+          );
+        }
+        break;
+      case "Approved by Client - Awaiting Work Completion":
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="complete"
+              type="button"
+              onClick={() =>
+                changeContractStatus("Work Completed - Awaiting Payment")
+              }
+            >
+              Complete Job
+            </Button>
+          );
+        }
+        break;
+      case "Rejected by Client - Awaiting Revision":
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="revise"
+              type="button"
+              onClick={() => {
+                changeContractStatus("Revised - Awaiting Client Approval");
+                reviseContract();
+              }}
+            >
+              Revise Contract
+            </Button>,
+            <Button
+              key="delete"
+              type="button"
+              onClick={() => changeContractStatus("Deleted")}
+            >
+              Delete Contract
+            </Button>
+          );
+        }
+        break;
+      case "Paid":
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="delete"
+              type="button"
+              onClick={() =>
+                changeContractStatus("Archived - Work Completed, Paid in Full")
+              }
+            >
+              Archive Contract
+            </Button>
+          );
+        }
+      default:
+        break;
+    }
+    return buttons;
   };
 
   return (

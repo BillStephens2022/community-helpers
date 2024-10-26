@@ -4,9 +4,9 @@ import { useState, FormEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
+import { updateUserSkills } from "../../_utils/api/users";
 import Button from "../ui/Button";
 import styles from "./editProfileForm.module.css";
-
 
 interface AddSkillFormProps {
   closeModal: () => void;
@@ -36,30 +36,17 @@ const AddSkillForm = ({ closeModal, user }: AddSkillFormProps) => {
       // Create the updated skills array with the newly added skill
       const updatedSkills = [...existingSkills, newSkill];
       // Send the updated skills array to the server to update the user in database
-      const response = await fetch(`/api/users/${user._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ skills: updatedSkills }), // Send updated skills as JSON
+      await updateUserSkills(user._id, updatedSkills);
+      setError(""); // Clear any error messages
+      // Update Recoil state directly with new skillset to reflect changes immediately on screen
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser; // If prevUser is null, do nothing
+        return {
+          ...prevUser, // Spread the existing user properties
+          skills: updatedSkills, // Update the skillset with the new skill added
+        };
       });
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to update user.");
-      } else {
-        setError(""); // Clear any error messages
-        // Update Recoil state directly with new skillset to reflect changes immediately on screen
-        setUser((prevUser) => {
-          if (!prevUser) return prevUser; // If prevUser is null, do nothing
-
-          return {
-            ...prevUser, // Spread the existing user properties
-            skills: updatedSkills, // Update the skillset with the new skill added
-          };
-        });
-
-        closeModal();
-      }
+      closeModal();
     } catch (error) {
       console.error("Error updating user:", error);
       setError("An error occurred while updating the user.");

@@ -26,7 +26,8 @@
     }
   };
 
-  export const modifyContractStatus = async (
+  // function to update the contract status
+  export const updateContractStatus = async (
     contractId: string,
     newStatus: string
   ): Promise<void> => {

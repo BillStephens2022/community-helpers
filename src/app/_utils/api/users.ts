@@ -51,6 +51,27 @@ export const updateIsWorkerStatus = async (
     throw new Error("Failed to update isWorker status.");
   }
 };
+
+// Function to update user skills
+export const updateUserSkills = async (
+  userId: string,
+  updatedSkills: string[]
+): Promise<void> => {
+  const response = await fetch(`/api/users/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ skills: updatedSkills }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to update user skills.");
+  }
+};
+
+// Function to delete a user skill
 export const deleteUserSkill = async (
   userId: string,
   skillToDelete: string
@@ -67,5 +88,5 @@ export const deleteUserSkill = async (
     throw new Error("Failed to delete skill.");
   }
 
-  return res.json(); // Or handle response as needed
+  return res.json();
 };
