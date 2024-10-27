@@ -2,7 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
-import { updateContractStatus } from "../_utils/api/contracts";
+import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
 import Button from "./ui/Button";
 import styles from "./contractCard.module.css";
 
@@ -45,6 +45,34 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
     console.log("Revising Contract!");
   };
 
+  const handleDeleteContract = async () => {
+    let previousUser: User | null = null;
+
+    setUser((prevUser) => {
+      if (!prevUser) return null;
+
+      previousUser = prevUser;
+
+      // Optimistically remove the contract from the user's contracts list
+      return {
+        ...prevUser,
+        contracts: prevUser.contracts.filter((c) => c._id !== contract._id),
+      };
+    });
+
+    try {
+      await deleteContract(contract._id, user._id);
+      console.log("Contract deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting contract:", error);
+
+      // Rollback to the previous user state if deletion fails
+      if (previousUser) {
+        setUser(previousUser);
+      }
+    }
+  };
+
   const buttonsToShow = (): JSX.Element[] => {
     const buttons: JSX.Element[] = [];
     const isClient = contract.client._id === user._id;
@@ -81,7 +109,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             <Button
               key="delete"
               type="button"
-              onClick={() => changeContractStatus("Deleted")}
+              onClick={handleDeleteContract}
             >
               Delete Contract
             </Button>
@@ -132,7 +160,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             <Button
               key="delete"
               type="button"
-              onClick={() => changeContractStatus("Deleted")}
+              onClick={handleDeleteContract}
             >
               Delete Contract
             </Button>
