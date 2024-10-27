@@ -7,7 +7,7 @@ import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
 import { updateAboutText } from "../../_utils/api/users";
 import Button from "../ui/Button";
-import styles from "./editProfileForm.module.css";
+import styles from "./editProfile.module.css";
 
 interface EditAboutTextFormProps {
   closeModal: () => void;
