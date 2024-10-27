@@ -1,3 +1,43 @@
+// api/messages.ts
+
+// function to send a message
+// _lib/api/messageApi.ts
+
+import { MessageBody } from "../../_lib/types";
+
+export const sendMessage = async (
+  fromUserId: string,
+  toUserId: string,
+  messageSubject: string,
+  messageText: string
+): Promise<MessageBody> => {
+  try {
+    const response = await fetch(`/api/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: fromUserId,
+        to: toUserId,
+        messageSubject,
+        messageText,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to send message.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error sending message:", error);
+    throw error;
+  }
+};
+
+
 export const deleteMessage = async (messageId: string, userId: string) => {
   try {
     const res = await fetch(`/api/messages/${messageId}`, {

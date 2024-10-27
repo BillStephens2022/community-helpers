@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import { User, MessageBody } from "../../_lib/types";
 import { messagesState } from "../../_atoms/messageAtom";
+import { sendMessage } from "../../_utils/api/messages";
 import Button from "../ui/Button";
 import styles from "./sendMessageForm.module.css";
 
@@ -27,9 +28,9 @@ const SendMessageForm = ({
   const [errors, setErrors] = useState<{ subject?: string; message?: string }>(
     {}
   );
-  
+
   const setMessages = useSetRecoilState(messagesState);
-  console.log("user in form: ", user)
+  console.log("user in form: ", user);
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -58,37 +59,20 @@ const SendMessageForm = ({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!validateFields()) {
-      return; // Stop if validation fails
-    }
-    console.log("form data: ", formData);
-    console.log("from: ", loggedInUserId);
-    console.log("to: ", user._id);
-    try {
-      const response = await fetch(`/api/messages`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: loggedInUserId,
-          to: user._id,
-          messageSubject: formData.messageSubject,
-          messageText: formData.messageText,
-        }), // Send form data as JSON
-      });
+    if (!validateFields()) return;
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setErrors({ message: errorData.message || "Failed to send message." });
-      } else {
-        const newMessage: MessageBody = await response.json();
-        // Update Recoil messages state
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-        // Clear form data and close modal
-        setFormData({ messageSubject: "", messageText: "" });
-        closeModal();
-      }
+    try {
+      const newMessage: MessageBody = await sendMessage(
+        loggedInUserId || "",
+        user._id,
+        formData.messageSubject,
+        formData.messageText
+      );
+      // Update Recoil messages state
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      // Clear form data and close modal
+      setFormData({ messageSubject: "", messageText: "" });
+      closeModal();
     } catch (error) {
       console.error("An error occurred while sending the message: ", error);
       setErrors({ message: "An error occurred while sending the message." });
