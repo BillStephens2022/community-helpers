@@ -190,7 +190,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
   return (
     <div key={contract._id} className={styles.contract_card}>
       <h2>
-        Worker: {contract.worker.firstName} {contract.worker.lastName}
+        Worker: {contract.worker.firstName} {contract.worker.lastName} 
       </h2>
       <h2>
         Client: {contract.client.firstName} {contract.client.lastName}

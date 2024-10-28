@@ -15,9 +15,9 @@ export default function Profile() {
   const user = useRecoilValue(userState);
   const { loading } = useProfileData();
 
-  if (!user) return <div>Access Denied</div>;
-
   if (loading) return <Loader />;
+
+  if (!user) return <div>Access Denied</div>;
 
   return (
     <div className={styles.profile_page}>
