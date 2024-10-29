@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { fetchUsers } from "../_utils/api/users";
 import { usersState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
@@ -10,35 +10,12 @@ import { skillsetOptions } from "../_lib/constants";
 import styles from "./page.module.css";
 
 export default function Community() {
-  const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useRecoilState(usersState);
+  const users = useRecoilValue(usersState);
   const [skillFilter, setSkillFilter] = useState("None");
 
-  useEffect(() => {
-    const getUsers = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchUsers();
-        console.log("data: ", data);
-        setUsers(data);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUsers();
-  }, [setUsers]);
-
-  // Filter users based on the selected skill
   const filteredUsers = users.filter(
     (user) => skillFilter === "None" || user.skillset === skillFilter
   );
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className={styles.community_page}>

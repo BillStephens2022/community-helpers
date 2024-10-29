@@ -1,21 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useState, useEffect } from "react";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { useProfileData } from "../_utils/hooks/useProfileData";
-import { userState } from "../_atoms/userAtom";
+import { userState, usersState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileContent from "../_components/ProfileContent";
 import MessagesAccordion from "../_components/MessagesAccordion";
 import ContractContent from "../_components/ContractsContent";
+import { fetchUsers } from "../_utils/api/users";
 import styles from "./profile.module.css";
 
 export default function Profile() {
   const [view, setView] = useState("profile");
+  const [, setUsers] = useRecoilState(usersState);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const user = useRecoilValue(userState);
-  const { loading } = useProfileData();
+  const { loading } = useProfileData(); 
 
-  if (loading) return <Loader />;
+  useEffect(() => {
+    const getUsers = async () => {
+      setLoadingUsers(true);
+      try {
+        const data = await fetchUsers();
+        console.log("data: ", data);
+        setUsers(data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+
+    getUsers();
+  }, [setUsers]);
+
+  if (loading || loadingUsers) return <Loader />;
 
   if (!user) return <div>Access Denied</div>;
 
