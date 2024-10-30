@@ -3,7 +3,6 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
 import { contractsState } from "../../_atoms/contractAtom";
 import { updateRejectText } from "../../_utils/api/contracts";
@@ -75,14 +74,14 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     <>
       <form className={styles.form}>
         <div>
-          <label htmlFor="aboutText" className={styles.label}>
-            About me
+          <label htmlFor="rejectText" className={styles.label}>
+            Feedback
           </label>
           <textarea
-            name="aboutText"
-            placeholder="about me"
+            name="rejectText"
+            placeholder="provide feedback on why you are rejecting this contract"
             className={styles.input}
-            id="aboutText"
+            id="rejectText"
             onChange={handleChange}
             value={formData.additionalText}
             rows={5}

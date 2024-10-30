@@ -1,10 +1,13 @@
 import { useSetRecoilState } from "recoil";
+import { useState, ReactNode } from "react";
 import { userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
 import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
 import Button from "./ui/Button";
+import Modal from "./ui/Modal";
 import styles from "./contractCard.module.css";
+import RejectTextForm from "./forms/RejectTextForm";
 
 interface ContractCardProps {
   contract: ContractBody;
@@ -13,6 +16,9 @@ interface ContractCardProps {
 
 const ContractCard = ({ contract, user }: ContractCardProps) => {
   const setUser = useSetRecoilState(userState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
+  const [modalTitle, setModalTitle] = useState<string>("");
 
   const changeContractStatus = async (newStatus: string) => {
     let previousUser: User | null = null;
@@ -39,6 +45,18 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
         setUser(previousUser);
       }
     }
+  };
+
+  const openModal = (title: string, content: ReactNode) => {
+    setModalTitle(title);
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalTitle("");
+    setModalContent(null);
   };
 
   const reviseContract = async () => {
@@ -96,9 +114,14 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             <Button
               key="reject"
               type="button"
-              onClick={() =>
-                changeContractStatus("Rejected by Client - Awaiting Revision")
-              }
+              onClick={() => {
+                openModal(
+                  "Provide Feedback",
+                  <RejectTextForm contractId={contract._id} closeModal={closeModal} />
+                );
+
+                changeContractStatus("Rejected by Client - Awaiting Revision");
+              }}
             >
               Reject
             </Button>
@@ -106,11 +129,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
         }
         if (isWorker) {
           buttons.push(
-            <Button
-              key="delete"
-              type="button"
-              onClick={handleDeleteContract}
-            >
+            <Button key="delete" type="button" onClick={handleDeleteContract}>
               Delete Contract
             </Button>
           );
@@ -157,11 +176,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             >
               Revise Contract
             </Button>,
-            <Button
-              key="delete"
-              type="button"
-              onClick={handleDeleteContract}
-            >
+            <Button key="delete" type="button" onClick={handleDeleteContract}>
               Delete Contract
             </Button>
           );
@@ -190,7 +205,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
   return (
     <div key={contract._id} className={styles.contract_card}>
       <h2>
-        Worker: {contract.worker.firstName} {contract.worker.lastName} 
+        Worker: {contract.worker.firstName} {contract.worker.lastName}
       </h2>
       <h2>
         Client: {contract.client.firstName} {contract.client.lastName}
@@ -217,6 +232,9 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
       <p>Status: {contract.status}</p>
       <p>Created: {formatDate(contract.createdAt)}</p>
       {buttonsToShow()}
+      {isModalOpen && (
+        <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
+      )}
     </div>
   );
 };
