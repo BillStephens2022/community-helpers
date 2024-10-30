@@ -216,15 +216,18 @@ const MessagesAccordion = ({
           {isContractModalOpen && activeMessage && (
             <Modal
               onClose={closeContractModal}
-              title={`Create contract with ${activeMessage.from.firstName}`}
+              title={`Create contract with ${
+                messageDirection === "Received" 
+                  ? activeMessage.from.firstName 
+                  : activeMessage.to.firstName
+              }`}
               profileImage={recipientProfileImage}
               content={
                 <ContractForm
                   loggedInUserId={loggedInUserId}
                   loggedInUsername={loggedInUsername || ""}
                   closeModal={closeContractModal}
-                  clientId={activeMessage.from._id}
-
+                  clientId={messageDirection === "Received" ? activeMessage.from._id : activeMessage.to._id}
                 />
               }
             />
