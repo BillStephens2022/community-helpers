@@ -223,6 +223,8 @@ const MessagesAccordion = ({
                   loggedInUserId={loggedInUserId}
                   loggedInUsername={loggedInUsername || ""}
                   closeModal={closeContractModal}
+                  clientId={activeMessage.from._id}
+
                 />
               }
             />

@@ -23,7 +23,6 @@ export default function Profile() {
       setLoadingUsers(true);
       try {
         const data = await fetchUsers();
-        console.log("data: ", data);
         setUsers(data);
       } catch (error) {
         console.error("Failed to fetch users:", error);
@@ -31,7 +30,6 @@ export default function Profile() {
         setLoadingUsers(false);
       }
     };
-
     getUsers();
   }, [setUsers]);
 

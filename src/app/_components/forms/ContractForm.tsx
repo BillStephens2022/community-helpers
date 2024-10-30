@@ -15,15 +15,17 @@ interface ContractFormProps {
   closeModal: () => void;
   loggedInUserId?: string;
   loggedInUsername?: string;
+  clientId?: string;
 }
 
 const ContractForm = ({
   closeModal,
   loggedInUserId,
   loggedInUsername,
+  clientId,
 }: ContractFormProps) => {
   const initialFormData = {
-    client: "",
+    client: clientId || "",
     jobCategory: "",
     jobDescription: "",
     feeType: "hourly",
