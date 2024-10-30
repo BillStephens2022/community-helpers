@@ -8,7 +8,7 @@ import { userState } from "../../_atoms/userAtom";
 import { updateUserSkillset } from "../../_utils/api/users";
 import { skillsetOptions } from "../../_lib/constants";
 import Button from "../ui/Button";
-import styles from "./editProfile.module.css";
+import styles from "./oneFieldForm.module.css";
 
 interface EditSkillsetFormProps {
   closeModal: () => void;

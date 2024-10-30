@@ -5,21 +5,24 @@ import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
-import { updateAboutText } from "../../_utils/api/users";
+import { contractsState } from "../../_atoms/contractAtom";
+import { updateRejectText } from "../../_utils/api/contracts";
 import Button from "../ui/Button";
 import styles from "./oneFieldForm.module.css";
 
-interface EditAboutTextFormProps {
+
+interface RejectTextFormProps {
   closeModal: () => void;
-  user: User;
+  contractId: string;
 }
 
-const EditAboutTextForm = ({ closeModal, user }: EditAboutTextFormProps) => {
+const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    aboutText: user.aboutText,
+    additionalText: "",
   });
   const [error, setError] = useState("");
+  const setContract = useSetRecoilState(contractsState);
   const setUser = useSetRecoilState(userState);
 
   const handleChange = (
@@ -38,22 +41,33 @@ const EditAboutTextForm = ({ closeModal, user }: EditAboutTextFormProps) => {
     event.preventDefault();
 
     try {
-      await updateAboutText(user._id, formData.aboutText || ""); // if empty, send empty string
+      await updateRejectText(contractId, formData.additionalText || ""); // if empty, send empty string
       // Success: clear any error messages, reset user state, and refresh profile page
       setError("");
-      // Update Recoil state directly with new skillset to reflect changes immediately
+      // Update Recoil state directly with new rejection text to reflect changes immediately
+      setContract((prevContract) => {
+        if (!prevContract) return prevContract; // If prevUser is null, do nothing
+        return {
+          ...prevContract, // Spread the existing user properties
+          additionalText: formData.additionalText, // Update only the skillset field
+        };
+      });
       setUser((prevUser) => {
         if (!prevUser) return prevUser; // If prevUser is null, do nothing
         return {
-          ...prevUser, // Spread the existing user properties
-          aboutText: formData.aboutText, // Update only the skillset field
-        };
+            ...prevUser, // Spread the existing user properties
+            contracts: prevUser.contracts.map((contract) =>
+              contract._id === contractId // Check if this is the contract to update
+                ? { ...contract, additionalText: formData.additionalText } // Update the additionalText field
+                : contract // Leave other contracts unchanged
+            ),
+          };
       });
       closeModal();
       router.refresh();
     } catch (error) {
-      console.error("Error updating user:", error);
-      setError("An error occurred while updating the user.");
+      console.error("Error updating contract:", error);
+      setError("An error occurred while updating the contract.");
     }
   };
 
@@ -70,7 +84,7 @@ const EditAboutTextForm = ({ closeModal, user }: EditAboutTextFormProps) => {
             className={styles.input}
             id="aboutText"
             onChange={handleChange}
-            value={formData.aboutText}
+            value={formData.additionalText}
             rows={5}
           />
         </div>
@@ -86,4 +100,4 @@ const EditAboutTextForm = ({ closeModal, user }: EditAboutTextFormProps) => {
   );
 };
 
-export default EditAboutTextForm;
+export default RejectTextForm;

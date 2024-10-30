@@ -85,3 +85,25 @@ export const deleteContract = async (contractId: string, userId: string) => {
     return { success: false, error: (error as Error).message };
   }
 };
+
+export const updateRejectText = async (contractId: string, rejectText: string) => {
+  try {
+    const response = await fetch(`/api/contracts/${contractId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ rejectText }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update contract.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating contract:", error);
+    throw error;
+  }
+};

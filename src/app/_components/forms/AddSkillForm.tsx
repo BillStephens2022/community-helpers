@@ -6,7 +6,7 @@ import { User } from "../../_lib/types";
 import { userState } from "../../_atoms/userAtom";
 import { updateUserSkills } from "../../_utils/api/users";
 import Button from "../ui/Button";
-import styles from "./editProfile.module.css";
+import styles from "./oneFieldForm.module.css";
 
 interface AddSkillFormProps {
   closeModal: () => void;
