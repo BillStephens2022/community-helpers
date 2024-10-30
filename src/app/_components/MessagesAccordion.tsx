@@ -28,16 +28,18 @@ const MessagesAccordion = ({
   const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
   const [activeMessage, setActiveMessage] = useState<MessageBody | null>(null);
-  const [recipientProfileImage, setRecipientProfileImage] = useState<string | null>(null);
+  const [recipientProfileImage, setRecipientProfileImage] = useState<
+    string | null
+  >(null);
 
   const loggedInUserId = session?.user?.id;
   const loggedInUsername = session?.user?.name;
 
   const openReplyModal = (message: MessageBody) => {
     setActiveMessage(message);
-    console.log("Active message: ", message);
     // Get the relevant user (from or to) based on the message direction
-    const recipient = messageDirection === "Received" ? message.from : message.to;
+    const recipient =
+      messageDirection === "Received" ? message.from : message.to;
 
     // Set the profile image from the recipient's data
     setRecipientProfileImage(recipient.profileImage || null);
@@ -53,13 +55,11 @@ const MessagesAccordion = ({
 
   const openContractModal = (message: MessageBody) => {
     setActiveMessage(message);
-    console.log("Active message: ", message);
     // Get the relevant user (from or to) based on the message direction
-    const recipient = messageDirection === "Received" ? message.from : message.to;
-
+    const recipient =
+      messageDirection === "Received" ? message.from : message.to;
     // Set the profile image from the recipient's data
     setRecipientProfileImage(recipient.profileImage || null);
-
     setIsContractModalOpen(true);
   };
 
@@ -130,7 +130,10 @@ const MessagesAccordion = ({
         from: activeMessage?.to || reply.from, // Use original recipient as sender
       };
 
-      const updatedSentMessages = [...(prevUser.sentMessages || []), replyWithRecipient];
+      const updatedSentMessages = [
+        ...(prevUser.sentMessages || []),
+        replyWithRecipient,
+      ];
 
       return {
         ...prevUser,
@@ -185,7 +188,10 @@ const MessagesAccordion = ({
                         className={styles.reply_icon}
                         onClick={() => openReplyModal(message)}
                       />
-                      <IoDocumentTextOutline className={styles.document_icon} onClick={() => openContractModal(message)}/>
+                      <IoDocumentTextOutline
+                        className={styles.document_icon}
+                        onClick={() => openContractModal(message)}
+                      />
                     </div>
                   </div>
                 </Accordion.Control>
@@ -206,7 +212,7 @@ const MessagesAccordion = ({
               content={
                 <MessageReplyForm
                   parentMessageId={activeMessage._id}
-                  userId={userId} 
+                  userId={userId}
                   onClose={closeReplyModal}
                   onReplySuccess={handleReplySuccess}
                 />
@@ -217,8 +223,8 @@ const MessagesAccordion = ({
             <Modal
               onClose={closeContractModal}
               title={`Create contract with ${
-                messageDirection === "Received" 
-                  ? activeMessage.from.firstName 
+                messageDirection === "Received"
+                  ? activeMessage.from.firstName
                   : activeMessage.to.firstName
               }`}
               profileImage={recipientProfileImage}
@@ -227,7 +233,11 @@ const MessagesAccordion = ({
                   loggedInUserId={loggedInUserId}
                   loggedInUsername={loggedInUsername || ""}
                   closeModal={closeContractModal}
-                  clientId={messageDirection === "Received" ? activeMessage.from._id : activeMessage.to._id}
+                  clientId={
+                    messageDirection === "Received"
+                      ? activeMessage.from._id
+                      : activeMessage.to._id
+                  }
                 />
               }
             />

@@ -24,9 +24,15 @@ const ContractForm = ({
   loggedInUsername,
   clientId,
 }: ContractFormProps) => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const users = useRecoilValue(usersState);
+  const user = useRecoilValue(userState);
+  const setContracts = useSetRecoilState(contractsState);
+  const setUser = useSetRecoilState(userState);
+
   const initialFormData = {
     client: clientId || "",
-    jobCategory: "",
+    jobCategory: user?.skillset || "",
     jobDescription: "",
     feeType: "hourly",
     hourlyRate: "",
@@ -34,15 +40,11 @@ const ContractForm = ({
     fixedRate: "",
     additionalNotes: "",
   };
+
   const [formData, setFormData] = useState(initialFormData);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const users = useRecoilValue(usersState);
-  const user = useRecoilValue(userState);
-  const setContracts = useSetRecoilState(contractsState);
-  const setUser = useSetRecoilState(userState);
 
   const requiredFields = ["jobCategory", "jobDescription", "feeType"];
-  console.log("user", user);
+
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -97,8 +99,6 @@ const ContractForm = ({
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
-    console.log("Submitting form data:", formData); // Debugging
 
     if (!validateFields()) return;
 
