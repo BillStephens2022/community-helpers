@@ -4,6 +4,14 @@
     align-content: center;
 }
 
+.contracts_cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem auto;
+}
+
 .contracts_content_header {
     font-size: 2rem;
     color: lightgoldenrodyellow;
