@@ -54,6 +54,7 @@ export interface ContractBody {
   fixedRate?: number;
   amountDue: number;
   additionalNotes?: string;
+  rejectionText?: string;
   status: string;
   createdAt: string;
 }

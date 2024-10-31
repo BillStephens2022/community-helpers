@@ -86,7 +86,7 @@ export const deleteContract = async (contractId: string, userId: string) => {
   }
 };
 
-export const updateRejectText = async (contractId: string, additionalNotes: string) => {
+export const updateRejectText = async (contractId: string, rejectionText: string) => {
   try {
     console.log("Sending request to update reject text for contract:", contractId);
     const response = await fetch(`/api/contracts/${contractId}`, {
@@ -94,7 +94,7 @@ export const updateRejectText = async (contractId: string, additionalNotes: stri
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ additionalNotes }),
+      body: JSON.stringify({ rejectionText, status: "Rejected by Client - Awaiting Revision" }),
     });
 
     if (!response.ok) {

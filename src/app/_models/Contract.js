@@ -12,6 +12,7 @@ const contractSchema = new Schema({
   fixedRate: { type: Number },
   amountDue: { type: Number, required: true },
   additionalNotes: { type: String },
+  rejectionText: { type: String },
   status: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, required: true },
 });

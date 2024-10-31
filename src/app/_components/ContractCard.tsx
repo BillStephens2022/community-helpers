@@ -156,6 +156,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
             </Button>
           );
         }
+        break;
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(
@@ -180,25 +181,6 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
               }
             >
               Complete Job
-            </Button>
-          );
-        }
-        break;
-      case "Rejected by Client - Awaiting Revision":
-        if (isWorker) {
-          buttons.push(
-            <Button
-              key="revise"
-              type="button"
-              onClick={() => {
-                changeContractStatus("Revised - Awaiting Client Approval");
-                reviseContract();
-              }}
-            >
-              Revise Contract
-            </Button>,
-            <Button key="delete" type="button" onClick={handleDeleteContract}>
-              Delete Contract
             </Button>
           );
         }
@@ -251,6 +233,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
         Amount Due upon completion: {formatNumberToDollars(contract.amountDue)}
       </h2>
       <p>Status: {contract.status}</p>
+      {contract.rejectionText && <p>Rejection Feedback: {contract.rejectionText}</p>}
       <p>Created: {formatDate(contract.createdAt)}</p>
       {buttonsToShow()}
       {isModalOpen && (
