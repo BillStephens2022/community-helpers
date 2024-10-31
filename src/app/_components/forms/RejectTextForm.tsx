@@ -40,6 +40,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     event.preventDefault();
 
     try {
+      console.log("Submitting form data:", formData);
       await updateRejectText(contractId, formData.additionalText || ""); // if empty, send empty string
       // Success: clear any error messages, reset user state, and refresh profile page
       setError("");
@@ -74,14 +75,14 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     <>
       <form className={styles.form}>
         <div>
-          <label htmlFor="rejectText" className={styles.label}>
+          <label htmlFor="additionalText" className={styles.label}>
             Feedback
           </label>
           <textarea
-            name="rejectText"
+            name="additionalText"
             placeholder="provide feedback on why you are rejecting this contract"
             className={styles.input}
-            id="rejectText"
+            id="additionalText"
             onChange={handleChange}
             value={formData.additionalText}
             rows={5}

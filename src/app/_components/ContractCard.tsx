@@ -20,7 +20,7 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
 
-  const changeContractStatus = async (newStatus: string) => {
+  const changeContractStatus = async (newStatus: string) : Promise<void> => {
     let previousUser: User | null = null;
 
     setUser((prevUser) => {
@@ -117,10 +117,13 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
               onClick={() => {
                 openModal(
                   "Provide Feedback",
-                  <RejectTextForm contractId={contract._id} closeModal={closeModal} />
+                  <RejectTextForm
+                    contractId={contract._id}
+                    closeModal={closeModal}
+                  />
                 );
 
-                changeContractStatus("Rejected by Client - Awaiting Revision");
+                //changeContractStatus("Rejected by Client - Awaiting Revision");
               }}
             >
               Reject
@@ -135,6 +138,24 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
           );
         }
         break;
+      case "Rejected by Client - Awaiting Revision":
+        if (isWorker) {
+          buttons.push(
+            <Button
+              key="revise"
+              type="button"
+              onClick={() => {
+                changeContractStatus("Draft - Awaiting Client Approval");
+                reviseContract();
+              }}
+            >
+              Revise Contract
+            </Button>,
+            <Button key="delete" type="button" onClick={handleDeleteContract}>
+              Delete Contract
+            </Button>
+          );
+        }
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(

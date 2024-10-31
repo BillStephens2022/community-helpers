@@ -14,10 +14,10 @@ export async function PUT(
     try {
       await dbConnect();
   
-      // Parse the request body to get updated user data
+      // Parse the request body to get updated contract data
       const updatedData = await req.json();
   
-      // Find the user by ID and update their information
+      // Find the contract by ID and update their information
       const updatedContract = await Contract.findByIdAndUpdate(id, { ...updatedData }, {
         new: true, // Return the updated document
         runValidators: true, // Validate the update against the model
