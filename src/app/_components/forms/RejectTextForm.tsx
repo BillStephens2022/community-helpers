@@ -18,7 +18,7 @@ interface RejectTextFormProps {
 const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    additionalText: "",
+    rejectionText: "",
   });
   const [error, setError] = useState("");
   const setContract = useSetRecoilState(contractsState);
@@ -41,7 +41,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
 
     try {
       console.log("Submitting form data:", formData);
-      await updateRejectText(contractId, formData.additionalText || ""); // if empty, send empty string
+      await updateRejectText(contractId, formData.rejectionText || ""); // if empty, send empty string
       // Success: clear any error messages, reset user state, and refresh profile page
       setError("");
       // Update Recoil state directly with new rejection text to reflect changes immediately
@@ -49,7 +49,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
         if (!prevContract) return prevContract; // If prevUser is null, do nothing
         return {
           ...prevContract, // Spread the existing user properties
-          additionalText: formData.additionalText, // Update only the skillset field
+          rejectionText: formData.rejectionText, // Update only the skillset field
         };
       });
       setUser((prevUser) => {
@@ -58,7 +58,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
             ...prevUser, // Spread the existing user properties
             contracts: prevUser.contracts.map((contract) =>
               contract._id === contractId // Check if this is the contract to update
-                ? { ...contract, additionalText: formData.additionalText } // Update the additionalText field
+                ? { ...contract, additionalText: formData.rejectionText } // Update the additionalText field
                 : contract // Leave other contracts unchanged
             ),
           };
@@ -75,16 +75,16 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     <>
       <form className={styles.form}>
         <div>
-          <label htmlFor="additionalText" className={styles.label}>
+          <label htmlFor="rejectionText" className={styles.label}>
             Feedback
           </label>
           <textarea
-            name="additionalText"
+            name="rejectionText"
             placeholder="provide feedback on why you are rejecting this contract"
             className={styles.input}
-            id="additionalText"
+            id="rejectionText"
             onChange={handleChange}
-            value={formData.additionalText}
+            value={formData.rejectionText}
             rows={5}
           />
         </div>
