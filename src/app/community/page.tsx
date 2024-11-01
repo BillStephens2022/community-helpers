@@ -13,8 +13,10 @@ export default function Community() {
   const users = useRecoilValue(usersState);
   const [skillFilter, setSkillFilter] = useState("None");
 
-  const filteredUsers = users.filter(
-    (user) => skillFilter === "None" || user.skillset === skillFilter
+  const workers = users.filter((user) => user.isWorker === true);
+
+  const filteredWorkers = workers.filter(
+    (worker) => skillFilter === "None" || worker.skillset === skillFilter
   );
 
   return (
@@ -43,17 +45,17 @@ export default function Community() {
         </select>
       </div>
       <div className={styles.users_div}>
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
+        {filteredWorkers.length > 0 ? (
+          filteredWorkers.map((worker) => (
             <ProfileCard
-              key={user._id}
-              user={user}
+              key={worker._id}
+              user={worker}
               size="small"
               isProfilePage={false}
             />
           ))
         ) : (
-          <p>No users found with the selected skill.</p>
+          <p>No neighbors found with the selected skill.</p>
         )}
       </div>
     </div>
