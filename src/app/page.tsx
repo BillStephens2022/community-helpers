@@ -5,7 +5,10 @@ import chlogo from "./images/chlogo.jpeg";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <div className={styles.home_content}>
+    <h2 className={styles.home_subheader}>Need a job done?</h2>
+    <main className={styles.home_main}>
+      
       <div className={styles.home_left}>
         <Image
           className={styles.logo}
@@ -20,9 +23,8 @@ export default function Home() {
         </Link>
       </div>
       <div className={styles.home_right}>
-        <h3 className={styles.home_h3}>Need a job done?</h3>
         <h4 className={styles.home_h4}>
-          Your community has the skills you need!
+          Your neighbors have the skills you need!
         </h4>
         <ul className={styles.home_ul}>
           <li className={styles.home_li}>Handyman Services</li>
@@ -36,5 +38,6 @@ export default function Home() {
         </ul>
       </div>
     </main>
+    </div>
   );
 }

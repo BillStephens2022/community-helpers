@@ -6,7 +6,7 @@ export default function Header() {
 
   return (
     <div className={styles.footer}>
-      <p>Copyright &copy; {currentYear} <Link className={styles.link} href="https://billstephens2022.github.io/my_portfolio/">Bill Stephens</Link></p>
+      <p className={styles.footer_p}>Copyright &copy; {currentYear} <Link className={styles.link} href="https://billstephens2022.github.io/my_portfolio/">Bill Stephens</Link></p>
     </div>
   );
 }

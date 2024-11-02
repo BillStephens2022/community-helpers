@@ -3,7 +3,7 @@
   justify-content: space-between;
   background-color: #3498db;
   color: #ffc107;
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 300;
   padding: 1rem;
   width: 100%;
@@ -15,7 +15,12 @@
   border-top: 1px solid #e9ecef;
 }
 
+.footer_p {
+  margin: auto;
+}
+
 .link {
+  margin-left: .5rem;
   font-weight: 900;
   text-decoration: none;
   color: #fff;
@@ -23,12 +28,12 @@
 }
 
 .link:hover {
-    cursor: pointer;
-    color: #3498db;
-    background-color: #ffc107;
-    border-radius: 5px;
-    transform: scale(1.1);
-    padding: 0.5rem;
+  cursor: pointer;
+  color: #3498db;
+  background-color: #ffc107;
+  border-radius: 5px;
+  transform: scale(1.1);
+  padding: 0.5rem;
 }
 
 @media (max-width: 767px) {
