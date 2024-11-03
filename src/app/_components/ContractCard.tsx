@@ -1,7 +1,7 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
 import { userContractsState, userState } from "../_atoms/userAtom";
-import { ContractBody, User } from "../_lib/types";
+import { ContractBody } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
 import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
 import Button from "./ui/Button";
@@ -58,7 +58,10 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
 
     try {
-      await deleteContract(contract._id);
+      console.log("Deleting Contract ID...: ", contract._id);
+      console.log("User Id from Contract Card component...: ", user?._id);
+      console.log("Contract status of contract being deleted...: ", contract.status);
+      await deleteContract(contract._id, user?._id);
       console.log("Contract deleted successfully!");
     } catch (error) {
       console.error("Error deleting contract:", error);

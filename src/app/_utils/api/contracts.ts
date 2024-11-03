@@ -64,14 +64,16 @@ export const updateContractStatus = async (
 };
 
 // function to delete a contract
-export const deleteContract = async (contractId: string) => {
-  console.log("Deleting contract with ID:", contractId);
+export const deleteContract = async (contractId: string, userId?: string) => {
+  console.log("Deleting contract with ID: ", contractId);
+  console.log("userID: ", userId);
   try {
     const res = await fetch(`/api/contracts/${contractId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+      body: JSON.stringify({ userId }),
     });
 
     if (!res.ok) {

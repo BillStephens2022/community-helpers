@@ -47,7 +47,8 @@ export async function PUT(
   export async function DELETE(req: NextRequest, { params } : { params: { id: string }} ) {
   const { id: contractId } = params; // Contract ID from URL
   const { userId } = await req.json(); // User ID from request body (who is deleting the contract)
-
+  console.log("BACK END: Deleting contract with ID: ", contractId);
+  console.log("BACK END: Deleting contract for USER with ID: ", userId);
   try {
     await dbConnect();
 
@@ -56,8 +57,8 @@ export async function PUT(
     if (!contract) {
       return NextResponse.json({ message: "Contract not found" }, { status: 404 });
     }
-
-    if (contract.status !== "Draft - Awaiting Client Approval" || contract.status === "Rejected by Client - Awaiting Revision") {
+    console.log("Contract found: ", contract.status);
+    if (contract.status !== "Draft - Awaiting Client Approval" && contract.status !== "Rejected by Client - Awaiting Revision") {
       return NextResponse.json({ message: "Can only delete Draft or Rejected contracts"})
     }
 
