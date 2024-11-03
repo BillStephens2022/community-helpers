@@ -63,7 +63,7 @@ export default function Profile() {
           }`}
           onClick={() => setView("contracts")}
         >
-          Contracts <span className={styles.count_span}>{user.contracts?.length || 0}</span>
+          Contracts <span className={styles.count_span}>{contracts.length || 0}</span>
         </button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}
