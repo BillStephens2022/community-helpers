@@ -1,6 +1,6 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
-import { userState } from "../_atoms/userAtom";
+import { userContractsState, userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
 import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
@@ -11,39 +11,27 @@ import RejectTextForm from "./forms/RejectTextForm";
 
 interface ContractCardProps {
   contract: ContractBody;
-  user: User;
 }
 
-const ContractCard = ({ contract, user }: ContractCardProps) => {
-  const setUser = useSetRecoilState(userState);
+const ContractCard = ({ contract }: ContractCardProps) => {
+  const user = useRecoilValue(userState);
+  const setContracts = useSetRecoilState(userContractsState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
 
   const changeContractStatus = async (newStatus: string) : Promise<void> => {
-    let previousUser: User | null = null;
-
-    setUser((prevUser) => {
-      if (!prevUser) return null;
-
-      previousUser = prevUser;
-
-      return {
-        ...prevUser,
-        contracts: prevUser.contracts.map((c) =>
-          c._id === contract._id ? { ...c, status: newStatus } : c
-        ),
-      };
-    });
+    setContracts((prevContracts) =>
+      prevContracts.map((c) =>
+        c._id === contract._id ? { ...c, status: newStatus } : c
+      )
+    );
 
     try {
       await updateContractStatus(contract._id, newStatus);
       console.log(`Contract status updated to "${newStatus}" successfully!`);
     } catch (error) {
       console.error(`Error updating contract status to "${newStatus}":`, error);
-      if (previousUser) {
-        setUser(previousUser);
-      }
     }
   };
 
@@ -64,37 +52,25 @@ const ContractCard = ({ contract, user }: ContractCardProps) => {
   };
 
   const handleDeleteContract = async () => {
-    let previousUser: User | null = null;
+    setContracts((prevContracts) =>
+      prevContracts.filter((c) => c._id !== contract._id)
+    );
 
-    setUser((prevUser) => {
-      if (!prevUser) return null;
-
-      previousUser = prevUser;
-
-      // Optimistically remove the contract from the user's contracts list
-      return {
-        ...prevUser,
-        contracts: prevUser.contracts.filter((c) => c._id !== contract._id),
-      };
-    });
 
     try {
-      await deleteContract(contract._id, user._id);
+      await deleteContract(contract._id);
       console.log("Contract deleted successfully!");
     } catch (error) {
       console.error("Error deleting contract:", error);
-
-      // Rollback to the previous user state if deletion fails
-      if (previousUser) {
-        setUser(previousUser);
       }
-    }
   };
+
+  const isClient = contract.client._id === user?._id;
+  const isWorker = contract.worker._id === user?._id;
 
   const buttonsToShow = (): JSX.Element[] => {
     const buttons: JSX.Element[] = [];
-    const isClient = contract.client._id === user._id;
-    const isWorker = contract.worker._id === user._id;
+   
 
     switch (contract.status) {
       case "Draft - Awaiting Client Approval":

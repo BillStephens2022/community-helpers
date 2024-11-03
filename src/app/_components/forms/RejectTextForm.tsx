@@ -3,8 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../../_atoms/userAtom";
-import { contractsState } from "../../_atoms/contractAtom";
+import { userState, userContractsState } from "../../_atoms/userAtom";
 import { updateRejectText } from "../../_utils/api/contracts";
 import Button from "../ui/Button";
 import styles from "./oneFieldForm.module.css";
@@ -21,7 +20,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     rejectionText: "",
   });
   const [error, setError] = useState("");
-  const setContract = useSetRecoilState(contractsState);
+  const setContracts = useSetRecoilState(userContractsState);
   const setUser = useSetRecoilState(userState);
 
   const handleChange = (
@@ -38,36 +37,34 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setError("");
+
+    // Optimistic update to show rejection text immediately
+    setContracts((prevContracts) =>
+      prevContracts.map((contract) =>
+        contract._id === contractId
+          ? { ...contract, rejectionText: formData.rejectionText }
+          : contract
+      )
+    );
 
     try {
-      console.log("Submitting form data:", formData);
       await updateRejectText(contractId, formData.rejectionText || ""); // if empty, send empty string
       // Success: clear any error messages, reset user state, and refresh profile page
       setError("");
       // Update Recoil state directly with new rejection text to reflect changes immediately
-      setContract((prevContract) => {
-        if (!prevContract) return prevContract; // If prevUser is null, do nothing
-        return {
-          ...prevContract, // Spread the existing user properties
-          rejectionText: formData.rejectionText, // Update only the skillset field
-        };
-      });
-      setUser((prevUser) => {
-        if (!prevUser) return prevUser; // If prevUser is null, do nothing
-        return {
-            ...prevUser, // Spread the existing user properties
-            contracts: prevUser.contracts.map((contract) =>
-              contract._id === contractId // Check if this is the contract to update
-                ? { ...contract, additionalText: formData.rejectionText } // Update the additionalText field
-                : contract // Leave other contracts unchanged
-            ),
-          };
-      });
       closeModal();
       router.refresh();
     } catch (error) {
       console.error("Error updating contract:", error);
       setError("An error occurred while updating the contract.");
+
+       // Rollback optimistic update if error occurs
+       setContracts((prevContracts) =>
+        prevContracts.map((contract) =>
+          contract._id === contractId ? { ...contract, rejectionText: "" } : contract
+        )
+      );
     }
   };
 

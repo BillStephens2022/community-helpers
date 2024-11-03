@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../../_atoms/userAtom";
+import { userState, userContractsState } from "../../_atoms/userAtom";
 import { fetchUserData } from "../../_utils/api/users";
 
 export const useProfileData = () => {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
+  const setUserContracts = useSetRecoilState(userContractsState);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +16,8 @@ export const useProfileData = () => {
         const userId = session.user.id;
         try {
           const data = await fetchUserData(userId);
-          setUser({ ...data, _id: userId }); // Update Recoil state
+          setUser({ ...data, _id: userId }); // Set full user data
+          setUserContracts(data.contracts); // Set contracts only
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {

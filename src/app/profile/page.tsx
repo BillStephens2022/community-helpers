@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useProfileData } from "../_utils/hooks/useProfileData";
-import { userState, usersState } from "../_atoms/userAtom";
+import { userState, usersState, userContractsState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
 import ProfileContent from "../_components/ProfileContent";
 import MessagesAccordion from "../_components/MessagesAccordion";
@@ -16,6 +16,7 @@ export default function Profile() {
   const [, setUsers] = useRecoilState(usersState);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const user = useRecoilValue(userState);
+  const contracts = useRecoilValue(userContractsState);
   const { loading } = useProfileData(); 
 
   useEffect(() => {
@@ -72,7 +73,7 @@ export default function Profile() {
           <MessagesAccordion messages={user.sentMessages || []} messageDirection="Sent" userId={user._id} />
         </>
       )}
-      {view === "contracts" && <ContractContent user={user}/>}
+      {view === "contracts" && <ContractContent contracts={contracts}/>}
     </div>
   );
 }

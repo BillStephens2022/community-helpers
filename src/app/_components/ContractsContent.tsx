@@ -1,19 +1,19 @@
-import { User } from "../_lib/types";
+import { ContractBody, User } from "../_lib/types";
 import ContractCard from "./ContractCard";
 import styles from "./contractsContent.module.css";
 
 
 interface ContractContentProps {
-  user: User;
+  contracts: ContractBody[];
 }
 
-const ContractContent = ({ user }: ContractContentProps) => {
+const ContractContent = ({ contracts }: ContractContentProps) => {
   return (
       <div className={styles.contracts_content}>
-        <h1 className={styles.contracts_content_header}>{user.firstName}'s Contracts</h1>
+        <h1 className={styles.contracts_content_header}>Your Contracts</h1>
         <div className={styles.contracts_cards}>
-        {user.contracts.map((contract) => (
-            <ContractCard key={contract._id} contract={contract} user={user} />
+        {contracts.map((contract) => (
+            <ContractCard key={contract._id} contract={contract} />
         ))}
         </div>
       </div>
