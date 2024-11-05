@@ -20,7 +20,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
 
-  const changeContractStatus = async (newStatus: string) : Promise<void> => {
+  const changeContractStatus = async (newStatus: string): Promise<void> => {
     setContracts((prevContracts) =>
       prevContracts.map((c) =>
         c._id === contract._id ? { ...c, status: newStatus } : c
@@ -56,24 +56,25 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       prevContracts.filter((c) => c._id !== contract._id)
     );
 
-
     try {
       console.log("Deleting Contract ID...: ", contract._id);
       console.log("User Id from Contract Card component...: ", user?._id);
-      console.log("Contract status of contract being deleted...: ", contract.status);
+      console.log(
+        "Contract status of contract being deleted...: ",
+        contract.status
+      );
       await deleteContract(contract._id, user?._id);
       console.log("Contract deleted successfully!");
     } catch (error) {
       console.error("Error deleting contract:", error);
-      }
+    }
   };
-
+ 
   const isClient = contract.client._id === user?._id;
   const isWorker = contract.worker._id === user?._id;
 
   const buttonsToShow = (): JSX.Element[] => {
     const buttons: JSX.Element[] = [];
-   
 
     switch (contract.status) {
       case "Draft - Awaiting Client Approval":
@@ -212,7 +213,9 @@ const ContractCard = ({ contract }: ContractCardProps) => {
         Amount Due upon completion: {formatNumberToDollars(contract.amountDue)}
       </h2>
       <p>Status: {contract.status}</p>
-      {contract.rejectionText && <p>Rejection Feedback: {contract.rejectionText}</p>}
+      {contract.rejectionText && (
+        <p>Rejection Feedback: {contract.rejectionText}</p>
+      )}
       <p>Created: {formatDate(contract.createdAt)}</p>
       {buttonsToShow()}
       {isModalOpen && (

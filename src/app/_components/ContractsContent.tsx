@@ -1,13 +1,11 @@
-import { ContractBody, User } from "../_lib/types";
+import { useRecoilValue } from "recoil";
+import { userContractsState } from "../_atoms/userAtom";
 import ContractCard from "./ContractCard";
 import styles from "./contractsContent.module.css";
 
 
-interface ContractContentProps {
-  contracts: ContractBody[];
-}
-
-const ContractContent = ({ contracts }: ContractContentProps) => {
+const ContractContent = () => {
+  const contracts = useRecoilValue(userContractsState);
   return (
       <div className={styles.contracts_content}>
         <h1 className={styles.contracts_content_header}>Your Contracts</h1>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import { userState, userContractsState } from "../../_atoms/userAtom";
-import { fetchUserData } from "../../_utils/api/users";
+import { fetchUserData, fetchUserContracts } from "../../_utils/api/users";
 
 export const useProfileData = () => {
   const { data: session } = useSession();
@@ -15,18 +15,19 @@ export const useProfileData = () => {
       if (session?.user?.id) {
         const userId = session.user.id;
         try {
-          const data = await fetchUserData(userId);
-          setUser({ ...data, _id: userId }); // Set full user data
-          setUserContracts(data.contracts); // Set contracts only
+          const userData = await fetchUserData(userId);
+          setUser(userData);
+          const userContracts = await fetchUserContracts(userId); // Fetch contracts separately
+          setUserContracts(userContracts);
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Error fetching profile data:", error);
         } finally {
           setLoading(false);
         }
       }
     };
     fetchData();
-  }, [session, setUser]);
+  }, [session, setUser, setUserContracts]);
 
   return { loading };
 };

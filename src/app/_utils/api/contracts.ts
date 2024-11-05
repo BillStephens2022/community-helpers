@@ -109,3 +109,14 @@ export const updateRejectText = async (contractId: string, rejectionText: string
     throw error;
   }
 };
+
+// Fetch all users
+export const fetchContracts = async () => {
+  const res = await fetch("/api/contracts");
+  if (!res.ok) {
+    throw new Error("Failed to fetch contracts.");
+  }
+  const data = await res.json();
+  return data.contracts;
+};
+

@@ -19,6 +19,15 @@ export const fetchUserData = async (userId: string) => {
   return await res.json();
 };
 
+// Fetch user data by user ID
+export const fetchUserContracts = async (userId: string) => {
+  const res = await fetch(`/api/users/${userId}/contracts`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch user data.");
+  }
+  return await res.json();
+};
+
 // Update profile image by user ID
 export const updateProfileImage = async (userId: string, imageUrl: string) => {
   const res = await fetch(`/api/users/${userId}`, {
