@@ -4,7 +4,7 @@ import { useState, FormEvent } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { User, ContractBody } from "../../_lib/types";
 import { contractsState } from "../../_atoms/contractAtom";
-import { usersState } from "../../_atoms/userAtom";
+import { userContractsState, usersState } from "../../_atoms/userAtom";
 import { userState } from "../../_atoms/userAtom";
 import { createContract } from "../../_utils/api/contracts";
 import Button from "../ui/Button";
@@ -27,8 +27,8 @@ const ContractForm = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const users = useRecoilValue(usersState);
   const user = useRecoilValue(userState);
-  const setContracts = useSetRecoilState(contractsState);
-  const setUser = useSetRecoilState(userState);
+  const setUserContracts = useSetRecoilState(userContractsState);
+  // const setUser = useSetRecoilState(userState);
 
   const initialFormData = {
     client: clientId || "",
@@ -123,33 +123,16 @@ const ContractForm = ({
       ...contractData,
       id: Date.now().toString(), // Temporary unique ID
     } as unknown as ContractBody; // Double casting to bypass the strict type check, since the ID is temporary
-    setContracts((prev) => [...prev, optimisticContract]);
-    setUser(
-      (prev) =>
-        ({
-          ...prev,
-          contracts: [...(prev?.contracts || []), optimisticContract],
-        } as User)
-    );
+    
+    setUserContracts((prev) => [...prev, optimisticContract]);
 
     try {
       const newContract = await createContract(contractData);
-      setContracts((prev) => [...prev, newContract]);
       // Replace the optimistic contract with the actual contract from the server
-      setContracts((prev) =>
+      setUserContracts((prev) =>
         prev.map((contract) =>
           contract._id === optimisticContract._id ? newContract : contract
         )
-      );
-      // Update user’s contracts with the actual contract from the server
-      setUser(
-        (prev) =>
-          ({
-            ...prev,
-            contracts: (prev?.contracts || []).map((contract) =>
-              contract._id === optimisticContract._id ? newContract : contract
-            ),
-          } as User)
       );
       setFormData(initialFormData);
       closeModal();
