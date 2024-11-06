@@ -6,7 +6,7 @@ import styles from "./contractsContent.module.css";
 
 const ContractContent = () => {
   const contracts = useRecoilValue(userContractsState);
-  console.log(contracts);
+  
   return (
       <div className={styles.contracts_content}>
         <h1 className={styles.contracts_content_header}>Your Contracts</h1>

@@ -57,12 +57,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
     );
 
     try {
-      console.log("Deleting Contract ID...: ", contract._id);
-      console.log("User Id from Contract Card component...: ", user?._id);
-      console.log(
-        "Contract status of contract being deleted...: ",
-        contract.status
-      );
       await deleteContract(contract._id, user?._id);
       console.log("Contract deleted successfully!");
     } catch (error) {

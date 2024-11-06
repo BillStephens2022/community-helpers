@@ -152,7 +152,7 @@ const ContractForm = ({
       worker: workerUser, // contains firstname, lastName, etc
       createdAt: new Date().toISOString(),
     } as unknown as ContractBody; // Double casting to bypass the strict type check, since the ID is temporary
-    console.log("Optimistic contract: ", optimisticContract);
+   
     setUserContracts((prev) => [...prev, optimisticContract]);
 
     try {
