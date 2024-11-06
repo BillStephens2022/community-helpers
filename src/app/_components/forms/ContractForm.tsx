@@ -2,8 +2,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { useState, FormEvent } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { User, ContractBody } from "../../_lib/types";
-import { contractsState } from "../../_atoms/contractAtom";
+import { ContractBody } from "../../_lib/types";
 import { userContractsState, usersState } from "../../_atoms/userAtom";
 import { userState } from "../../_atoms/userAtom";
 import { createContract } from "../../_utils/api/contracts";
