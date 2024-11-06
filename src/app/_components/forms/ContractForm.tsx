@@ -1,5 +1,5 @@
 "use client";
-
+import { v4 as uuidv4 } from "uuid";
 import { useState, FormEvent } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { User, ContractBody } from "../../_lib/types";
@@ -28,10 +28,11 @@ const ContractForm = ({
   const users = useRecoilValue(usersState);
   const user = useRecoilValue(userState);
   const setUserContracts = useSetRecoilState(userContractsState);
-  // const setUser = useSetRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
 
   const initialFormData = {
     client: clientId || "",
+    worker: loggedInUserId || "",
     jobCategory: user?.skillset || "",
     jobDescription: "",
     feeType: "hourly",
@@ -104,8 +105,33 @@ const ContractForm = ({
 
     const amountDue = calculateAmountDue();
 
+    // Get client and worker details
+    const client = users.find((u) => u._id === formData.client);
+    const worker = users.find((u) => u._id === formData.worker);
+
+    // Select only the required properties
+    const clientUser = client
+      ? {
+          _id: client._id,
+          firstName: client.firstName,
+          lastName: client.lastName,
+          email: client.email,
+          profileImage: client.profileImage,
+        }
+      : null;
+
+    const workerUser = worker
+      ? {
+          _id: worker._id,
+          firstName: worker.firstName,
+          lastName: worker.lastName,
+          email: worker.email,
+          profileImage: worker.profileImage,
+        }
+      : null;
+
     const contractData = {
-      worker: loggedInUserId || "",
+      worker: formData.worker,
       client: formData.client,
       jobCategory: formData.jobCategory,
       jobDescription: formData.jobDescription,
@@ -121,17 +147,28 @@ const ContractForm = ({
     // Optimistically update the state
     const optimisticContract = {
       ...contractData,
-      id: Date.now().toString(), // Temporary unique ID
+      id: uuidv4(), // Generate a unique temporary ID
+      client: clientUser, // contains firstName, lastName, etc
+      worker: workerUser, // contains firstname, lastName, etc
+      createdAt: new Date().toISOString(),
     } as unknown as ContractBody; // Double casting to bypass the strict type check, since the ID is temporary
-    
+    console.log("Optimistic contract: ", optimisticContract);
     setUserContracts((prev) => [...prev, optimisticContract]);
 
     try {
       const newContract = await createContract(contractData);
+      // Add the additional user details to newContract before updating the state
+      const populatedNewContract = {
+        ...newContract,
+        client: clientUser!,
+        worker: workerUser!,
+      };
       // Replace the optimistic contract with the actual contract from the server
       setUserContracts((prev) =>
         prev.map((contract) =>
-          contract._id === optimisticContract._id ? newContract : contract
+          contract._id === optimisticContract._id
+            ? populatedNewContract
+            : contract
         )
       );
       setFormData(initialFormData);
