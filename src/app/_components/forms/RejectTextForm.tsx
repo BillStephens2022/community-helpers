@@ -43,7 +43,7 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
     setContracts((prevContracts) =>
       prevContracts.map((contract) =>
         contract._id === contractId
-          ? { ...contract, rejectionText: formData.rejectionText }
+          ? { ...contract, rejectionText: formData.rejectionText, status: "Rejected by Client - Awaiting Revision" }
           : contract
       )
     );
