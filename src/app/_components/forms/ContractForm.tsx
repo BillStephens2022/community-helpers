@@ -15,6 +15,7 @@ interface ContractFormProps {
   loggedInUserId?: string;
   loggedInUsername?: string;
   clientId?: string;
+  contract?: ContractBody;
 }
 
 const ContractForm = ({
@@ -22,6 +23,7 @@ const ContractForm = ({
   loggedInUserId,
   loggedInUsername,
   clientId,
+  contract,
 }: ContractFormProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const users = useRecoilValue(usersState);
@@ -29,17 +31,29 @@ const ContractForm = ({
   const setUserContracts = useSetRecoilState(userContractsState);
   const setUser = useSetRecoilState(userState);
 
-  const initialFormData = {
-    client: clientId || "",
-    worker: loggedInUserId || "",
-    jobCategory: user?.skillset || "",
-    jobDescription: "",
-    feeType: "hourly",
-    hourlyRate: "",
-    hours: "",
-    fixedRate: "",
-    additionalNotes: "",
-  };
+  const initialFormData = contract
+    ? {
+        client: contract.client._id,
+        worker: contract.worker._id,
+        jobCategory: contract.jobCategory,
+        jobDescription: contract.jobDescription,
+        feeType: contract.feeType,
+        hourlyRate: contract.hourlyRate?.toString() || "",
+        hours: contract.hours?.toString() || "",
+        fixedRate: contract.fixedRate?.toString() || "",
+        additionalNotes: contract.additionalNotes || "",
+      }
+    : {
+        client: clientId || "",
+        worker: loggedInUserId || "",
+        jobCategory: user?.skillset || "",
+        jobDescription: "",
+        feeType: "hourly",
+        hourlyRate: "",
+        hours: "",
+        fixedRate: "",
+        additionalNotes: "",
+      };
 
   const [formData, setFormData] = useState(initialFormData);
 
@@ -100,6 +114,13 @@ const ContractForm = ({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    // placeholder until functionality is built to edit the contract, returns early if contract is being edited
+    if (contract) {
+      console.log("editing contract!")
+      closeModal();
+      return;
+    }
+
     if (!validateFields()) return;
 
     const amountDue = calculateAmountDue();
@@ -151,7 +172,7 @@ const ContractForm = ({
       worker: workerUser, // contains firstname, lastName, etc
       createdAt: new Date().toISOString(),
     } as unknown as ContractBody; // Double casting to bypass the strict type check, since the ID is temporary
-   
+
     setUserContracts((prev) => [...prev, optimisticContract]);
 
     try {
@@ -184,8 +205,11 @@ const ContractForm = ({
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.static_field}>
           <label className={styles.label}>Worker:</label>
-          <p className={styles.form_p1}>{loggedInUsername}</p>{" "}
-          {/* Not editable */}
+          <p className={styles.form_p1}>
+            {contract
+              ? `${contract.worker.firstName} ${contract.worker.lastName}`
+              : `${loggedInUsername}`}
+          </p>
         </div>
         <div className={styles.static_field}>
           <label className={styles.label}>Client:</label>
@@ -309,7 +333,7 @@ const ContractForm = ({
         </div>
         <div className={styles.button_div}>
           <Button type="submit" onClick={handleSubmit}>
-            Create Contract
+            {contract ? "Submit Changes" : "Create Contract"}
           </Button>
         </div>
       </form>

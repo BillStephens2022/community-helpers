@@ -10,6 +10,7 @@
   
   .form_p1,
   .form_p2 {
+    text-align: left;
     margin-bottom: 0.25rem;
     color: #333;
   }

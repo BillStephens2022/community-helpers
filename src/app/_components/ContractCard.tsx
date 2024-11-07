@@ -8,6 +8,7 @@ import Button from "./ui/Button";
 import Modal from "./ui/Modal";
 import styles from "./contractCard.module.css";
 import RejectTextForm from "./forms/RejectTextForm";
+import ContractForm from "./forms/ContractForm";
 
 interface ContractCardProps {
   contract: ContractBody;
@@ -96,8 +97,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
                     closeModal={closeModal}
                   />
                 );
-
-                //changeContractStatus("Rejected by Client - Awaiting Revision");
               }}
             >
               Reject
@@ -119,8 +118,13 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               key="revise"
               type="button"
               onClick={() => {
-                changeContractStatus("Draft - Awaiting Client Approval");
-                reviseContract();
+                openModal(
+                  "Provide Feedback",
+                  <ContractForm
+                    closeModal={closeModal}
+                    contract={contract}
+                  />
+                );
               }}
             >
               Revise Contract
@@ -181,36 +185,36 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
   return (
     <div key={contract._id} className={styles.contract_card}>
-      <h2>
+      <h2 className={styles.contract_card_h2}>
         Worker: {contract.worker.firstName} {contract.worker.lastName}
       </h2>
-      <h2>
+      <h2 className={styles.contract_card_h2}>
         Client: {contract.client.firstName} {contract.client.lastName}
       </h2>
-      <h2>Job Category: {contract.jobCategory}</h2>
-      <p>Job Description: {contract.jobDescription}</p>
+      <h2 className={styles.contract_card_h2}>Job Category: {contract.jobCategory}</h2>
+      <p className={styles.contract_card_p}>Job Description: {contract.jobDescription}</p>
       {contract.additionalNotes && <p>Job Notes: {contract.additionalNotes}</p>}
-      <p>Fee Type: {contract.feeType.toUpperCase()}</p>
+      <p className={styles.contract_card_p}>Fee Type: {contract.feeType.toUpperCase()}</p>
       {contract.feeType === "hourly" && (
-        <p>Hourly Rate: ${contract.hourlyRate} per hour</p>
+        <p className={styles.contract_card_p}>Hourly Rate: ${contract.hourlyRate} per hour</p>
       )}
       {contract.feeType === "hourly" && (
-        <p>Estimated Hours: {contract.hours} hours</p>
+        <p className={styles.contract_card_p}>Estimated Hours: {contract.hours} hours</p>
       )}
       {contract.feeType === "fixed" && (
-        <p>
+        <p className={styles.contract_card_p}>
           Fixed Fee:{" "}
           {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
         </p>
       )}
-      <h2>
+      <h2 className={styles.contract_card_h2}>
         Amount Due upon completion: {formatNumberToDollars(contract.amountDue)}
       </h2>
-      <p>Status: {contract.status}</p>
+      <p className={styles.contract_card_p}>Status: {contract.status}</p>
       {contract.rejectionText && (
-        <p>Rejection Feedback: {contract.rejectionText}</p>
+        <p className={styles.contract_card_p}>Rejection Feedback: {contract.rejectionText}</p>
       )}
-      <p>Created: {formatDate(contract.createdAt)}</p>
+      <p className={styles.contract_card_p}>Created: {formatDate(contract.createdAt)}</p>
       {buttonsToShow()}
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />

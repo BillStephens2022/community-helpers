@@ -10,14 +10,14 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
-.contract_card h2 {
+.contract_card_h2 {
   font-size: 1.25rem;
   color: darkslateblue;
   text-shadow: 2px 2px 4px #aa9e9e;
   margin: 0.5rem auto;
 }
 
-.contract_card p {
+.contract_card_p {
   font-size: 1.1rem;
   color: darkslategrey;
   text-shadow: 1px 1px 2px #aa9e9e;
