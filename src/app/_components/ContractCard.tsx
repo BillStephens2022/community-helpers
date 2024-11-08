@@ -135,6 +135,23 @@ const ContractCard = ({ contract }: ContractCardProps) => {
           );
         }
         break;
+        case "Revised - Awaiting Client Approval":
+        if (isClient) {
+          buttons.push(
+            <Button
+            key="approve"
+            type="button"
+            onClick={() =>
+              changeContractStatus(
+                "Approved by Client - Awaiting Work Completion"
+              )
+            }
+            >
+              Approve
+            </Button>
+          );
+        }
+        break;
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(

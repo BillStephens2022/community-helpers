@@ -5,7 +5,7 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { ContractBody } from "../../_lib/types";
 import { userContractsState, usersState } from "../../_atoms/userAtom";
 import { userState } from "../../_atoms/userAtom";
-import { createContract } from "../../_utils/api/contracts";
+import { createContract, updateContract } from "../../_utils/api/contracts";
 import Button from "../ui/Button";
 import { skillsetOptions } from "../../_lib/constants";
 import styles from "./sendMessageForm.module.css";
@@ -114,17 +114,6 @@ const ContractForm = ({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    // placeholder until functionality is built to edit the contract, returns early if contract is being edited
-    if (contract) {
-      console.log("editing contract!")
-      closeModal();
-      return;
-    }
-
-    if (!validateFields()) return;
-
-    const amountDue = calculateAmountDue();
-
     // Get client and worker details
     const client = users.find((u) => u._id === formData.client);
     const worker = users.find((u) => u._id === formData.worker);
@@ -149,6 +138,67 @@ const ContractForm = ({
           profileImage: worker.profileImage,
         }
       : null;
+
+    // if contract exists, update the contract with the updated terms
+    if (contract) {
+      if (!validateFields()) return;
+
+      const updatedContractData = {
+        ...formData,
+        _id: contract._id,
+        client: formData.client,
+        worker: formData.worker,
+        hourlyRate: formData.hourlyRate
+          ? Number(formData.hourlyRate)
+          : undefined,
+        hours: formData.hours ? Number(formData.hours) : undefined,
+        fixedRate: formData.fixedRate ? Number(formData.fixedRate) : undefined,
+        amountDue: calculateAmountDue(),
+        status: "Revised - Awaiting Client Approval",
+        createdAt: contract.createdAt,
+      };
+
+      // Optimistically update the contract state
+      const optimisticEditedContract = {
+        ...updatedContractData,
+        _id: contract._id,
+        client: clientUser, // contains firstName, lastName, etc
+        worker: workerUser, // contains firstname, lastName, etc
+      } as ContractBody;
+
+      setUserContracts((prev) => [...prev, optimisticEditedContract]);
+
+      try {
+        const updatedContract = await updateContract(
+          contract._id,
+          updatedContractData
+        );
+        // Add the additional user details to newContract before updating the state
+        const populatedUpdatedContract = {
+          ...updatedContract,
+          client: clientUser!,
+          worker: workerUser!,
+        };
+        // Replace the optimistic contract with the actual contract from the server
+        setUserContracts((prev) =>
+          prev.map((contract) =>
+            contract._id === optimisticEditedContract._id
+              ? populatedUpdatedContract
+              : contract
+          )
+        );
+        closeModal();
+      } catch (error: any) {
+        console.error("An error occurred during contract update: ", error);
+        const apiErrors = JSON.parse(error.message) as Record<string, string>;
+        setErrors(apiErrors);
+      }
+      return;
+    }
+
+    if (!validateFields()) return;
+
+    const amountDue = calculateAmountDue();
 
     const contractData = {
       worker: formData.worker,

@@ -45,6 +45,30 @@ export const createContract = async (
   return response.json();
 };
 
+export async function updateContract(contractId: string, updatedData: CreateContractData) {
+  try {
+    const response = await fetch(`/api/contracts/${contractId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to update contract');
+    }
+
+    const result = await response.json();
+    console.log(result.message); 
+    return result.user;
+  } catch (error: any) {
+    console.error("An error occurred while updating the contract:", error);
+    throw error;
+  }
+}
+
 // function to update the contract status
 export const updateContractStatus = async (
   contractId: string,
