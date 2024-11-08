@@ -48,10 +48,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
     setModalContent(null);
   };
 
-  const reviseContract = async () => {
-    console.log("Revising Contract!");
-  };
-
   const handleDeleteContract = async () => {
     setContracts((prevContracts) =>
       prevContracts.filter((c) => c._id !== contract._id)
@@ -148,7 +144,22 @@ const ContractCard = ({ contract }: ContractCardProps) => {
             }
             >
               Approve
-            </Button>
+            </Button>,
+             <Button
+             key="reject"
+             type="button"
+             onClick={() => {
+               openModal(
+                 "Provide Feedback",
+                 <RejectTextForm
+                   contractId={contract._id}
+                   closeModal={closeModal}
+                 />
+               );
+             }}
+           >
+             Reject
+           </Button>
           );
         }
         break;

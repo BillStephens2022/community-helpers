@@ -29,7 +29,7 @@ const ContractForm = ({
   const users = useRecoilValue(usersState);
   const user = useRecoilValue(userState);
   const setUserContracts = useSetRecoilState(userContractsState);
-  const setUser = useSetRecoilState(userState);
+  // const setUser = useSetRecoilState(userState);
 
   const initialFormData = contract
     ? {
@@ -166,7 +166,9 @@ const ContractForm = ({
         worker: workerUser, // contains firstname, lastName, etc
       } as ContractBody;
 
-      setUserContracts((prev) => [...prev, optimisticEditedContract]);
+      setUserContracts((prev) =>
+        prev.map((c) => (c._id === contract._id ? optimisticEditedContract : c))
+      );
 
       try {
         const updatedContract = await updateContract(
@@ -181,17 +183,25 @@ const ContractForm = ({
         };
         // Replace the optimistic contract with the actual contract from the server
         setUserContracts((prev) =>
-          prev.map((contract) =>
-            contract._id === optimisticEditedContract._id
-              ? populatedUpdatedContract
-              : contract
+          prev.map((c) =>
+            c._id === contract._id ? populatedUpdatedContract : c
           )
         );
         closeModal();
-      } catch (error: any) {
-        console.error("An error occurred during contract update: ", error);
-        const apiErrors = JSON.parse(error.message) as Record<string, string>;
-        setErrors(apiErrors);
+      } catch (error) {
+        if (error instanceof Error) {
+          try {
+            const apiErrors = JSON.parse(error.message) as Record<
+              string,
+              string
+            >;
+            setErrors(apiErrors);
+          } catch {
+            console.error("Error parsing the API error message", error.message);
+          }
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
       }
       return;
     }
@@ -243,10 +253,17 @@ const ContractForm = ({
       );
       setFormData(initialFormData);
       closeModal();
-    } catch (error: any) {
-      console.error("An error occurred: ", error);
-      const apiErrors = JSON.parse(error.message) as Record<string, string>;
-      setErrors(apiErrors);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        try {
+          const apiErrors = JSON.parse(error.message) as Record<string, string>;
+          setErrors(apiErrors);
+        } catch {
+          console.error("Error parsing the API error message", error.message);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
     }
   };
 
