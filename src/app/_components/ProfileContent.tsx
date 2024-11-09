@@ -1,4 +1,5 @@
 import { useSetRecoilState } from "recoil";
+import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { Switch } from "@mantine/core";
 import { userState } from "../_atoms/userAtom";
@@ -15,8 +16,14 @@ interface ProfileContentProps {
 
 const ProfileContent = ({ user }: ProfileContentProps) => {
   const setUser = useSetRecoilState(userState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { isWorker, profileImage, walletBalance } = user;
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
 
   const handleImageUpload = async (imageUrl: string) => {
     const userId = user?._id; // Get the user's ID from the Recoil state
@@ -61,7 +68,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
 
   return (
     <>
-    <div className={styles.wallet_div}><h2 className={styles.wallet_balance}>Wallet Balance: $ {user.walletBalance}</h2>
+    <div className={styles.wallet_div}><h2 className={styles.wallet_balance}>Wallet Balance: $ {walletBalance}</h2>
     <Button type="button" onClick={() => console.log("depositing funds!")}>Deposit</Button>
     </div>
       <Switch
