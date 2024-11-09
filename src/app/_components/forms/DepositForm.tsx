@@ -37,9 +37,11 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
 
     // Validate that depositAmount is a positive number
     if (formData.depositAmount <= 0) {
-        setError("Please enter a deposit amount greater than zero.");
-        return;
-      }
+      setError("Please enter a deposit amount greater than zero.");
+      return;
+    }
+
+    const originalBalance = user.walletBalance; // Save original balance in case of rollback
 
     try {
       await updateWalletBalance(user._id, formData.depositAmount || 0, "add"); // if empty, send zero
@@ -57,6 +59,14 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
     } catch (error) {
       console.error("Error updating user's wallet balance:", error);
       setError("An error occurred while updating the user's wallet balance.");
+      // Roll back to the original balance if the update fails
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          walletBalance: originalBalance,
+        };
+      });
     }
   };
 
