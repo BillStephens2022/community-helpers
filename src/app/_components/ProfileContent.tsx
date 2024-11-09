@@ -1,14 +1,15 @@
 import { useSetRecoilState } from "recoil";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { Switch } from "@mantine/core";
 import { userState } from "../_atoms/userAtom";
 import { User } from "../_lib/types";
 import ProfileCard from "./ProfileCard";
+import Modal from "../_components/ui/Modal";
 import { updateProfileImage, updateIsWorkerStatus } from "../_utils/api/users";
 import styles from "./profileContent.module.css";
 import Button from "./ui/Button";
-
+import DepositForm from "./forms/DepositForm";
 
 interface ProfileContentProps {
   user: User;
@@ -17,13 +18,22 @@ interface ProfileContentProps {
 const ProfileContent = ({ user }: ProfileContentProps) => {
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
+  const [modalTitle, setModalTitle] = useState<string>("");
 
   const { isWorker, profileImage, walletBalance } = user;
 
-  const openModal = () => {
+  const openModal = (title: string, content: ReactNode) => {
     setIsModalOpen(true);
+    setModalTitle(title);
+    setModalContent(content);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalTitle("");
+    setModalContent(null);
+  };
 
   const handleImageUpload = async (imageUrl: string) => {
     const userId = user?._id; // Get the user's ID from the Recoil state
@@ -68,9 +78,22 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
 
   return (
     <>
-    <div className={styles.wallet_div}><h2 className={styles.wallet_balance}>Wallet Balance: $ {walletBalance}</h2>
-    <Button type="button" onClick={() => console.log("depositing funds!")}>Deposit</Button>
-    </div>
+      <div className={styles.wallet_div}>
+        <h2 className={styles.wallet_balance}>
+          Wallet Balance: $ {walletBalance}
+        </h2>
+        <Button
+          type="button"
+          onClick={() =>
+            openModal(
+              "Deposit Funds",
+              <DepositForm closeModal={closeModal} user={user} />
+            )
+          }
+        >
+          Deposit
+        </Button>
+      </div>
       <Switch
         size="xl"
         checked={isWorker}
@@ -109,6 +132,9 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
         </CldUploadWidget>
       </div>
       <ProfileCard user={user} size="large" isProfilePage={true} />
+      {isModalOpen && (
+        <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
+      )}
     </>
   );
 };

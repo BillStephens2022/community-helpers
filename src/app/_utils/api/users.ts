@@ -159,7 +159,8 @@ export const updateWalletBalance = async (
     }
 
     const userData = await userResponse.json();
-    const currentBalance = userData.user.walletBalance;
+    console.log("User data:", userData);
+    const currentBalance = userData.walletBalance;
 
     const newBalance = operation === "add" ? currentBalance+amount : currentBalance-amount;
     const res = await fetch(`/api/users/${userId}`, {
