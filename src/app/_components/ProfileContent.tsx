@@ -6,6 +6,7 @@ import { User } from "../_lib/types";
 import ProfileCard from "./ProfileCard";
 import { updateProfileImage, updateIsWorkerStatus } from "../_utils/api/users";
 import styles from "./profileContent.module.css";
+import Button from "./ui/Button";
 
 
 interface ProfileContentProps {
@@ -15,7 +16,7 @@ interface ProfileContentProps {
 const ProfileContent = ({ user }: ProfileContentProps) => {
   const setUser = useSetRecoilState(userState);
 
-  const { isWorker, profileImage } = user;
+  const { isWorker, profileImage, walletBalance } = user;
 
   const handleImageUpload = async (imageUrl: string) => {
     const userId = user?._id; // Get the user's ID from the Recoil state
@@ -60,6 +61,9 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
 
   return (
     <>
+    <div className={styles.wallet_div}><h2 className={styles.wallet_balance}>Wallet Balance: $ {user.walletBalance}</h2>
+    <Button type="button" onClick={() => console.log("depositing funds!")}>Deposit</Button>
+    </div>
       <Switch
         size="xl"
         checked={isWorker}

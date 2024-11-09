@@ -7,8 +7,7 @@ export default function Home() {
   return (
     <div className={styles.home_content}>
     <h2 className={styles.home_subheader}>Need a job done?</h2>
-    <main className={styles.home_main}>
-      
+    <main className={styles.home_main}>      
       <div className={styles.home_left}>
         <Image
           className={styles.logo}

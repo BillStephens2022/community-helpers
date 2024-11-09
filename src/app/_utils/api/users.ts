@@ -144,3 +144,41 @@ export const updateAboutText = async (userId: string, aboutText: string) => {
     throw error;
   }
 };
+
+// Update wallet balance by user ID
+export const updateWalletBalance = async (
+  userId: string,
+  amount: number,
+  operation: "add" | "subtract"
+) => {
+  try {
+    // Step 1: Fetch the current user data to get the wallet balance
+    const userResponse = await fetch(`/api/users/${userId}`);
+    if (!userResponse.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    const userData = await userResponse.json();
+    const currentBalance = userData.user.walletBalance;
+
+    const newBalance = operation === "add" ? currentBalance+amount : currentBalance-amount;
+    const res = await fetch(`/api/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ walletBalance: newBalance }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update wallet balance.");
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error updating wallet balance:", error);
+    return {
+      success: false,
+      message: "Error updating wallet balance",
+    };
+  }
+};

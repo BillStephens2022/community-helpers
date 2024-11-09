@@ -53,7 +53,7 @@ const ProfileCard = ({
     setModalContent(null);
   };
 
-  const { firstName, lastName, skillset, skills, aboutText, profileImage } =
+  const { firstName, lastName, skillset, skills, aboutText, profileImage, walletBalance } =
     user;
 
   const handleDeleteSkill = async (skillToDelete: string) => {

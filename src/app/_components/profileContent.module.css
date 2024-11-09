@@ -1,3 +1,15 @@
+.wallet_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wallet_balance {
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
 .profile_upload_div {
   margin: 1rem;
 }

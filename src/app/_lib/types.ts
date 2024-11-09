@@ -8,6 +8,7 @@ export interface User {
   aboutText?: string;
   isWorker?: boolean;
   profileImage?: string;
+  walletBalance: number;
   receivedMessages: any[],
   sentMessages: any[],
   contracts: any[]

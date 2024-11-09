@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "../../../_lib/dbMongoose";
 import User from "../../../_models/User";
+import { waitForAll } from "recoil";
 
 console.log("Get user route hit!");
 
@@ -45,6 +46,7 @@ export async function GET(
         aboutText: user.aboutText,
         isWorker: user.isWorker,
         profileImage: user.profileImage,
+        walletBalance: user.walletBalance,
         receivedMessages: user.receivedMessages || [], 
         sentMessages: user.sentMessages || [], 
         contracts: user.contracts || [],

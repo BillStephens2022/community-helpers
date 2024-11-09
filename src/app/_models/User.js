@@ -47,6 +47,10 @@ const userSchema = new Schema({
   profileImage: { 
     type: String 
   },
+  walletBalance: { 
+    type: Number, 
+    default: 0 
+  },
   sentMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   receivedMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   contracts: [{ type: Schema.Types.ObjectId, ref: 'Contract' }],
