@@ -1,5 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
+import { CldImage } from "next-cloudinary";
 import { userContractsState, userState } from "../_atoms/userAtom";
 import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
@@ -70,7 +71,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
     contractId: string,
     amount: number
   ) => {
-
     // Save original states for rollback if needed
     const originalUserContracts = [...userContracts];
     const originalUser = { ...user } as User;
@@ -264,12 +264,40 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
   return (
     <div key={contract._id} className={styles.contract_card}>
-      <h2 className={styles.contract_card_h2}>
-        Worker: {contract.worker.firstName} {contract.worker.lastName}
-      </h2>
-      <h2 className={styles.contract_card_h2}>
-        Client: {contract.client.firstName} {contract.client.lastName}
-      </h2>
+      <div className={styles.contract_card_people}>
+        <div className={styles.contract_card_worker}>
+          <h2 className={styles.contract_card_h2}>
+            Worker: {contract.worker.firstName} {contract.worker.lastName}
+          </h2>
+          {contract.worker.profileImage && (
+            <CldImage
+              src={contract.worker.profileImage}
+              alt="worker's profile image"
+              radius={50}
+              width={50}
+              height={50}
+              crop={{ type: "thumb", gravity: "face" }}
+              className={styles.profileImage}
+            />
+          )}
+        </div>
+        <div className={styles.contract_card_client}>
+          <h2 className={styles.contract_card_h2}>
+            Client: {contract.client.firstName} {contract.client.lastName}
+          </h2>
+          {contract.client.profileImage && (
+            <CldImage
+              src={contract.client.profileImage}
+              alt="client's profile image"
+              radius={50}
+              width={50}
+              height={50}
+              crop={{ type: "thumb", gravity: "face" }}
+              className={styles.profileImage}
+            />
+          )}
+        </div>
+      </div>
       <h2 className={styles.contract_card_h2}>
         Job Category: {contract.jobCategory}
       </h2>
