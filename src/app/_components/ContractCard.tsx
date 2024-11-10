@@ -1,9 +1,10 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
 import { userContractsState, userState } from "../_atoms/userAtom";
-import { ContractBody } from "../_lib/types";
+import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
 import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
+import { updateWalletBalance } from "../_utils/api/users";
 import Button from "./ui/Button";
 import Modal from "./ui/Modal";
 import styles from "./contractCard.module.css";
@@ -16,7 +17,9 @@ interface ContractCardProps {
 
 const ContractCard = ({ contract }: ContractCardProps) => {
   const user = useRecoilValue(userState);
+  const userContracts = useRecoilValue(userContractsState);
   const setContracts = useSetRecoilState(userContractsState);
+  const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
@@ -60,7 +63,51 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       console.error("Error deleting contract:", error);
     }
   };
- 
+
+  const handleMakePayment = async (
+    clientId: string,
+    workerId: string,
+    contractId: string,
+    amount: number
+  ) => {
+
+    // Save original states for rollback if needed
+    const originalUserContracts = [...userContracts];
+    const originalUser = { ...user } as User;
+
+    // Update the contract status to "Paid" and update the client's and worker's wallet balances
+    try {
+      // Update the user contract state optimistically
+      setContracts((prevContracts) =>
+        prevContracts.map((c) =>
+          c._id === contractId
+            ? { ...c, status: "Work Completed, Paid in Full" }
+            : c
+        )
+      );
+      // Update the user wallet balance optimistically
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          walletBalance: prevUser.walletBalance - amount,
+        };
+      });
+
+      // Update the contract status to "Paid"
+      await updateContractStatus(contractId, "Work Completed, Paid in Full");
+      // Update the client's wallet balance
+      await updateWalletBalance(clientId, amount, "subtract");
+      // Update the worker's wallet balance
+      await updateWalletBalance(workerId, amount, "add");
+    } catch (error) {
+      console.error("Error making payment for contract:", error);
+      // Roll back to the original states if an error occurs
+      setContracts(originalUserContracts);
+      setUser(originalUser);
+    }
+  };
+
   const isClient = contract.client._id === user?._id;
   const isWorker = contract.worker._id === user?._id;
 
@@ -116,10 +163,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               onClick={() => {
                 openModal(
                   "Provide Feedback",
-                  <ContractForm
-                    closeModal={closeModal}
-                    contract={contract}
-                  />
+                  <ContractForm closeModal={closeModal} contract={contract} />
                 );
               }}
             >
@@ -131,35 +175,35 @@ const ContractCard = ({ contract }: ContractCardProps) => {
           );
         }
         break;
-        case "Revised - Awaiting Client Approval":
+      case "Revised - Awaiting Client Approval":
         if (isClient) {
           buttons.push(
             <Button
-            key="approve"
-            type="button"
-            onClick={() =>
-              changeContractStatus(
-                "Approved by Client - Awaiting Work Completion"
-              )
-            }
+              key="approve"
+              type="button"
+              onClick={() =>
+                changeContractStatus(
+                  "Approved by Client - Awaiting Work Completion"
+                )
+              }
             >
               Approve
             </Button>,
-             <Button
-             key="reject"
-             type="button"
-             onClick={() => {
-               openModal(
-                 "Provide Feedback",
-                 <RejectTextForm
-                   contractId={contract._id}
-                   closeModal={closeModal}
-                 />
-               );
-             }}
-           >
-             Reject
-           </Button>
+            <Button
+              key="reject"
+              type="button"
+              onClick={() => {
+                openModal(
+                  "Provide Feedback",
+                  <RejectTextForm
+                    contractId={contract._id}
+                    closeModal={closeModal}
+                  />
+                );
+              }}
+            >
+              Reject
+            </Button>
           );
         }
         break;
@@ -169,7 +213,14 @@ const ContractCard = ({ contract }: ContractCardProps) => {
             <Button
               key="payment"
               type="button"
-              onClick={() => changeContractStatus("Paid")}
+              onClick={() =>
+                handleMakePayment(
+                  contract.client._id,
+                  contract.worker._id,
+                  contract._id,
+                  contract.amountDue
+                )
+              }
             >
               Make Payment
             </Button>
@@ -219,15 +270,25 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       <h2 className={styles.contract_card_h2}>
         Client: {contract.client.firstName} {contract.client.lastName}
       </h2>
-      <h2 className={styles.contract_card_h2}>Job Category: {contract.jobCategory}</h2>
-      <p className={styles.contract_card_p}>Job Description: {contract.jobDescription}</p>
+      <h2 className={styles.contract_card_h2}>
+        Job Category: {contract.jobCategory}
+      </h2>
+      <p className={styles.contract_card_p}>
+        Job Description: {contract.jobDescription}
+      </p>
       {contract.additionalNotes && <p>Job Notes: {contract.additionalNotes}</p>}
-      <p className={styles.contract_card_p}>Fee Type: {contract.feeType.toUpperCase()}</p>
+      <p className={styles.contract_card_p}>
+        Fee Type: {contract.feeType.toUpperCase()}
+      </p>
       {contract.feeType === "hourly" && (
-        <p className={styles.contract_card_p}>Hourly Rate: ${contract.hourlyRate} per hour</p>
+        <p className={styles.contract_card_p}>
+          Hourly Rate: ${contract.hourlyRate} per hour
+        </p>
       )}
       {contract.feeType === "hourly" && (
-        <p className={styles.contract_card_p}>Estimated Hours: {contract.hours} hours</p>
+        <p className={styles.contract_card_p}>
+          Estimated Hours: {contract.hours} hours
+        </p>
       )}
       {contract.feeType === "fixed" && (
         <p className={styles.contract_card_p}>
@@ -240,9 +301,13 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       </h2>
       <p className={styles.contract_card_p}>Status: {contract.status}</p>
       {contract.rejectionText && (
-        <p className={styles.contract_card_p}>Rejection Feedback: {contract.rejectionText}</p>
+        <p className={styles.contract_card_p}>
+          Rejection Feedback: {contract.rejectionText}
+        </p>
       )}
-      <p className={styles.contract_card_p}>Created: {formatDate(contract.createdAt)}</p>
+      <p className={styles.contract_card_p}>
+        Created: {formatDate(contract.createdAt)}
+      </p>
       {buttonsToShow()}
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
