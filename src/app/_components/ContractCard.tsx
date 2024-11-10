@@ -264,6 +264,11 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
   return (
     <div key={contract._id} className={styles.contract_card}>
+      <div className={styles.contract_card_header}>
+        <h2 className={styles.contract_card_h2_category}>
+          {contract.jobCategory}
+        </h2>
+      </div>
       <div className={styles.contract_card_people}>
         <div className={styles.contract_card_worker}>
           <h2 className={styles.contract_card_h2}>
@@ -298,45 +303,47 @@ const ContractCard = ({ contract }: ContractCardProps) => {
           )}
         </div>
       </div>
-      <h2 className={styles.contract_card_h2}>
-        Job Category: {contract.jobCategory}
-      </h2>
-      <p className={styles.contract_card_p}>
-        Job Description: {contract.jobDescription}
-      </p>
-      {contract.additionalNotes && <p>Job Notes: {contract.additionalNotes}</p>}
-      <p className={styles.contract_card_p}>
-        Fee Type: {contract.feeType.toUpperCase()}
-      </p>
-      {contract.feeType === "hourly" && (
-        <p className={styles.contract_card_p}>
-          Hourly Rate: ${contract.hourlyRate} per hour
+      <div className={styles.contract_card_body}>
+        <p className={styles.contract_card_description}>
+          Description: {contract.jobDescription}
         </p>
-      )}
-      {contract.feeType === "hourly" && (
+        {contract.additionalNotes && (
+          <p className={styles.contract_card_p}>Job Notes: {contract.additionalNotes}</p>
+        )}
         <p className={styles.contract_card_p}>
-          Estimated Hours: {contract.hours} hours
+          Fee Type: {contract.feeType.toUpperCase()}
         </p>
-      )}
-      {contract.feeType === "fixed" && (
+        {contract.feeType === "hourly" && (
+          <p className={styles.contract_card_p}>
+            Hourly Rate: ${contract.hourlyRate} per hour
+          </p>
+        )}
+        {contract.feeType === "hourly" && (
+          <p className={styles.contract_card_p}>
+            Estimated Hours: {contract.hours} hours
+          </p>
+        )}
+        {contract.feeType === "fixed" && (
+          <p className={styles.contract_card_p}>
+            Fixed Fee:{" "}
+            {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
+          </p>
+        )}
+        <h2 className={styles.contract_card_h2}>
+          Amount Due upon completion:{" "}
+          {formatNumberToDollars(contract.amountDue)}
+        </h2>
+        <p className={styles.contract_card_p}>Status: {contract.status}</p>
+        {contract.rejectionText && (
+          <p className={styles.contract_card_p}>
+            Rejection Feedback: {contract.rejectionText}
+          </p>
+        )}
         <p className={styles.contract_card_p}>
-          Fixed Fee:{" "}
-          {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
+          Created: {formatDate(contract.createdAt)}
         </p>
-      )}
-      <h2 className={styles.contract_card_h2}>
-        Amount Due upon completion: {formatNumberToDollars(contract.amountDue)}
-      </h2>
-      <p className={styles.contract_card_p}>Status: {contract.status}</p>
-      {contract.rejectionText && (
-        <p className={styles.contract_card_p}>
-          Rejection Feedback: {contract.rejectionText}
-        </p>
-      )}
-      <p className={styles.contract_card_p}>
-        Created: {formatDate(contract.createdAt)}
-      </p>
-      {buttonsToShow()}
+        {buttonsToShow()}
+      </div>
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
       )}

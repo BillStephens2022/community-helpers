@@ -1,22 +1,41 @@
 .contract_card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-wrap: wrap;
-  width: 40rem;
-  padding: 3rem;
-  background: transparent;
+  width: 40rem; 
+  height: 45rem;
+  padding: 0 0 3rem 0;
+  background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary)); 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
-.contract_card_people {
+.contract_card_header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  height: 10%;
   width: 100%;
-  margin: 0.5rem auto;
-  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  text-align: center;
+  background-color: var(--yellow-primary);
+}
+
+.contract_card_h2_category {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.1rem;
+  text-shadow: 2px 2px 4px #333;
+  margin: auto;
+  background-color: transparent;
+}
+
+.contract_card_people {
+  width: 100%;
+  height: 30%;
+  margin: auto;
+  padding-top: 0.5rem;
 }
 
 .contract_card_client, .contract_card_worker {
@@ -25,8 +44,7 @@
   align-items: center;
   padding: 0.5rem;
   margin: 0.5rem auto;
-  /* border: 5px solid white; */
-  background-color: lightblue;
+  background-color:  var(--yellow-primary);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #333; 
 }
@@ -35,11 +53,36 @@
   border-radius: 50%;
 }
 
+.contract_card_body {
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  align-items: center;
+  width: 75%;
+  margin: 0.5rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: var(--yellow-primary);
+  box-shadow: 2px 2px 5px #333; 
+}
+
 .contract_card_h2 {
   font-size: 1.25rem;
   color: darkslateblue;
+  letter-spacing: 0.1rem;
   text-shadow: 2px 2px 4px #aa9e9e;
   margin: 0.5rem auto;
+}
+
+.contract_card_description {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 2px #aa9e9e;
+  margin: 0.25rem auto;
+  text-align: center;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
 }
 
 .contract_card_p {
