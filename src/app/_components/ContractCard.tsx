@@ -149,7 +149,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
         if (isWorker) {
           buttons.push(
             <Button key="delete" type="button" onClick={handleDeleteContract}>
-              Delete Contract
+              Delete
             </Button>
           );
         }
@@ -167,10 +167,10 @@ const ContractCard = ({ contract }: ContractCardProps) => {
                 );
               }}
             >
-              Revise Contract
+              Revise
             </Button>,
             <Button key="delete" type="button" onClick={handleDeleteContract}>
-              Delete Contract
+              Delete
             </Button>
           );
         }
@@ -305,7 +305,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       </div>
       <div className={styles.contract_card_body}>
         <p className={styles.contract_card_description}>
-          Description: {contract.jobDescription}
+          {contract.jobDescription}
         </p>
         {contract.additionalNotes && (
           <p className={styles.contract_card_p}>Job Notes: {contract.additionalNotes}</p>
@@ -329,12 +329,8 @@ const ContractCard = ({ contract }: ContractCardProps) => {
             {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
           </p>
         )}
-        <h2 className={styles.contract_card_h2}>
-          Amount Due upon completion:{" "}
-          {formatNumberToDollars(contract.amountDue)}
-        </h2>
         <p className={styles.contract_card_p}>Status: {contract.status}</p>
-        {contract.rejectionText && (
+        {contract.status === "Rejected by Client - Awaiting Revision" && contract.rejectionText && (
           <p className={styles.contract_card_p}>
             Rejection Feedback: {contract.rejectionText}
           </p>
@@ -342,7 +338,11 @@ const ContractCard = ({ contract }: ContractCardProps) => {
         <p className={styles.contract_card_p}>
           Created: {formatDate(contract.createdAt)}
         </p>
-        {buttonsToShow()}
+        <h2 className={styles.contract_card_amount_due}>
+          Amount Due upon completion:{" "}
+          {formatNumberToDollars(contract.amountDue)}
+        </h2>
+        <div className={styles.button_group}>{buttonsToShow()}</div>
       </div>
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
