@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { fetchUsers } from "../_utils/api/users";
 import { usersState } from "../_atoms/userAtom";
 import Loader from "../_components/ui/Loader";
-import ProfileCard from "../_components/ProfileCard";
+import ProfileCard2 from "../_components/ProfileCard2";
 import { skillsetOptions } from "../_lib/constants";
 import styles from "./page.module.css";
 
@@ -47,7 +47,7 @@ export default function Community() {
       <div className={styles.users_div}>
         {filteredWorkers.length > 0 ? (
           filteredWorkers.map((worker) => (
-            <ProfileCard
+            <ProfileCard2
               key={worker._id}
               user={worker}
               size="small"
