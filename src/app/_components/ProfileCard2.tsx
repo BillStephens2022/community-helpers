@@ -109,11 +109,19 @@ const ProfileCard2 = ({
       </div>
       <div className={`${styles.card_face} ${styles.card_face2}`}>
         <div className={styles.card_content}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Est
-            velit egestas dui id.
-          </p>
+         
+            <p className={styles.profile_about_text}>
+              {aboutText ? aboutText : ""}
+            </p>
+            <h3 className={styles.profile_h3}>Skills</h3>
+     
+          <ul className={styles.profile_ul}>
+            {skills?.map((skill) => (
+              <li key={skill} className={styles.profile_li}>
+                {skill}
+              </li>
+            ))}
+          </ul>
 
           {!isProfilePage && user._id !== session?.user?.id && (
             <div className={styles.profile_card_message_icon}>

@@ -8,7 +8,11 @@
   position: relative;
   width: 300px;
   height: 250px;
-  background-image: linear-gradient(to bottom, var(--yellow-primary), var(--lightblue-primary));
+  background-image: linear-gradient(
+    to bottom,
+    var(--yellow-primary),
+    var(--lightblue-primary)
+  );
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,13 +29,18 @@
   position: relative;
   width: 300px;
   height: 250px;
-  background-color: white;
+  background-image: linear-gradient(
+    to bottom,
+    var(--lightblue-primary),
+    var(--yellow-primary)
+  );
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   padding: 20px;
   margin-bottom: -250px;
+  color: black;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
   transform: translateY(-250px);
   transition: 0.5s;
@@ -52,17 +61,18 @@
 .card_face2 p {
   margin: 0;
   padding: 0;
+  color: black;
 }
 
-.card_face2 a {
+/* .card_face1 a {
   margin: 15px 0 0;
   display: inline-block;
   text-decoration: none;
   font-weight: 900;
-  color: #777;
+  color: navy;
   padding: 5px;
   border: 1px solid #777;
-}
+} */
 
 .card_face2 a:hover {
   background-color: #777;
@@ -70,43 +80,61 @@
 }
 
 .skillset_h4 {
-    color: #333;
-    font-size: 1rem;
+  color: #333;
+  font-size: 1rem;
+}
+
+.profile_about_text {
+  margin: 0 0 1rem 0;
+  background-color: white;
+  border-radius: 5px;
+  padding: .25rem;
+  text-align: center;
+}
+
+.profile_ul {
+  list-style-type: none;
+  padding: 0;
 }
 
 .profile_card_message_icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    background-color: transparent; 
-    padding: 8px 8px 0 8px;
-    border-radius: 50%;
-    z-index: 5000;
-  }
-  
-  .profile_card_message_icon:hover {
-    transform: scale(1.2); /* Slightly scale up the icon */
-    background-color: rgba(255, 255, 255, 0.2); /* Lighter background color on hover */
-  }
-  
-  .profile_card_message_icon::after {
-    content: "Send Message"; /* Tooltip content */
-    position: absolute;
-    bottom: 100%; /* Place it above the icon */
-    right: 50%;
-    transform: translateX(50%);
-    background-color: black;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-  }
-  
-  .profile_card_message_icon:hover::after {
-    opacity: 1; /* Show the tooltip on hover */
-  }
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  background-color: transparent;
+  padding: 8px 8px 0 8px;
+  border-radius: 50%;
+  z-index: 5000;
+}
+
+.profile_card_message_icon:hover {
+  transform: scale(1.2); /* Slightly scale up the icon */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Lighter background color on hover */
+}
+
+.profile_card_message_icon::after {
+  content: "Send Message"; /* Tooltip content */
+  position: absolute;
+  bottom: 100%; /* Place it above the icon */
+  right: 50%;
+  transform: translateX(50%);
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.profile_card_message_icon:hover::after {
+  opacity: 1; /* Show the tooltip on hover */
+}
