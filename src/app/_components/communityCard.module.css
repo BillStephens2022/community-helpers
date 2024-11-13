@@ -1,6 +1,5 @@
 .card {
   position: relative;
-  cursor: pointer;
   width: 300px;
 }
 
@@ -19,10 +18,6 @@
   align-items: center;
   transition: 0.5s;
   z-index: 1;
-}
-
-.card:hover .card_face1 {
-  background-color: var(--lightblue-primary);
 }
 
 .card_face2 {
@@ -69,12 +64,14 @@
   font-size: 1rem;
 }
 
-.profile_about_text {
+.card_face2 .profile_about_text {
   margin: 0 0 1rem 0;
-  background-color: white;
+  font-weight: 700;
   border-radius: 5px;
-  padding: .25rem;
+  padding: 1rem;
+  border: 2px solid steelblue;
   text-align: center;
+  color: white;
 }
 
 .profile_ul {

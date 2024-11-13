@@ -1,35 +1,21 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
-import { MdOutlineEdit } from "react-icons/md";
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { FaRegTrashCan, FaRegMessage } from "react-icons/fa6";
+import { FaRegMessage } from "react-icons/fa6";
 import { User } from "../_lib/types";
-import { userState } from "../_atoms/userAtom";
-import Modal from "../_components/ui/Modal";
-import EditSkillsetForm from "./forms/EditSkillsetForm";
-import EditAboutTextForm from "./forms/EditAboutTextForm";
-import AddSkillForm from "./forms/AddSkillForm";
+import Modal from "./ui/Modal";
 import CardButton from "./ui/CardButton";
-import { deleteUserSkill } from "../_utils/api/users";
 import SendMessageForm from "./forms/SendMessageForm";
-import styles from "./profileCard2.module.css";
-import { sendMessage } from "../_utils/api/messages";
+import styles from "./communityCard.module.css";
 
-interface ProfileCardProps {
+interface CommunityCardProps {
   user: User;
-  size: "large" | "small";
-  isProfilePage: boolean;
 }
 
-const ProfileCard2 = ({
-  user,
-  size,
-  isProfilePage = false,
-}: ProfileCardProps) => {
+const CommunityCard = ({
+  user
+}: CommunityCardProps) => {
   const { data: session } = useSession();
-  const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
@@ -63,28 +49,7 @@ const ProfileCard2 = ({
     skills,
     aboutText,
     profileImage,
-    walletBalance,
   } = user;
-
-  const handleDeleteSkill = async (skillToDelete: string) => {
-    try {
-      const userId = user?._id;
-
-      // api call to delete the skill
-      await deleteUserSkill(userId, skillToDelete);
-
-      // Update Recoil state to remove the deleted skill
-      setUser((prevUser) => {
-        if (!prevUser || !prevUser.skills) return prevUser; // Guard clause
-        return {
-          ...prevUser,
-          skills: prevUser.skills.filter((skill) => skill !== skillToDelete), // Filter out the deleted skill
-        };
-      });
-    } catch (error) {
-      console.error("Error deleting skill:", error);
-    }
-  };
 
   const showOtherSide = () => {
     setIsOtherSide((prev) => !prev);
@@ -99,8 +64,8 @@ const ProfileCard2 = ({
               <CldImage
                 src={profileImage}
                 alt="sample image"
-                width={size === "small" ? 140 : 500}
-                height={size === "small" ? 140 : 500}
+                width={140}
+                height={140}
                 crop={{
                   type: "auto", // Transform the image: auto-crop to square aspect_ratio
                   source: true,
@@ -136,7 +101,7 @@ const ProfileCard2 = ({
       )}
       <div className={styles.profile_card_footer}>
         <CardButton type="button" onClick={() => showOtherSide()}>
-          {isOtherSide ? "back..." : "more..."}
+          {isOtherSide ? "back..." : "about..."}
         </CardButton>
         <CardButton
           type="button"
@@ -163,4 +128,4 @@ const ProfileCard2 = ({
   );
 };
 
-export default ProfileCard2;
+export default CommunityCard;

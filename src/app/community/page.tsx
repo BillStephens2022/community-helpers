@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { fetchUsers } from "../_utils/api/users";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import { usersState } from "../_atoms/userAtom";
-import Loader from "../_components/ui/Loader";
-import ProfileCard2 from "../_components/ProfileCard2";
+import CommunityCard from "../_components/CommunityCard";
 import { skillsetOptions } from "../_lib/constants";
 import styles from "./page.module.css";
 
@@ -47,11 +45,9 @@ export default function Community() {
       <div className={styles.users_div}>
         {filteredWorkers.length > 0 ? (
           filteredWorkers.map((worker) => (
-            <ProfileCard2
+            <CommunityCard
               key={worker._id}
               user={worker}
-              size="small"
-              isProfilePage={false}
             />
           ))
         ) : (
