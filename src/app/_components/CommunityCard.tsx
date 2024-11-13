@@ -87,7 +87,7 @@ const CommunityCard = ({
             <p className={styles.profile_about_text}>
               {aboutText ? aboutText : ""}
             </p>
-            <h3 className={styles.profile_h3}>Skills</h3>
+            
 
             <ul className={styles.profile_ul}>
               {skills?.map((skill) => (

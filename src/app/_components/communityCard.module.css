@@ -6,7 +6,7 @@
 .card_face1 {
   position: relative;
   width: 300px;
-  height: 250px;
+  height: 275px;
   background-image: linear-gradient(
     to bottom,
     var(--yellow-primary),
@@ -23,20 +23,21 @@
 .card_face2 {
   position: relative;
   width: 300px;
-  height: 250px;
+  min-height: 275px;
+  max-height: 400px;
   background-image: linear-gradient(
     to bottom,
     var(--lightblue-primary),
     var(--yellow-primary)
   );
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
   padding: 20px;
   color: black;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-  transition: 0.5s;
 }
 
 .card_face1 h3 {
@@ -45,12 +46,6 @@
   color: white;
   text-align: center;
   font-size: 25px;
-}
-
-.card_face2 p {
-  margin: 0;
-  padding: 0;
-  color: black;
 }
 
 .card_imgbox {
@@ -68,8 +63,10 @@
   margin: 0 0 1rem 0;
   font-weight: 700;
   border-radius: 5px;
+  /* border: 5px solid black; */
+  box-shadow: 2px 2px 5px #333;
   padding: 1rem;
-  border: 2px solid steelblue;
+  background-color: transparent;
   text-align: center;
   color: white;
 }
@@ -77,6 +74,17 @@
 .profile_ul {
   list-style-type: none;
   padding: 0;
+  text-align: center;
+}
+
+.profile_li {
+  background-color: transparent;
+  box-shadow: 1px 1px 2px #333;
+  margin: 0.5rem;
+  color: white;
+  border-radius: 5px;
+  letter-spacing: 0.05rem;
+  padding: 0.15rem 0.5rem;
 }
 
 .profile_card_footer {
