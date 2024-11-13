@@ -1,10 +1,16 @@
 .contract_card {
   position: relative;
   width: 40rem; 
-  height: 45rem;
+  height: 35rem;
   padding: 0 0 3rem 0;
   background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary)); 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  transition: all 0.5s;
+}
+
+.contract_card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 .contract_card_header {
@@ -57,10 +63,10 @@
 .contract_card_body {
   display: flex;
   flex-direction: column;
-  height: 62%;
+  height: 60%;
   align-items: center;
   width: 75%;
-  margin: auto;
+  margin: 1rem auto;
   padding: 1rem;
   border-radius: 10px;
   background-color: var(--yellow-primary);
@@ -103,7 +109,7 @@
 
 .contract_card_amount_due {
   position: absolute;
-  bottom: 3rem;
+  bottom: 2.5rem;
   font-size: 1.05rem;
   padding: 0.5rem 1rem;
   border-radius: 10px;

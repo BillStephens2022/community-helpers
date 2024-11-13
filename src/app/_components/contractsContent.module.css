@@ -9,12 +9,12 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
-    margin: 1rem auto;
+    margin: 0.5rem auto;
 }
 
 .contracts_content_header {
     font-size: 2rem;
-    color: lightgoldenrodyellow;
-    text-shadow: 2px 2px 4px #aa9e9e;
-    margin: 1rem auto;
+    color: darkslateblue;
+    text-shadow: 1px 1px 2px white;
+    margin: 1rem auto 0.5rem auto;
 }
