@@ -17,15 +17,9 @@ import SendMessageForm from "./forms/SendMessageForm";
 
 interface ProfileCardProps {
   user: User;
-  size: "large" | "small";
-  isProfilePage: boolean;
 }
 
-const ProfileCard = ({
-  user,
-  size,
-  isProfilePage = false,
-}: ProfileCardProps) => {
+const ProfileCard = ({ user }: ProfileCardProps) => {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,8 +47,15 @@ const ProfileCard = ({
     setModalContent(null);
   };
 
-  const { firstName, lastName, skillset, skills, aboutText, profileImage, walletBalance } =
-    user;
+  const {
+    firstName,
+    lastName,
+    skillset,
+    skills,
+    aboutText,
+    profileImage,
+    walletBalance,
+  } = user;
 
   const handleDeleteSkill = async (skillToDelete: string) => {
     try {
@@ -78,25 +79,24 @@ const ProfileCard = ({
 
   return (
     <>
-      <div
-        className={`${styles.profile_card} ${
-          isProfilePage ? "" : styles.hideIcons
-        } ${size === "small" ? styles.small : ""}`}
-      >
-        {profileImage && (
-          <CldImage
-            src={profileImage}
-            alt="sample image"
-            width={size === "small" ? 300 : 500}
-            height={size === "small" ? 300 : 500}
-            crop={{
-              type: "auto", // Transform the image: auto-crop to square aspect_ratio
-              source: true,
-            }}
-          />
-        )}
-        <div className={styles.profile_aboutMe}>
-          <div className={`${styles.profile_summary_div}`}>
+      <div className={styles.profile_card}>
+        <div className={styles.profile_header_div}>
+          <div className={styles.profile_image_div}>
+            {profileImage && (
+              <CldImage
+                src={profileImage}
+                alt="sample image"
+                width={200}
+                height={200}
+                crop={{
+                  type: "auto", // Transform the image: auto-crop to square aspect_ratio
+                  source: true,
+                }}
+                radius={150}
+              />
+            )}
+          </div>
+          <div className={styles.profile_name_skillset}>
             <h1 className={styles.profile_h1}>
               {firstName} {lastName}
             </h1>
@@ -110,66 +110,57 @@ const ProfileCard = ({
                   )
                 }
               />
-              <h2 className={styles.profile_h2}>{skillset ? skillset : "Skillset: "}</h2>
-            </div>
-            <div className={styles.profile_aboutText}>
-              <p className={styles.profile_p}>{aboutText ? aboutText : "About Me: "}</p>
-              <MdOutlineEdit
-                className={styles.profile_editIcon}
-                onClick={() =>
-                  openModal(
-                    "Edit About Me",
-                    <EditAboutTextForm closeModal={closeModal} user={user} />
-                  )
-                }
-              />
-            </div>
+              <h2 className={styles.profile_h2}>
+                {skillset ? skillset : "Skillset: "}
+              </h2>
+              </div>
+              <div className={styles.profile_aboutText}>
+                <p className={styles.profile_p}>
+                  {aboutText ? aboutText : "About Me: "}
+                </p>
+                <MdOutlineEdit
+                  className={styles.profile_editIcon}
+                  onClick={() =>
+                    openModal(
+                      "Edit About Me",
+                      <EditAboutTextForm closeModal={closeModal} user={user} />
+                    )
+                  }
+                />
+              </div>
+            
           </div>
-          <div className={styles.profile_skills}>
-            <div className={styles.profile_skills_header}>
-              <h3 className={styles.profile_h3}>Skills</h3>
-            </div>
-            <ul className={styles.profile_ul}>
-              {skills?.map((skill) => (
-                <li key={skill} className={styles.profile_li}>
-                  {skill}{" "}
-                  <FaRegTrashCan
-                    color="white"
-                    className={styles.profile_trashIcon}
-                    onClick={() => handleDeleteSkill(skill)}
-                  />
-                </li>
-              ))}
-            </ul>
-            <div className={styles.profile_add_skill_div}>
-              <IoMdAddCircleOutline
-                className={styles.profile_addSkillIcon}
-                onClick={() =>
-                  openModal(
-                    "Add Skill",
-                    <AddSkillForm closeModal={closeModal} user={user} />
-                  )
-                }
-              />
-              <span className={styles.profile_add_skill_span}>Add Skill</span>
-            </div>
+        </div>
+
+        <div className={`${styles.profile_summary_div}`}></div>
+        <div className={styles.profile_skills}>
+          <div className={styles.profile_skills_header}>
+            <h3 className={styles.profile_h3}>Skills</h3>
           </div>
-          {!isProfilePage && user._id !== session?.user?.id && <div className={styles.profile_card_message_icon}>
-            <div className={styles.message_icon_container}>
-              <FaRegMessage
-                color="white"
-                size={30}
-                aria-label="Send Message"
-                onClick={() =>
-                  openModal(
-                    "Send Message",
-                    <SendMessageForm closeModal={closeModal} user={user} loggedInUserId={loggedInUserId} loggedInUsername={loggedInUsername || ""} />
-                  )
-                }
-              />
-              <span className={styles.tooltip_text}></span>
-            </div>
-          </div>}
+          <ul className={styles.profile_ul}>
+            {skills?.map((skill) => (
+              <li key={skill} className={styles.profile_li}>
+                {skill}{" "}
+                <FaRegTrashCan
+                  color="white"
+                  className={styles.profile_trashIcon}
+                  onClick={() => handleDeleteSkill(skill)}
+                />
+              </li>
+            ))}
+          </ul>
+          <div className={styles.profile_add_skill_div}>
+            <IoMdAddCircleOutline
+              className={styles.profile_addSkillIcon}
+              onClick={() =>
+                openModal(
+                  "Add Skill",
+                  <AddSkillForm closeModal={closeModal} user={user} />
+                )
+              }
+            />
+            <span className={styles.profile_add_skill_span}>Add Skill</span>
+          </div>
         </div>
       </div>
       {isModalOpen && (

@@ -1,9 +1,11 @@
 .profile_card {
   display: flex;
+  flex-direction: column;
   background-image: linear-gradient(to bottom, #ffc107, rgb(159, 166, 185), #3498db);
   box-shadow: 3px 3px 8px #333;
   margin-top: 1rem;
-  max-width: 47vw;
+  width: 50vw;
+  padding: 1rem;
   position: relative;
 }
 
@@ -13,23 +15,32 @@
   transition: 0.3s ease-in-out;
 }
 
-.small:hover {
-  box-shadow: 5px 5px 12px black;
-  transform: translateY(-2px) translateX(-1px) scale(0.725);
-  transition: 0.3s ease-in-out;
+.profile_header_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem;
 }
 
-.profile_aboutMe {
+.profile_image_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 0.5rem;
+  background-color: white;
+  padding: 0.5rem;
+}
+
+.profile_name_skillset {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: transparent;
-  border-radius: 15px;
-  margin: 1rem;
-  padding: 1rem;
-  width: 50%;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 1rem;
 }
+
 
 .profile_summary_div {
   display: flex;
@@ -46,20 +57,20 @@
   text-align: center;
 }
 
-.profile_aboutMe h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  color: white;
-}
-
 .profile_h3 {
   font-size: 1.4rem;
-  color: white;
+  color: darkslateblue;
+  text-shadow: 1px 1px 2px lightblue;
   text-align: center;
+  letter-spacing: 2px;
 }
 
-.profile_aboutMe p {
+.profile_aboutText {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.profile_aboutText p {
   font-size: 1.15rem;
   color: darkslateblue;
   font-weight: 700;
@@ -70,7 +81,7 @@
 .profile_skillset,
 .profile_aboutText {
   position: relative;
-  padding: 0 2rem;
+  padding: 0 2rem 0 0;
 }
 
 .profile_editIcon {
@@ -80,20 +91,9 @@
   color: white;
 }
 
-.profile_p {
-  font-size: 1.15rem;
-  color: white;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-
-.profile_aboutMe p,
-.profile_aboutMe h2 {
-  text-align: center;
-}
-
 .profile_skills {
-  width: 90%;
+  margin: auto;
+  width: 50%;
 }
 
 .profile_skills_header {
@@ -137,73 +137,6 @@
 .hideIcons .profile_addSkillIcon,
 .hideIcons .profile_add_skill_span {
   display: none;
-}
-
-/* Styles for small card */
-.small {
-  transform: scale(0.7); /* Scale down the component */
-  border-width: 10px; /* Adjust the border for smaller size */
-  width: 1000px;
-  background-image: linear-gradient(to bottom, #3498db, #b0acac, #3498db);
-  
-}
-
-.small:nth-child(even) {
-  background-image: linear-gradient(to bottom, #ffc107, #b6b38b, #ffc107);
-}
-
-
-.small .profile_aboutMe {
-  flex-direction: row;
-  flex-grow: 1;
-  padding: 0;
-  margin: 0;
-}
-
-.small .profile_h1 {
-  font-size: 1.5rem;
-}
-
-.small .profile_h2 {
-  font-size: 1.25rem;
-  color: darkslateblue;
-  text-shadow: 2px 2px 3px white;
-  letter-spacing: 1px;
-}
-
-.small .profile_h3 {
-  font-size: 1.25rem;
-}
-
-.small .profile_p {
-  font-size: 1.15rem;
-  color: white;
-  text-shadow: 1px 1px 2px black;
-  margin-top: 1rem;
-}
-
-.small .profile_li {
-  font-size: 1.15rem;
-  justify-content: center;
-  text-align: center;
-}
-
-.small .profile_skills {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0 0 0 0.25rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.small .profile_summary_div {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: 0 0.25rem 0 1rem;
 }
 
 .profile_card_message_icon {

@@ -131,7 +131,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
           }}
         </CldUploadWidget>
       </div>
-      <ProfileCard user={user} size="large" isProfilePage={true} />
+      <ProfileCard user={user} />
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
       )}
