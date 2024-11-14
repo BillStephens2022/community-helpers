@@ -25,10 +25,20 @@
   text-shadow: 5px 5px 5px #000;
 }
 
+@media (max-width: 1366px) {
+  .header_link {
+    margin-top: 2rem;
+  }
+}
+
 @media (max-width: 767px) {
   .header_div {
     display: flex;
     align-items: center;
+  }
+
+  .header_link {
+    margin-top: 0;
   }
 
   .header_div2 {
@@ -37,10 +47,10 @@
   }
 
   .header_h1 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     letter-spacing: 0.35rem;
     text-wrap: wrap;
-    margin: auto;
+    margin: 0.75rem auto;
   }
 
   .header_h1:hover {

@@ -4,6 +4,7 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  padding: 0 1rem;
 }
 
 .community_h2 {
@@ -50,4 +51,42 @@
   gap: 1rem;
   padding: 1rem;
   justify-content: center;
+}
+
+@media (max-width: 1366px) {
+  .community_page {
+    padding-top: 1rem;
+  }
+
+  .filter_div {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .community_page {
+    padding-top: 0;
+  }
+
+  .community_h2 {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .filter_div {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .filter_label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .filter_select {
+    font-size: 0.9rem;
+  }
+  
 }
