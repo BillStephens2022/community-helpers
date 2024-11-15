@@ -4,30 +4,28 @@ import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { FaRegTrashCan, FaRegMessage } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { Switch } from "@mantine/core";
 import { User } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import Modal from "../_components/ui/Modal";
 import EditSkillsetForm from "./forms/EditSkillsetForm";
 import EditAboutTextForm from "./forms/EditAboutTextForm";
 import AddSkillForm from "./forms/AddSkillForm";
-import { deleteUserSkill } from "../_utils/api/users";
+import { deleteUserSkill, updateIsWorkerStatus } from "../_utils/api/users";
 import styles from "./profileCard.module.css";
-import SendMessageForm from "./forms/SendMessageForm";
 
 interface ProfileCardProps {
   user: User;
+  isEditMode?: boolean;
 }
 
-const ProfileCard = ({ user }: ProfileCardProps) => {
+const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
-
-  const loggedInUserId = session?.user?.id;
-  const loggedInUsername = session?.user?.name;
 
   useEffect(() => {
     if (session) {
@@ -54,7 +52,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     skills,
     aboutText,
     profileImage,
-    walletBalance,
+    isWorker,
   } = user;
 
   const handleDeleteSkill = async (skillToDelete: string) => {
@@ -77,9 +75,41 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     }
   };
 
+  const toggleIsWorker = async () => {
+    const userId = user?._id; // Get the user's ID from the Recoil state
+    if (userId) {
+      try {
+        const updatedIsWorker = !user?.isWorker;
+        // API call to update the user profile
+        await updateIsWorkerStatus(userId, updatedIsWorker);
+        // Update Recoil state with the new value
+        setUser((prevUser) => {
+          if (!prevUser) return prevUser; // In case prevUser is null, do nothing
+          return {
+            ...prevUser, // Spread all existing properties
+            isWorker: updatedIsWorker, // Update only the isWorker field
+          };
+        });
+      } catch (error) {
+        console.error("Error updating isWorker:", error);
+      }
+    }
+  };
+
   return (
     <>
       <div className={styles.profile_card}>
+        <Switch
+          size="lg"
+          checked={isWorker}
+          onChange={toggleIsWorker}
+          label="Available for Work?"
+          color="darkslateblue"
+          onLabel="Yes"
+          offLabel="No"
+          labelPosition="left"
+          className={styles.profile_switch}
+        />
         <div className={styles.profile_header_div}>
           <div className={styles.profile_image_div}>
             {profileImage && (
@@ -101,23 +131,26 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
               {firstName} {lastName}
             </h1>
             <div className={styles.profile_skillset}>
-              <MdOutlineEdit
-                className={styles.profile_editIcon}
-                onClick={() =>
-                  openModal(
-                    "Edit Skillset",
-                    <EditSkillsetForm closeModal={closeModal} user={user} />
-                  )
-                }
-              />
+              {isEditMode && (
+                <MdOutlineEdit
+                  className={styles.profile_editIcon}
+                  onClick={() =>
+                    openModal(
+                      "Edit Skillset",
+                      <EditSkillsetForm closeModal={closeModal} user={user} />
+                    )
+                  }
+                />
+              )}
               <h2 className={styles.profile_h2}>
                 {skillset ? skillset : "Skillset: "}
               </h2>
-              </div>
-              <div className={styles.profile_aboutText}>
-                <p className={styles.profile_p}>
-                  {aboutText ? aboutText : "About Me: "}
-                </p>
+            </div>
+            <div className={styles.profile_aboutText}>
+              <p className={styles.profile_p}>
+                {aboutText ? aboutText : "About Me: "}
+              </p>
+              {isEditMode && (
                 <MdOutlineEdit
                   className={styles.profile_editIcon}
                   onClick={() =>
@@ -127,8 +160,8 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                     )
                   }
                 />
-              </div>
-            
+              )}
+            </div>
           </div>
         </div>
 
@@ -141,26 +174,30 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
             {skills?.map((skill) => (
               <li key={skill} className={styles.profile_li}>
                 {skill}{" "}
-                <FaRegTrashCan
-                  color="white"
-                  className={styles.profile_trashIcon}
-                  onClick={() => handleDeleteSkill(skill)}
-                />
+                {isEditMode && (
+                  <FaRegTrashCan
+                    color="white"
+                    className={styles.profile_trashIcon}
+                    onClick={() => handleDeleteSkill(skill)}
+                  />
+                )}
               </li>
             ))}
           </ul>
-          <div className={styles.profile_add_skill_div}>
-            <IoMdAddCircleOutline
-              className={styles.profile_addSkillIcon}
-              onClick={() =>
-                openModal(
-                  "Add Skill",
-                  <AddSkillForm closeModal={closeModal} user={user} />
-                )
-              }
-            />
-            <span className={styles.profile_add_skill_span}>Add Skill</span>
-          </div>
+          {isEditMode && (
+            <div className={styles.profile_add_skill_div}>
+              <IoMdAddCircleOutline
+                className={styles.profile_addSkillIcon}
+                onClick={() =>
+                  openModal(
+                    "Add Skill",
+                    <AddSkillForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+              <span className={styles.profile_add_skill_span}>Add Skill</span>
+            </div>
+          )}
         </div>
       </div>
       {isModalOpen && (

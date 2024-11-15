@@ -1,12 +1,11 @@
 import { useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
 import { CldUploadWidget } from "next-cloudinary";
-import { Switch } from "@mantine/core";
 import { userState } from "../_atoms/userAtom";
 import { User } from "../_lib/types";
 import ProfileCard from "./ProfileCard";
 import Modal from "../_components/ui/Modal";
-import { updateProfileImage, updateIsWorkerStatus } from "../_utils/api/users";
+import { updateProfileImage } from "../_utils/api/users";
 import styles from "./profileContent.module.css";
 import Button from "./ui/Button";
 import DepositForm from "./forms/DepositForm";
@@ -20,8 +19,9 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [modalTitle, setModalTitle] = useState<string>("");
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  const { isWorker, profileImage, walletBalance } = user;
+  const { profileImage, walletBalance } = user;
 
   const openModal = (title: string, content: ReactNode) => {
     setIsModalOpen(true);
@@ -55,27 +55,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
     }
   };
 
-  const toggleIsWorker = async () => {
-    const userId = user?._id; // Get the user's ID from the Recoil state
-    if (userId) {
-      try {
-        const updatedIsWorker = !user?.isWorker;
-        // API call to update the user profile
-        await updateIsWorkerStatus(userId, updatedIsWorker);
-        // Update Recoil state with the new value
-        setUser((prevUser) => {
-          if (!prevUser) return prevUser; // In case prevUser is null, do nothing
-          return {
-            ...prevUser, // Spread all existing properties
-            isWorker: updatedIsWorker, // Update only the isWorker field
-          };
-        });
-      } catch (error) {
-        console.error("Error updating isWorker:", error);
-      }
-    }
-  };
-
+  
   return (
     <>
       <div className={styles.wallet_div}>
@@ -94,18 +74,11 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
           Deposit
         </Button>
       </div>
-      <Switch
-        size="xl"
-        checked={isWorker}
-        onChange={toggleIsWorker}
-        label="Available for Work?"
-        color="#333"
-        onLabel="Yes"
-        offLabel="No"
-        labelPosition="left"
-        className={styles.profile_switch}
-      />
-      <div className={styles.profile_upload_div}>
+      
+      <div className={styles.profile_edit_buttons}>
+      <Button type="button" onClick={() => setIsEditMode(!isEditMode)}>
+          {isEditMode ? "Cancel" : "Edit Profile"}
+        </Button>
         <CldUploadWidget
           uploadPreset="community_helpers"
           onSuccess={(result) => {
@@ -121,17 +94,19 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
         >
           {({ open }) => {
             return (
-              <button
+              <Button
+              type="button"
                 onClick={() => open()}
-                className={styles.upload_widget_button}
+                
               >
-                {profileImage ? "Edit" : "Upload a"} Profile Photo
-              </button>
+                {profileImage ? "Edit" : "Upload"} Photo
+              </Button>
             );
           }}
         </CldUploadWidget>
+        
       </div>
-      <ProfileCard user={user} />
+      <ProfileCard user={user} isEditMode={isEditMode} />
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
       )}

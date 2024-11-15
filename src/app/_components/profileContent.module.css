@@ -10,17 +10,7 @@
   letter-spacing: 0.1rem;
 }
 
-.profile_upload_div {
-  margin: 1rem;
-}
-
-.profile_switch {
-  color: black;
-  letter-spacing: 0.1rem;
-  font-weight: 700;
-}
-
-.upload_widget_button {
+.rounded_button {
   background-color: #3498db;
   color: white;
   font-size: 1rem;
