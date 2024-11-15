@@ -98,7 +98,7 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
 
   return (
     <>
-      <div className={styles.profile_card}>
+      <div className={`${styles.profile_card} ${isEditMode ? styles.no_hover : ""}`}>
         <Switch
           size="md"
           checked={isWorker}

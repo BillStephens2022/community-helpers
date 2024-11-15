@@ -7,12 +7,18 @@
   width: 50vw;
   padding: 1rem;
   position: relative;
+  transition: 0.3s ease-in-out;
 }
 
 .profile_card:hover {
   box-shadow: 6px 6px 16px black;
   transform: translateY(-4px) translateX(-1px) scale(1.02);
-  transition: 0.3s ease-in-out;
+}
+
+/* Default styling - this is to remove hover effect when in edit mode */
+.profile_card.no_hover:hover {
+  box-shadow: 3px 3px 8px #333; 
+  transform: none; 
 }
 
 .profile_switch {
