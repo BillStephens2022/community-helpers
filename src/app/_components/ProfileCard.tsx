@@ -100,7 +100,7 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
     <>
       <div className={styles.profile_card}>
         <Switch
-          size="lg"
+          size="md"
           checked={isWorker}
           onChange={toggleIsWorker}
           label="Available for Work?"
@@ -116,8 +116,8 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
               <CldImage
                 src={profileImage}
                 alt="sample image"
-                width={200}
-                height={200}
+                width={160}
+                height={160}
                 crop={{
                   type: "auto", // Transform the image: auto-crop to square aspect_ratio
                   source: true,
@@ -164,7 +164,6 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
             </div>
           </div>
         </div>
-
         <div className={`${styles.profile_summary_div}`}></div>
         <div className={styles.profile_skills}>
           <div className={styles.profile_skills_header}>
@@ -173,7 +172,7 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
           <ul className={styles.profile_ul}>
             {skills?.map((skill) => (
               <li key={skill} className={styles.profile_li}>
-                {skill}{" "}
+                <span className={styles.skillset_text}>{skill}{" "}</span>
                 {isEditMode && (
                   <FaRegTrashCan
                     color="white"

@@ -8,14 +8,15 @@ import { updateWalletBalance } from "../../_utils/api/users";
 import Button from "../ui/Button";
 import styles from "./oneFieldForm.module.css";
 
-interface DepositFormProps {
+interface WalletFormProps {
   closeModal: () => void;
   user: User;
+  type: "deposit" | "withdraw";
 }
 
-const DepositForm = ({ closeModal, user }: DepositFormProps) => {
+const WalletForm = ({ closeModal, user, type }: WalletFormProps) => {
   const [formData, setFormData] = useState({
-    depositAmount: 0,
+    amount: 0,
   });
   const [error, setError] = useState("");
   const setUser = useSetRecoilState(userState);
@@ -36,15 +37,20 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
     event.preventDefault();
 
     // Validate that depositAmount is a positive number
-    if (formData.depositAmount <= 0) {
-      setError("Please enter a deposit amount greater than zero.");
+    if (formData.amount <= 0) {
+      setError(`Please enter a ${type === "deposit" ? "deposit" : "withdrawal"} amount greater than zero.`);
+      return;
+    }
+
+    if (type === "withdraw" && formData.amount > user.walletBalance) {
+      setError("Insufficient funds for withdrawal.");
       return;
     }
 
     const originalBalance = user.walletBalance; // Save original balance in case of rollback
 
     try {
-      await updateWalletBalance(user._id, formData.depositAmount || 0, "add"); // if empty, send zero
+      await updateWalletBalance(user._id, formData.amount || 0, type === "deposit" ? "add" : "subtract"); // if empty, send zero
       // Success: clear any error messages, reset user state, and refresh profile page
       setError("");
       // Update Recoil state directly with updated wallet balance to reflect changes immediately
@@ -52,7 +58,7 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
         if (!prevUser) return prevUser; // If prevUser is null, do nothing
         return {
           ...prevUser, // Spread the existing user properties
-          walletBalance: prevUser.walletBalance + formData.depositAmount, // Update only wallet balance
+          walletBalance: prevUser.walletBalance + (type === "deposit" ? formData.amount : -formData.amount), // Update only wallet balance
         };
       });
       closeModal();
@@ -74,18 +80,19 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
     <>
       <form className={styles.form}>
         <div>
-          <label htmlFor="depositAmount" className={styles.label}>
-            Deposit Funds
+          <label htmlFor="amount" className={styles.label}>
+            {type === "deposit" ? "Deposit Amount" : "Withdrawal Amount"}
           </label>
           <input
             type="number"
-            name="depositAmount"
-            placeholder="deposit amount"
+            name="amount"
+            placeholder={type==="deposit" ? "Enter deposit amount" : "Enter withdrawal amount"}
             className={styles.input}
-            id="depositAmount"
+            id="amount"
             onChange={handleChange}
-            value={formData.depositAmount}
+            value={formData.amount}
             min={0}
+            max={type === "withdraw" ? user.walletBalance : undefined}
           />
         </div>
         {/* If error, display the error message */}
@@ -100,4 +107,4 @@ const DepositForm = ({ closeModal, user }: DepositFormProps) => {
   );
 };
 
-export default DepositForm;
+export default WalletForm;

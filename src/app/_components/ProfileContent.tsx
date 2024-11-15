@@ -1,6 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import { useState, ReactNode } from "react";
 import { CldUploadWidget } from "next-cloudinary";
+import { HiMiniMinusCircle, HiPlusCircle } from "react-icons/hi2";
 import { userState } from "../_atoms/userAtom";
 import { User } from "../_lib/types";
 import ProfileCard from "./ProfileCard";
@@ -8,7 +9,7 @@ import Modal from "../_components/ui/Modal";
 import { updateProfileImage } from "../_utils/api/users";
 import styles from "./profileContent.module.css";
 import Button from "./ui/Button";
-import DepositForm from "./forms/DepositForm";
+import WalletForm from "./forms/WalletForm";
 
 interface ProfileContentProps {
   user: User;
@@ -55,28 +56,34 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
     }
   };
 
-  
   return (
     <>
       <div className={styles.wallet_div}>
         <h2 className={styles.wallet_balance}>
           Wallet Balance: $ {walletBalance}
         </h2>
-        <Button
-          type="button"
-          onClick={() =>
-            openModal(
-              "Deposit Funds",
-              <DepositForm closeModal={closeModal} user={user} />
-            )
-          }
-        >
-          Deposit
-        </Button>
+        <div className={styles.wallet_buttons}>
+          <HiPlusCircle
+            color="chartreuse"
+            size={32}
+            onClick={() =>
+              openModal(
+                "Deposit Funds",
+                <WalletForm closeModal={closeModal} user={user} type="deposit" />
+              )
+            }
+          />
+          <HiMiniMinusCircle color="red" size={32} onClick={() =>
+              openModal(
+                "Withdraw Funds",
+                <WalletForm closeModal={closeModal} user={user} type="withdraw" />
+              )
+            } />
+        </div>
       </div>
-      
+      <ProfileCard user={user} isEditMode={isEditMode} />
       <div className={styles.profile_edit_buttons}>
-      <Button type="button" onClick={() => setIsEditMode(!isEditMode)}>
+        <Button type="button" onClick={() => setIsEditMode(!isEditMode)}>
           {isEditMode ? "Cancel" : "Edit Profile"}
         </Button>
         <CldUploadWidget
@@ -94,19 +101,13 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
         >
           {({ open }) => {
             return (
-              <Button
-              type="button"
-                onClick={() => open()}
-                
-              >
+              <Button type="button" onClick={() => open()}>
                 {profileImage ? "Edit" : "Upload"} Photo
               </Button>
             );
           }}
         </CldUploadWidget>
-        
       </div>
-      <ProfileCard user={user} isEditMode={isEditMode} />
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
       )}
