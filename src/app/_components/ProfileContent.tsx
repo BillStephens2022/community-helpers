@@ -66,19 +66,33 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
           <HiPlusCircle
             color="chartreuse"
             size={32}
+            className={styles.wallet_button}
             onClick={() =>
               openModal(
                 "Deposit Funds",
-                <WalletForm closeModal={closeModal} user={user} type="deposit" />
+                <WalletForm
+                  closeModal={closeModal}
+                  user={user}
+                  type="deposit"
+                />
               )
             }
           />
-          <HiMiniMinusCircle color="red" size={32} onClick={() =>
+          <HiMiniMinusCircle
+            color="red"
+            size={32}
+            className={styles.wallet_button}
+            onClick={() =>
               openModal(
                 "Withdraw Funds",
-                <WalletForm closeModal={closeModal} user={user} type="withdraw" />
+                <WalletForm
+                  closeModal={closeModal}
+                  user={user}
+                  type="withdraw"
+                />
               )
-            } />
+            }
+          />
         </div>
       </div>
       <ProfileCard user={user} isEditMode={isEditMode} />

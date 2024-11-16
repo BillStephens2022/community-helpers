@@ -24,6 +24,20 @@
   width: 20%;
 }
 
+.wallet_button {
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  border-radius: 50%; 
+}
+
+.wallet_button:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 3px #333;
+  background-color: transparent;
+  padding: 0.1rem;
+  border: 1px solid white;
+}
+
 
 
 
