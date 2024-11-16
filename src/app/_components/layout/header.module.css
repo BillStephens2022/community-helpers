@@ -9,7 +9,7 @@
 }
 
 .header_h1 {
-  color: #ffc107;
+  color: var(--yellow-primary);
   transition: 0.3s ease-int;
   font-size: 3rem;
   font-weight: 900;
@@ -17,12 +17,14 @@
   text-shadow: 5px 5px 5px #000;
   padding: 0.25rem 0;
   text-align: center;
+  transition: 0.3s ease-in-out;
 }
 
 .header_h1:hover {
-  color: orangered;
-  letter-spacing: 1.4rem;
-  text-shadow: 5px 5px 5px #000;
+  color: #ffc107;
+  letter-spacing: 1.2rem;
+  text-shadow: 5px 5px 5px navy;
+  transform: skew(-15deg);
 }
 
 @media (max-width: 1366px) {

@@ -1,3 +1,10 @@
+.profile_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .wallet_div {
   display: flex;
   justify-content: space-evenly;
@@ -5,7 +12,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 5px #333;
   background-image: radial-gradient(circle, steelblue, var(--lightblue-primary), darkslateblue);
-  width: 50%;
+  width: 25%;
   padding: 1.5rem 0;
   margin: 0.5rem 0;
 }
@@ -36,6 +43,34 @@
   background-color: transparent;
   padding: 0.1rem;
   border: 1px solid white;
+}
+
+@media (max-width: 1366px) {
+  .wallet_div {
+    margin: 2rem 0;
+    width: 30%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .wallet_div {
+    width: 45%;
+  }
+ 
+}
+
+@media (max-width: 767px) {
+  .wallet_div {
+    width: 90%;
+    padding: 0.5rem 0.5rem;
+  }
+  .wallet_balance {
+    font-size: 0.9rem;
+  }
+
+  .wallet_buttons {
+    gap: 1rem;
+  }
 }
 
 

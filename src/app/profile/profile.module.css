@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 80vh;
   padding-bottom: 2rem;
+  width: 100%;
 }
 
 .view_button_div {
@@ -48,5 +49,16 @@
   font-weight: 900;
   text-shadow: none;
   padding-left: 2px;
+}
+
+@media (max-width: 767px) {
+  .view_button_div {
+    width: 100%;
+  }
+  .view_button {
+    font-size: 1rem;
+    padding: 0.25rem 1.25rem;
+    letter-spacing: 0;
+  }
 }
 

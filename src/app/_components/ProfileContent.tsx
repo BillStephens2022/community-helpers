@@ -57,7 +57,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
   };
 
   return (
-    <>
+    <div className={styles.profile_content}>
       <div className={styles.wallet_div}>
         <h2 className={styles.wallet_balance}>
           Wallet Balance: $ {walletBalance}
@@ -125,7 +125,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
       )}
-    </>
+    </div>
   );
 };
 
