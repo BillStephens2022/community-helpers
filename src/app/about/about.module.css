@@ -1,0 +1,17 @@
+.about_page {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+}
+
+.about_section {
+  width: 75%;
+  margin-top: 2rem;
+}
+
+.about_list {
+  list-style: none;
+}

@@ -66,6 +66,7 @@
 @media (max-width: 767px) {
   .community_page {
     padding-top: 0;
+    min-height: 600vh;
   }
 
   .community_h2 {
