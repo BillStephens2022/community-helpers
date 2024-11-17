@@ -42,8 +42,16 @@
   box-shadow: 0 0 3px #333;
   background-color: transparent;
   padding: 0.1rem;
-  border: 1px solid white;
 }
+
+.wallet_button:hover:nth-child(1) {
+  border: 2px solid chartreuse;
+}
+
+.wallet_button:hover:nth-child(2) {
+  border: 2px solid red;
+}
+
 
 @media (max-width: 1366px) {
   .wallet_div {
