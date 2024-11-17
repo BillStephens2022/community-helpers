@@ -52,6 +52,10 @@
 }
 
 @media (max-width: 767px) {
+  .profile_page {
+    min-height: 145vh;
+    padding: 0;
+  }
   .view_button_div {
     width: 100%;
   }

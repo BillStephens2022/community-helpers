@@ -185,7 +185,28 @@
 
 @media (max-width: 767px) {
   .profile_card {
-    width: 95vw;
+    width: 92vw;
+  }
+
+  .profile_header_div {
+    flex-direction: column;
+    padding-top: 2rem;
+  }
+
+  .profile_name_skillset {
+    padding: 0;
+    align-items: center;
+  }
+
+  .profile_aboutText {
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .profile_summary_div {
+    margin-top: 1rem;
   }
 }
 
