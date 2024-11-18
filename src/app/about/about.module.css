@@ -5,12 +5,20 @@
   justify-content: flex-start;
   align-items: center;
   color: white;
-  min-height: 160vh;
+  min-height: 180vh;
 }
 
 .about_section {
-  width: 75%;
-  margin-top: 2rem;
+  width: 80%;
+  border: 5px solid white;
+  padding: 2rem 4rem;
+  margin-bottom: 2rem;
+  background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary));
+}
+
+
+.about_section:nth-child(even) {
+  background-image: linear-gradient(to bottom, var(--yellow-primary), var(--lightblue-primary));
 }
 
 .about_header {
@@ -42,7 +50,6 @@
   display: flex;
   gap: 1rem;
   justify-content: flex-start;
-  width: 50%;
   flex-wrap: wrap;
   margin-top: 1rem;
 }

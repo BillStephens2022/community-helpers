@@ -5,6 +5,7 @@
   align-items: center;
   width: 100%;
   padding: 0 1rem;
+  min-height: 100vh;
 }
 
 .community_h2 {
