@@ -6,7 +6,7 @@ export default function Page() {
         <section className={styles.about_section}>
           <h2 className={styles.about_header}>What is Community Helpers?</h2>
           <p className={styles.about_p}>
-            Community Helpers is an app designed to bring neighbors together by connecting those with skills to those in need. 
+            Community Helpers is designed to bring neighbors together by connecting those with skills to those in need. 
             Whether you need help with a specific task or want to offer your expertise, Community Helpers makes it easy to collaborate 
             and build a supportive local network.
           </p>
@@ -16,37 +16,37 @@ export default function Page() {
         <p className={styles.about_p}>
           Discover a wide range of services provided by your neighbors, including:
         </p>
-        <ul className={styles.about_list}>
-          <li>Handyman Services</li>
-          <li>Landscaping</li>
-          <li>Housekeeping</li>
-          <li>Babysitting / Senior Care</li>
-          <li>Technology Assistance</li>
-          <li>Financial Services</li>
-          <li>Dog Walking / Pet Sitting</li>
-          <li>Tutoring</li>
-          <li>Auto Repair</li>
+        <ul className={styles.about_list_1}>
+          <li className={styles.about_li_1}>Handyman Services</li>
+          <li className={styles.about_li_1}>Landscaping</li>
+          <li className={styles.about_li_1}>Housekeeping</li>
+          <li className={styles.about_li_1}>Babysitting / Senior Care</li>
+          <li className={styles.about_li_1}>Technology Assistance</li>
+          <li className={styles.about_li_1}>Financial Services</li>
+          <li className={styles.about_li_1}>Dog Walking / Pet Sitting</li>
+          <li className={styles.about_li_1}>Tutoring</li>
+          <li className={styles.about_li_1}>Auto Repair</li>
         </ul>
       </section>
         <section className={styles.about_section}>
           <h2 className={styles.about_header}>How It Works</h2>
-          <ol className={styles.about_list}>
-            <li>
-              <strong>Search and Connect:</strong> Find neighbors with the skills you need or offer your skills to others in your community.
+          <ul className={styles.about_list_2}>
+            <li className={styles.about_li_2}>
+              <span className={styles.about_li_span}>Search and Connect:</span> Find neighbors with the skills you need or offer your skills to others in your community.
             </li>
-            <li>
-              <strong>Messaging:</strong> Communicate directly with neighbors to discuss details and terms for the task or job.
+            <li className={styles.about_li_2}>
+              <span className={styles.about_li_span}>Messaging:</span> Communicate directly with neighbors to discuss details and terms for the task or job.
             </li>
-            <li>
-              <strong>Create a Contract:</strong> Agree on terms for the job and create a contract. The worker can submit the contract to the client for review.
+            <li className={styles.about_li_2}>
+              <span className={styles.about_li_span}>Create a Contract:</span> Agree on terms for the job and create a contract. The worker can submit the contract to the client for review.
             </li>
-            <li>
-              <strong>Approval:</strong> The client can accept or reject the contract terms. Feedback can be provided for adjustments if needed.
+            <li className={styles.about_li_2}>
+              <span className={styles.about_li_span}>Approval:</span> The client can accept or reject the contract terms. Feedback can be provided for adjustments if needed.
             </li>
-            <li>
-              <strong>Work and Payment:</strong> Once the client accepts the contract, the worker can perform the job. Payment is made securely through the client's wallet after the job is completed.
+            <li className={styles.about_li_2}>
+              <span className={styles.about_li_span}>Work and Payment:</span> Once the client accepts the contract, the worker performs the job. Payment is made securely through the client's wallet after the job is completed.
             </li>
-          </ol>
+          </ul>
         </section>
         <section className={styles.about_section}>
           <h2 className={styles.about_header}>Wallet System</h2>
