@@ -12,6 +12,12 @@
   margin-top: 2rem;
 }
 
+.about_header {
+  font-size: 2rem;
+  color: darkslateblue;
+  text-shadow: 1px 1px 2px white;
+}
+
 .about_list {
   list-style: none;
 }

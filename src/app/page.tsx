@@ -27,13 +27,13 @@ export default function Home() {
         </h4>
         <ul className={styles.home_ul}>
           <li className={styles.home_li}>Handyman Services</li>
-          <li className={styles.home_li}>Yard Work</li>
-          <li className={styles.home_li}>House Cleaning</li>
-          <li className={styles.home_li}>Child Care</li>
-          <li className={styles.home_li}>Senior Care</li>
+          <li className={styles.home_li}>Landscaping</li>
+          <li className={styles.home_li}>Housekeeping</li>
+          <li className={styles.home_li}>Child / Senior</li>
+          <li className={styles.home_li}>Dog Walking / Pet Sitting</li>
           <li className={styles.home_li}>Auto Repair</li>
           <li className={styles.home_li}>Technology</li>
-          <li className={styles.home_li}>Dog Walking / Pet Sitting</li>
+          <li className={styles.home_li}>Tutoring</li>
         </ul>
       </div>
     </main>
