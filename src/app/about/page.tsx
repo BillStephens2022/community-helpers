@@ -1,10 +1,14 @@
+import Image from "next/image";
+import landscaper from "../images/landscaper.jpeg";
 import styles from "./about.module.css";
 
 export default function Page() {
   return (
     <div className={styles.about_page}>
       <section className={styles.about_section}>
+        <div className={styles.content_left}>
         <h2 className={styles.about_header}>What is Community Helpers?</h2>
+        
         <p className={styles.about_p}>
           Community Helpers is designed to bring neighbors together by
           connecting those with skills to those in need. Whether you need help
@@ -12,13 +16,24 @@ export default function Page() {
           Helpers makes it easy to collaborate and build a supportive local
           network.
         </p>
+          </div>
+        <Image className={styles.about_img}
+          src={landscaper}
+          alt="landscaper photo"
+          width={200}
+          height={200}
+          priority 
+        />
+      
       </section>
       <section className={styles.about_section}>
+      <div className={styles.content_left}>
         <h2 className={styles.about_header}>Services Offered</h2>
         <p className={styles.about_p}>
           Discover a wide range of services provided by your neighbors,
           including:
         </p>
+        </div>
         <ul className={styles.about_list_1}>
           <li className={styles.about_li_1}>Handyman Services</li>
           <li className={styles.about_li_1}>Landscaping</li>
@@ -32,6 +47,7 @@ export default function Page() {
         </ul>
       </section>
       <section className={styles.about_section}>
+      <div className={styles.content_left}>
         <h2 className={styles.about_header}>How It Works</h2>
         <ul className={styles.about_list_2}>
           <li className={styles.about_li_2}>
@@ -61,6 +77,7 @@ export default function Page() {
             is completed.
           </li>
         </ul>
+        </div>
       </section>
       <section className={styles.about_section}>
         <h2 className={styles.about_header}>Wallet System</h2>

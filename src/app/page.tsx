@@ -12,7 +12,7 @@ export default function Home() {
         <Image
           className={styles.logo}
           src={chlogo}
-          alt="Next.js logo"
+          alt="Community Helpers logo"
           width={425}
           height={425}
           priority
