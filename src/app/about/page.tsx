@@ -61,7 +61,7 @@ export default function Page() {
         </div>
       </section>
       <section className={styles.about_section}>
-        <div className={styles.content_left}>
+        <div className={styles.content_left} style={{"marginRight": "2rem"}}>
           <h2 className={styles.about_header}>How It Works</h2>
           <ul className={styles.about_list_2}>
             <li className={styles.about_li_2}>
@@ -92,7 +92,7 @@ export default function Page() {
             </li>
           </ul>
         </div>
-        <div className={styles.content_right}>
+        
           <Image
             className={styles.about_img}
             src={housekeeper}
@@ -101,7 +101,7 @@ export default function Page() {
             height={200}
             priority
           />
-        </div>
+        
       </section>
       <section className={styles.about_section}>
       <Image
@@ -113,8 +113,6 @@ export default function Page() {
           priority
         />
         <div className={styles.content_left} style={{"marginLeft": "2rem"}}>
-          
-          
         <h2 className={styles.about_header}>Wallet System</h2>
         <p className={styles.about_p}>
           Each neighbor has a secure wallet to manage their funds. You can

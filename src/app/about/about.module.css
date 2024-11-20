@@ -13,13 +13,20 @@
   width: 80%;
   padding: 2rem 4rem;
   margin-bottom: 2rem;
-  background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary));
+  background-image: linear-gradient(
+    to bottom,
+    var(--lightblue-primary),
+    var(--yellow-primary)
+  );
   box-shadow: 2px 2px 5px #333;
 }
 
-
 .about_section:nth-child(even) {
-  background-image: linear-gradient(to bottom, var(--yellow-primary), var(--lightblue-primary));
+  background-image: linear-gradient(
+    to bottom,
+    var(--yellow-primary),
+    var(--lightblue-primary)
+  );
 }
 
 .about_header {
@@ -42,7 +49,8 @@
   margin-left: 2rem;
 }
 
-.about_p, .about_list {
+.about_p,
+.about_list {
   font-size: 1.3rem;
   margin-top: 1rem;
   letter-spacing: 0.1rem;
@@ -59,13 +67,16 @@
 .about_img {
   border-radius: 50%;
   box-shadow: 2px 2px 5px black;
+  align-self: center;
 }
 
-.about_list_1, .about_list_2 {
+.about_list_1,
+.about_list_2 {
   list-style: none;
 }
 
-.about_li_1, .about_li_2 {
+.about_li_1,
+.about_li_2 {
   margin-bottom: 0.5rem;
   padding: 0.5rem;
 }
@@ -97,9 +108,72 @@
 
 .about_li_span {
   font-weight: 700;
-  color:  darkslateblue;
+  color: darkslateblue;
   letter-spacing: 0.1rem;
   text-shadow: none;
 }
 
+@media (max-width: 1100px) {
+  .about_page {
+    min-height: 300vh;
+  }
+  .about_section,
+  .content_left,
+  .content_right {
+    width: 98%;
+    justify-content: center;
+    align-items: center;
+  }
+  .content_left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
+  .content_right {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .about_img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 767px) {
+  .about_page {
+    min-height: 500vh;
+  }
+  .about_section {
+    flex-direction: column;
+    padding: 1rem;
+   
+  }
+
+  .about_header {
+    font-size: 1.3rem;
+  }
+  .about_list_1, .about_list_2 {
+    align-items: center;
+  }
+  .about_p, .about_li_1, .about_li_2 {
+    font-size: 1rem;
+  }
+
+  .content_left {
+    flex-direction: column;
+    align-items: center;
+    margin-right: 0 !important;
+  }
+
+  .content_right {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about_img {
+    width: 125px;
+    height: 125px;
+    margin: 1rem 0;
+  }
+}
