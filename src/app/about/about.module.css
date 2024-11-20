@@ -35,6 +35,13 @@
   align-items: flex-start;
 }
 
+.content_right {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 2rem;
+}
+
 .about_p, .about_list {
   font-size: 1.3rem;
   margin-top: 1rem;
