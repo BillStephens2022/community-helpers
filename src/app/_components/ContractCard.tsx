@@ -6,12 +6,12 @@ import { ContractBody, User } from "../_lib/types";
 import { formatDate, formatNumberToDollars } from "../_utils/helpers/helpers";
 import { updateContractStatus, deleteContract } from "../_utils/api/contracts";
 import { updateWalletBalance } from "../_utils/api/users";
-import Button from "./ui/Button";
 import Modal from "./ui/Modal";
 import styles from "./contractCard.module.css";
 import RejectTextForm from "./forms/RejectTextForm";
 import ContractForm from "./forms/ContractForm";
 import LegalContract from "./LegalContract";
+import CardButton from "./ui/CardButton";
 
 interface ContractCardProps {
   contract: ContractBody;
@@ -119,9 +119,11 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       case "Draft - Awaiting Client Approval":
         if (isClient) {
           buttons.push(
-            <Button
+            <CardButton
               key="approve"
               type="button"
+              primaryColor="steelblue"
+              secondaryColor="var(--lightblue-primary)"
               onClick={() =>
                 changeContractStatus(
                   "Approved by Client - Awaiting Work Completion"
@@ -129,10 +131,12 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }
             >
               Approve
-            </Button>,
-            <Button
+            </CardButton>,
+            <CardButton
               key="reject"
               type="button"
+              primaryColor="steelblue"
+              secondaryColor="var(--lightblue-primary)"
               onClick={() => {
                 openModal(
                   "Provide Feedback",
@@ -144,21 +148,25 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }}
             >
               Reject
-            </Button>
+            </CardButton>
           );
         }
         if (isWorker) {
           buttons.push(
-            <Button key="delete" type="button" onClick={handleDeleteContract}>
+            <CardButton
+              key="delete"
+              type="button"
+              onClick={handleDeleteContract}
+            >
               Delete
-            </Button>
+            </CardButton>
           );
         }
         break;
       case "Rejected by Client - Awaiting Revision":
         if (isWorker) {
           buttons.push(
-            <Button
+            <CardButton
               key="revise"
               type="button"
               onClick={() => {
@@ -169,17 +177,21 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }}
             >
               Revise
-            </Button>,
-            <Button key="delete" type="button" onClick={handleDeleteContract}>
+            </CardButton>,
+            <CardButton
+              key="delete"
+              type="button"
+              onClick={handleDeleteContract}
+            >
               Delete
-            </Button>
+            </CardButton>
           );
         }
         break;
       case "Revised - Awaiting Client Approval":
         if (isClient) {
           buttons.push(
-            <Button
+            <CardButton
               key="approve"
               type="button"
               onClick={() =>
@@ -189,8 +201,8 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }
             >
               Approve
-            </Button>,
-            <Button
+            </CardButton>,
+            <CardButton
               key="reject"
               type="button"
               onClick={() => {
@@ -204,14 +216,14 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }}
             >
               Reject
-            </Button>
+            </CardButton>
           );
         }
         break;
       case "Work Completed - Awaiting Payment":
         if (isClient) {
           buttons.push(
-            <Button
+            <CardButton
               key="payment"
               type="button"
               onClick={() =>
@@ -224,14 +236,14 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }
             >
               Make Payment
-            </Button>
+            </CardButton>
           );
         }
         break;
       case "Approved by Client - Awaiting Work Completion":
         if (isWorker) {
           buttons.push(
-            <Button
+            <CardButton
               key="complete"
               type="button"
               onClick={() =>
@@ -239,14 +251,14 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }
             >
               Complete Job
-            </Button>
+            </CardButton>
           );
         }
         break;
       case "Paid":
         if (isWorker) {
           buttons.push(
-            <Button
+            <CardButton
               key="delete"
               type="button"
               onClick={() =>
@@ -254,7 +266,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
               }
             >
               Archive Contract
-            </Button>
+            </CardButton>
           );
         }
       default:
@@ -274,103 +286,109 @@ const ContractCard = ({ contract }: ContractCardProps) => {
           <h2 className={styles.contract_card_h2_category}>
             {contract.jobCategory}
           </h2>
-        </div>  
+        </div>
         <div className={styles.contract_card_body}>
-        <div className={styles.contract_card_people}>
-          <div className={styles.contract_card_worker}>
-            <h2 className={styles.contract_card_h2}>
-              Worker: {contract.worker.firstName} {contract.worker.lastName}
-            </h2>
-            {contract.worker.profileImage && (
-              <CldImage
-                src={contract.worker.profileImage}
-                alt="worker's profile image"
-                radius={50}
-                width={50}
-                height={50}
-                crop={{ type: "thumb", gravity: "face" }}
-                className={styles.profileImage}
-              />
-            )}
+          <div className={styles.contract_card_people}>
+            <div className={styles.contract_card_worker}>
+              <h2 className={styles.contract_card_h2}>
+                Worker: {contract.worker.firstName} {contract.worker.lastName}
+              </h2>
+              {contract.worker.profileImage && (
+                <CldImage
+                  src={contract.worker.profileImage}
+                  alt="worker's profile image"
+                  radius={50}
+                  width={50}
+                  height={50}
+                  crop={{ type: "thumb", gravity: "face" }}
+                  className={styles.profileImage}
+                />
+              )}
+            </div>
+            <div className={styles.contract_card_client}>
+              <h2 className={styles.contract_card_h2}>
+                Client: {contract.client.firstName} {contract.client.lastName}
+              </h2>
+              {contract.client.profileImage && (
+                <CldImage
+                  src={contract.client.profileImage}
+                  alt="client's profile image"
+                  radius={50}
+                  width={50}
+                  height={50}
+                  crop={{ type: "thumb", gravity: "face" }}
+                  className={styles.profileImage}
+                />
+              )}
+            </div>
           </div>
-          <div className={styles.contract_card_client}>
-            <h2 className={styles.contract_card_h2}>
-              Client: {contract.client.firstName} {contract.client.lastName}
-            </h2>
-            {contract.client.profileImage && (
-              <CldImage
-                src={contract.client.profileImage}
-                alt="client's profile image"
-                radius={50}
-                width={50}
-                height={50}
-                crop={{ type: "thumb", gravity: "face" }}
-                className={styles.profileImage}
-              />
-            )}
-          </div>
-        </div>
-        <div className={styles.contract_card_terms}>
-          <div className={styles.contrace_card_terms_top}>
-          <p className={styles.contract_card_description}>
-            {contract.jobDescription}
-          </p>
-          {contract.additionalNotes && (
-            <p className={styles.contract_card_p}>
-              Job Notes: {contract.additionalNotes}
-            </p>
-          )}
-          <p className={styles.contract_card_p}>
-            Fee Type: {contract.feeType.toUpperCase()}
-          </p>
-          {contract.feeType === "hourly" && (
-            <p className={styles.contract_card_p}>
-              Hourly Rate: ${contract.hourlyRate} per hour
-            </p>
-          )}
-          {contract.feeType === "hourly" && (
-            <p className={styles.contract_card_p}>
-              Estimated Hours: {contract.hours} hours
-            </p>
-          )}
-          {contract.feeType === "fixed" && (
-            <p className={styles.contract_card_p}>
-              Fixed Fee:{" "}
-              {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
-            </p>
-          )}
-          <p className={styles.contract_card_p}>Status: {contract.status}</p>
-          {contract.status === "Rejected by Client - Awaiting Revision" &&
-            contract.rejectionText && (
-              <p className={styles.contract_card_p}>
-                Rejection Feedback: {contract.rejectionText}
+          <div className={styles.contract_card_terms}>
+            <div className={styles.contrace_card_terms_top}>
+              <p className={styles.contract_card_description}>
+                {contract.jobDescription}
               </p>
-            )}
-          <p className={styles.contract_card_p}>
-            Created: {formatDate(contract.createdAt)}
-          </p>
+              {contract.additionalNotes && (
+                <p className={styles.contract_card_p}>
+                  Job Notes: {contract.additionalNotes}
+                </p>
+              )}
+              <p className={styles.contract_card_p}>
+                Fee Type: {contract.feeType.toUpperCase()}
+              </p>
+              {contract.feeType === "hourly" && (
+                <p className={styles.contract_card_p}>
+                  Hourly Rate: ${contract.hourlyRate} per hour
+                </p>
+              )}
+              {contract.feeType === "hourly" && (
+                <p className={styles.contract_card_p}>
+                  Estimated Hours: {contract.hours} hours
+                </p>
+              )}
+              {contract.feeType === "fixed" && (
+                <p className={styles.contract_card_p}>
+                  Fixed Fee:{" "}
+                  {contract.fixedRate &&
+                    formatNumberToDollars(contract.fixedRate)}
+                </p>
+              )}
+              <p className={styles.contract_card_p}>
+                Status: {contract.status}
+              </p>
+              {contract.status === "Rejected by Client - Awaiting Revision" &&
+                contract.rejectionText && (
+                  <p className={styles.contract_card_p}>
+                    Rejection Feedback: {contract.rejectionText}
+                  </p>
+                )}
+              <p className={styles.contract_card_p}>
+                Created: {formatDate(contract.createdAt)}
+              </p>
+            </div>
+            <div className={styles.contrace_card_terms_bottom}>
+              <h2 className={styles.contract_card_amount_due}>
+                Amount Due upon completion:{" "}
+                {formatNumberToDollars(contract.amountDue)}
+              </h2>
+            </div>
           </div>
-          <div className={styles.contrace_card_terms_bottom}>
-          <h2 className={styles.contract_card_amount_due}>
-            Amount Due upon completion:{" "}
-            {formatNumberToDollars(contract.amountDue)}
-          </h2>
-          </div>
-        </div>
         </div>
         <div className={styles.contract_card_footer}>
-         {buttonsToShow()}
-          <Button type="button" onClick={viewLegalContract}>
+          {buttonsToShow()}
+          <CardButton
+            type="button"
+            onClick={viewLegalContract}
+            primaryColor="steelblue"
+            secondaryColor="var(--lightblue-primary)"
+          >
             View Contract
-          </Button>
+          </CardButton>
         </div>
-        
       </div>
- {isModalOpen && (
-  <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
-)}
-</>
-    
+      {isModalOpen && (
+        <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
+      )}
+    </>
   );
 };
 
