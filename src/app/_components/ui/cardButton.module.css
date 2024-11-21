@@ -27,3 +27,9 @@
 .button:nth-child(even) {
   background-color: var(--button-secondary-color, rgba(70, 130, 180, 0.8));
 }
+
+@media (max-width: 767px) {
+  .button {
+    font-size: 0.7rem;
+  }
+}

@@ -103,7 +103,6 @@
 }
 
 .contract_card_amount_due {
-  
   font-size: 1.05rem;
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -124,4 +123,42 @@
   gap: 0;
   background-color: var(--yellow-primary);
   width: 100%;
+}
+
+@media (max-width: 767px) {
+  .contract_card {
+    width: 92vw;
+  }
+
+  .contract_card_header {
+    height: 3rem;
+  }
+  
+  .contract_card_h2_category {
+    font-size: 1.25rem;
+  }
+
+  .contract_card_client, .contract_card_worker {
+    width: 95%;
+  }
+
+  .contract_card_h2 {
+    font-size: 1rem;
+  }
+
+  .contract_card_description {
+    font-size: 0.9rem;
+  }
+
+  .contract_card_p {
+    font-size: 0.8rem;
+  }
+
+  .contract_card_terms {
+    width: 95%;
+  }
+
+  .contract_card_amount_due {
+    font-size: 0.8rem;
+  }
 }

@@ -1,21 +1,28 @@
 .contracts_content {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    min-height: 125vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  min-height: 125vh;
 }
 
 .contracts_cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin: 0.5rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.5rem auto;
 }
 
 .contracts_content_header {
-    font-size: 2rem;
-    color: darkslateblue;
-    text-shadow: 1px 1px 2px white;
-    margin: 1rem auto 0.5rem auto;
+  font-size: 2rem;
+  color: darkslateblue;
+  text-shadow: 1px 1px 2px white;
+  margin: 1rem auto 0.5rem auto;
+}
+
+@media (max-width: 767px) {
+  .contracts_content {
+    min-height: auto;
+    margin-bottom: 7rem;
+  }
 }
