@@ -1,10 +1,11 @@
 .contract_card {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 40rem; 
-  height: 35rem;
-  padding: 0 0 3rem 0;
+  min-height: 40rem;
   background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary)); 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px rgba(255, 199, 199, 0.6);
   transition: all 0.5s;
 }
 
@@ -14,15 +15,9 @@
 }
 
 .contract_card_header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 10%;
+  height: 4rem;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  align-items: center;
-  text-align: center;
+  align-content: center;
   background-color: var(--yellow-primary);
 }
 
@@ -35,7 +30,14 @@
   letter-spacing: 0.1rem;
   text-shadow: 2px 2px 4px #333;
   margin: auto;
-  background-color: transparent;
+}
+
+.contract_card_body {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: flex-start;
 }
 
 .contract_card_people {
@@ -60,17 +62,17 @@
   border-radius: 50%;
 }
 
-.contract_card_body {
+.contract_card_terms {
   display: flex;
   flex-direction: column;
-  height: 60%;
+  justify-content: space-between;
+  height: 65%;
   align-items: center;
   width: 75%;
   margin: 1rem auto;
   padding: 1rem;
   border-radius: 10px;
   background-color: var(--yellow-primary);
-  box-shadow: 2px 2px 5px #333; 
 }
 
 .contract_card_h2 {
@@ -100,16 +102,8 @@
   text-align: center;
 }
 
-.button_group {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 0.5rem auto;
-}
-
 .contract_card_amount_due {
-  position: absolute;
-  bottom: 2.5rem;
+  
   font-size: 1.05rem;
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -121,4 +115,13 @@
   letter-spacing: 0.1rem;
   text-transform: uppercase;
   border: 2px solid darkslateblue;
+}
+
+.contract_card_footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  gap: 0;
+  background-color: var(--yellow-primary);
+  width: 100%;
 }

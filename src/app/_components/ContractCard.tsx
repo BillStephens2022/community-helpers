@@ -11,6 +11,7 @@ import Modal from "./ui/Modal";
 import styles from "./contractCard.module.css";
 import RejectTextForm from "./forms/RejectTextForm";
 import ContractForm from "./forms/ContractForm";
+import LegalContract from "./LegalContract";
 
 interface ContractCardProps {
   contract: ContractBody;
@@ -262,92 +263,114 @@ const ContractCard = ({ contract }: ContractCardProps) => {
     return buttons;
   };
 
+  const viewLegalContract = () => {
+    openModal("Legal Contract", <LegalContract contract={contract} />);
+  };
+
   return (
-    <div key={contract._id} className={styles.contract_card}>
-      <div className={styles.contract_card_header}>
-        <h2 className={styles.contract_card_h2_category}>
-          {contract.jobCategory}
-        </h2>
-      </div>
-      <div className={styles.contract_card_people}>
-        <div className={styles.contract_card_worker}>
-          <h2 className={styles.contract_card_h2}>
-            Worker: {contract.worker.firstName} {contract.worker.lastName}
+    <>
+      <div key={contract._id} className={styles.contract_card}>
+        <div className={styles.contract_card_header}>
+          <h2 className={styles.contract_card_h2_category}>
+            {contract.jobCategory}
           </h2>
-          {contract.worker.profileImage && (
-            <CldImage
-              src={contract.worker.profileImage}
-              alt="worker's profile image"
-              radius={50}
-              width={50}
-              height={50}
-              crop={{ type: "thumb", gravity: "face" }}
-              className={styles.profileImage}
-            />
-          )}
+        </div>  
+        <div className={styles.contract_card_body}>
+        <div className={styles.contract_card_people}>
+          <div className={styles.contract_card_worker}>
+            <h2 className={styles.contract_card_h2}>
+              Worker: {contract.worker.firstName} {contract.worker.lastName}
+            </h2>
+            {contract.worker.profileImage && (
+              <CldImage
+                src={contract.worker.profileImage}
+                alt="worker's profile image"
+                radius={50}
+                width={50}
+                height={50}
+                crop={{ type: "thumb", gravity: "face" }}
+                className={styles.profileImage}
+              />
+            )}
+          </div>
+          <div className={styles.contract_card_client}>
+            <h2 className={styles.contract_card_h2}>
+              Client: {contract.client.firstName} {contract.client.lastName}
+            </h2>
+            {contract.client.profileImage && (
+              <CldImage
+                src={contract.client.profileImage}
+                alt="client's profile image"
+                radius={50}
+                width={50}
+                height={50}
+                crop={{ type: "thumb", gravity: "face" }}
+                className={styles.profileImage}
+              />
+            )}
+          </div>
         </div>
-        <div className={styles.contract_card_client}>
-          <h2 className={styles.contract_card_h2}>
-            Client: {contract.client.firstName} {contract.client.lastName}
+        <div className={styles.contract_card_terms}>
+          <div className={styles.contrace_card_terms_top}>
+          <p className={styles.contract_card_description}>
+            {contract.jobDescription}
+          </p>
+          {contract.additionalNotes && (
+            <p className={styles.contract_card_p}>
+              Job Notes: {contract.additionalNotes}
+            </p>
+          )}
+          <p className={styles.contract_card_p}>
+            Fee Type: {contract.feeType.toUpperCase()}
+          </p>
+          {contract.feeType === "hourly" && (
+            <p className={styles.contract_card_p}>
+              Hourly Rate: ${contract.hourlyRate} per hour
+            </p>
+          )}
+          {contract.feeType === "hourly" && (
+            <p className={styles.contract_card_p}>
+              Estimated Hours: {contract.hours} hours
+            </p>
+          )}
+          {contract.feeType === "fixed" && (
+            <p className={styles.contract_card_p}>
+              Fixed Fee:{" "}
+              {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
+            </p>
+          )}
+          <p className={styles.contract_card_p}>Status: {contract.status}</p>
+          {contract.status === "Rejected by Client - Awaiting Revision" &&
+            contract.rejectionText && (
+              <p className={styles.contract_card_p}>
+                Rejection Feedback: {contract.rejectionText}
+              </p>
+            )}
+          <p className={styles.contract_card_p}>
+            Created: {formatDate(contract.createdAt)}
+          </p>
+          </div>
+          <div className={styles.contrace_card_terms_bottom}>
+          <h2 className={styles.contract_card_amount_due}>
+            Amount Due upon completion:{" "}
+            {formatNumberToDollars(contract.amountDue)}
           </h2>
-          {contract.client.profileImage && (
-            <CldImage
-              src={contract.client.profileImage}
-              alt="client's profile image"
-              radius={50}
-              width={50}
-              height={50}
-              crop={{ type: "thumb", gravity: "face" }}
-              className={styles.profileImage}
-            />
-          )}
+          </div>
         </div>
+        </div>
+        <div className={styles.contract_card_footer}>
+         {buttonsToShow()}
+          <Button type="button" onClick={viewLegalContract}>
+            View Contract
+          </Button>
+        </div>
+        
       </div>
-      <div className={styles.contract_card_body}>
-        <p className={styles.contract_card_description}>
-          {contract.jobDescription}
-        </p>
-        {contract.additionalNotes && (
-          <p className={styles.contract_card_p}>Job Notes: {contract.additionalNotes}</p>
-        )}
-        <p className={styles.contract_card_p}>
-          Fee Type: {contract.feeType.toUpperCase()}
-        </p>
-        {contract.feeType === "hourly" && (
-          <p className={styles.contract_card_p}>
-            Hourly Rate: ${contract.hourlyRate} per hour
-          </p>
-        )}
-        {contract.feeType === "hourly" && (
-          <p className={styles.contract_card_p}>
-            Estimated Hours: {contract.hours} hours
-          </p>
-        )}
-        {contract.feeType === "fixed" && (
-          <p className={styles.contract_card_p}>
-            Fixed Fee:{" "}
-            {contract.fixedRate && formatNumberToDollars(contract.fixedRate)}
-          </p>
-        )}
-        <p className={styles.contract_card_p}>Status: {contract.status}</p>
-        {contract.status === "Rejected by Client - Awaiting Revision" && contract.rejectionText && (
-          <p className={styles.contract_card_p}>
-            Rejection Feedback: {contract.rejectionText}
-          </p>
-        )}
-        <p className={styles.contract_card_p}>
-          Created: {formatDate(contract.createdAt)}
-        </p>
-        <h2 className={styles.contract_card_amount_due}>
-          Amount Due upon completion:{" "}
-          {formatNumberToDollars(contract.amountDue)}
-        </h2>
-        <div className={styles.button_group}>{buttonsToShow()}</div>
-      </div>
-      {isModalOpen && (
-        <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
-      )}
-    </div>
+ {isModalOpen && (
+  <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
+)}
+</>
+    
   );
 };
 

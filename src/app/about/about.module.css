@@ -147,16 +147,18 @@
   .about_section {
     flex-direction: column;
     padding: 1rem;
-   
   }
 
   .about_header {
     font-size: 1.3rem;
   }
-  .about_list_1, .about_list_2 {
+  .about_list_1,
+  .about_list_2 {
     align-items: center;
   }
-  .about_p, .about_li_1, .about_li_2 {
+  .about_p,
+  .about_li_1,
+  .about_li_2 {
     font-size: 1rem;
   }
 
