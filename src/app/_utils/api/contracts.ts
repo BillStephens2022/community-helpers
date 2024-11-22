@@ -63,7 +63,8 @@ export async function updateContract(contractId: string, updatedData: CreateCont
     const result = await response.json();
 
     return result.user;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as Error;
     console.error("An error occurred while updating the contract:", error);
     throw error;
   }

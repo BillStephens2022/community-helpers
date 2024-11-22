@@ -82,7 +82,8 @@ const SignupForm = ({ closeModal }: SignupFormProps) => {
         closeModal();
         router.push("/profile");
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error;
       console.error("Signup error:", error.message);
       setError(error.message);
     }

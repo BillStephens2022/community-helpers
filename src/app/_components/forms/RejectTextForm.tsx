@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { userState, userContractsState } from "../../_atoms/userAtom";
+import { userContractsState } from "../../_atoms/userAtom";
 import { updateRejectText } from "../../_utils/api/contracts";
 import Button from "../ui/Button";
 import styles from "./oneFieldForm.module.css";
@@ -21,7 +21,6 @@ const RejectTextForm = ({ closeModal, contractId }: RejectTextFormProps) => {
   });
   const [error, setError] = useState("");
   const setContracts = useSetRecoilState(userContractsState);
-  const setUser = useSetRecoilState(userState);
 
   const handleChange = (
     event: React.ChangeEvent<
