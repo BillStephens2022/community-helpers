@@ -6,7 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 
 
 export default function Navigation() {
-  const {data: session, status} = useSession();
+  const {data: session } = useSession();
 
   const handleLogoff = async () => {
     await signOut({ redirect: true, callbackUrl: "/" }); // Redirect to homepage after logging out

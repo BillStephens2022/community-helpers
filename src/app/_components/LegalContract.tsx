@@ -29,8 +29,8 @@ const LegalContract: React.FC<LegalContractProps> = ({ contract }) => {
       <h1 style={{ textAlign: 'center' }}>Legal Contract</h1>
       <p>
         This contract is entered into as of <strong>{formattedDate}</strong>, between{' '}
-        <strong>{worker.firstName} {worker.lastName}</strong> (the "Worker") and <strong>{client.firstName} {client.lastName}</strong> (the
-        "Client").
+        <strong>{worker.firstName} {worker.lastName}</strong> (the &quot;Worker&quot;) and <strong>{client.firstName} {client.lastName}</strong> (the
+          &quot;Client&quot;).
       </p>
       <p>
         <strong>Job Category:</strong> {jobCategory}

@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { Accordion, AccordionItem } from "@mantine/core";
 import { FaRegTrashCan, FaReply } from "react-icons/fa6";
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { MessageBody, User } from "../_lib/types";
+import { MessageBody } from "../_lib/types";
 import { userState } from "../_atoms/userAtom";
 import { deleteMessage } from "../_utils/api/messages";
 import Modal from "./ui/Modal";

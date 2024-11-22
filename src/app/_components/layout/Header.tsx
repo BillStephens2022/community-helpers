@@ -24,7 +24,7 @@ export default function Header() {
   useEffect(() => {
     const newTitle = routeTitles[pathname] || "Community Helpers"; // Default title
     setHeaderTitle(newTitle); // Update the header title in the atom
-  }, [pathname, setHeaderTitle]);
+  }, [pathname, setHeaderTitle, routeTitles]);
 
   const headerTitle = useRecoilValue(headerTitleState);
 

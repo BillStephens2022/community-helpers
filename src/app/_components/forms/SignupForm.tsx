@@ -65,7 +65,7 @@ const SignupForm = ({ closeModal }: SignupFormProps) => {
 
     try {
       // Step 1: Create the user
-      const result = await createUser(email, firstName, lastName, password);
+      await createUser(email, firstName, lastName, password);
 
       // Step 2: Automatically log the user in after signup
       const loginResult = await signIn("credentials", {
