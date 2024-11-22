@@ -5,13 +5,12 @@
   width: 40rem; 
   min-height: 40rem;
   background-image: linear-gradient(to bottom, var(--lightblue-primary), var(--yellow-primary)); 
-  box-shadow: 0 0 10px rgba(255, 199, 199, 0.6);
+  box-shadow: 3px 3px 3px #333;
   transition: all 0.5s;
 }
 
 .contract_card:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 .contract_card_header {
@@ -121,7 +120,7 @@
   justify-content: space-between;
   padding: 1rem;
   gap: 0;
-  background-color: var(--yellow-primary);
+  background-image: radial-gradient(circle, var(--yellow-primary), var(--lightblue-primary));
   width: 100%;
 }
 
