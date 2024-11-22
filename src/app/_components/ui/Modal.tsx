@@ -15,9 +15,7 @@ const Modal: React.FC<ModalProps> = ({
   title,
   profileImage,
 }) => {
-  if (profileImage) {
-    console.log("Profile image: ", profileImage);
-  }
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>

@@ -3,7 +3,6 @@ import { dbConnect } from "../../_lib/dbMongoose";
 import User from "../../_models/User";
 
 export async function GET() {
-  console.log("Get users route hit!");
   try {
     await dbConnect();
 

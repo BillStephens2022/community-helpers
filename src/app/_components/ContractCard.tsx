@@ -35,7 +35,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
     try {
       await updateContractStatus(contract._id, newStatus);
-      console.log(`Contract status updated to "${newStatus}" successfully!`);
     } catch (error) {
       console.error(`Error updating contract status to "${newStatus}":`, error);
     }
@@ -60,7 +59,6 @@ const ContractCard = ({ contract }: ContractCardProps) => {
 
     try {
       await deleteContract(contract._id, user?._id);
-      console.log("Contract deleted successfully!");
     } catch (error) {
       console.error("Error deleting contract:", error);
     }

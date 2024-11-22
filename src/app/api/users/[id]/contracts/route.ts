@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "../../../../_lib/dbMongoose";
 import User from "../../../../_models/User";
 
-console.log("Get user contracts route hit!");
-
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -12,7 +10,6 @@ export async function GET(
 
   try {
     await dbConnect();
-    console.log("getting contracts for userId: ", id);
     const user = await User.findById(id)
       .populate({
         path: "contracts",

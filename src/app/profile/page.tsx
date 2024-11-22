@@ -10,8 +10,7 @@ import MessagesAccordion from "../_components/MessagesAccordion";
 import ContractContent from "../_components/ContractsContent";
 import { fetchUsers } from "../_utils/api/users";
 import styles from "./profile.module.css";
-import { contractsState } from "../_atoms/contractAtom";
-import { fetchContracts } from "../_utils/api/contracts";
+
 
 export default function Profile() {
   const [view, setView] = useState("profile");

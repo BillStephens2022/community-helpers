@@ -4,9 +4,7 @@ import { dbConnect } from "../../../_lib/dbMongoose";
 import User from "../../../_models/User";
 
 
-console.log('Signup route hit!');
 dbConnect();
-console.log('Model imported in signup.ts!');
 
 export async function POST(req: NextRequest) {
   await dbConnect();

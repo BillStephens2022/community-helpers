@@ -30,7 +30,7 @@ const SendMessageForm = ({
   );
 
   const setMessages = useSetRecoilState(messagesState);
-  console.log("user in form: ", user);
+
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

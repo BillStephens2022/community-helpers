@@ -61,7 +61,7 @@ export async function updateContract(contractId: string, updatedData: CreateCont
     }
 
     const result = await response.json();
-    console.log(result.message); 
+
     return result.user;
   } catch (error: any) {
     console.error("An error occurred while updating the contract:", error);
@@ -89,8 +89,7 @@ export const updateContractStatus = async (
 
 // function to delete a contract
 export const deleteContract = async (contractId: string, userId?: string) => {
-  console.log("Deleting contract with ID: ", contractId);
-  console.log("userID: ", userId);
+
   try {
     const res = await fetch(`/api/contracts/${contractId}`, {
       method: "DELETE",
@@ -113,7 +112,6 @@ export const deleteContract = async (contractId: string, userId?: string) => {
 
 export const updateRejectText = async (contractId: string, rejectionText: string) => {
   try {
-    console.log("Sending request to update reject text for contract:", contractId);
     const response = await fetch(`/api/contracts/${contractId}`, {
       method: "PUT",
       headers: {

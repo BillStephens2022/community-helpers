@@ -1,20 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "../../../_lib/dbMongoose";
 import User from "../../../_models/User";
-import { waitForAll } from "recoil";
 
-console.log("Get user route hit!");
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log("params: ", params);
   const { id } = params;
 
   try {
     await dbConnect();
-    console.log("getting userId: ", id);
     const user = await User.findById(id)
       .populate({
         path: "receivedMessages",
@@ -66,7 +62,6 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log("Update user route hit!");
   const { id } = params;
 
   try {

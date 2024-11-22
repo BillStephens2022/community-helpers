@@ -87,7 +87,7 @@ export default function Page() {
             <li className={styles.about_li_2}>
               <span className={styles.about_li_span}>Work and Payment:</span>{" "}
               Once the client accepts the contract, the worker performs the job.
-              Payment is made securely through the client's wallet after the job
+              Payment is made securely through the client&apos;s wallet after the job
               is completed.
             </li>
           </ul>

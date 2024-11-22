@@ -6,7 +6,7 @@ import { ContractBody } from "../../_lib/types";
 
 export async function POST(req: NextRequest) {
   await dbConnect(); // Ensure the database is connected
-  console.log("Create contract route hit!");
+
   try {
     const {
       worker, 
@@ -21,13 +21,7 @@ export async function POST(req: NextRequest) {
       additionalNotes,
       status
     }: ContractBody = await req.json();
-    console.log("Request body: ", {
-      worker,
-      client,
-      jobCategory,
-      jobDescription,
-      amountDue,
-    });
+  
     // Validate required fields
     if (!client || !worker || !jobCategory || !jobDescription || !amountDue) {
       return NextResponse.json(
