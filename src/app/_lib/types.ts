@@ -9,8 +9,11 @@ export interface User {
   isWorker?: boolean;
   profileImage?: string;
   walletBalance: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   receivedMessages: any[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sentMessages: any[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   contracts: any[]
 }
 
