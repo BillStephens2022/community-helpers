@@ -1,11 +1,10 @@
 .profile_accordion_title {
   margin: 2rem 0 1rem 0;
-
   color: black;
 }
 
 .accordion {
-  width: 750px;
+  max-width: 750px;
   margin: 0 auto;
   color: black;
 }
@@ -76,4 +75,16 @@
   word-wrap: break-word;
   white-space: normal;
   overflow-wrap: break-word;
+}
+
+@media (max-width: 1200px) {
+  .accordion {
+    width: 80vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .accordion {
+    width: 98vw;
+  }
 }
