@@ -1,90 +1,136 @@
-.profile_accordion_title {
-  margin: 2rem 0 1rem 0;
-  color: black;
+.messages_container {
+  width: 50vw;
+  margin: 3rem 0;
 }
 
-.accordion {
-  max-width: 750px;
-  margin: 0 auto;
-  color: black;
+.messages_title {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: var(--yellow-primary);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
-/* Column labels layout */
 .accordion_labels {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background-color: var(--yellow-primary);
-  font-weight: bold;
-  border-bottom: 1px solid #e0e0e0;
   color: white;
+  background-color: #333;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
 }
 
-/* Ensure labels align with header columns */
-.accordion_labels span {
-  flex: 1;
-  text-align: left;
-  padding: 0 10px;
+.accordion_item {
+  color: white;
+  background: transparent;
 }
 
-/* Header Layout */
 .accordion_header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  box-sizing: border-box;
+  justify-content: space-evenly;
+  color: white;
+  font-weight: 500;
+  font-size: 1.25rem;
+  padding: 0.5rem;
 }
 
-/* Header span styles (date, subject, sender/receiver) */
-.accordion_header span {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.header_row1 {
+  display: flex;
+  gap: 6rem;
+  width: 62.5%;
 }
 
-/* Align action icons properly */
+.header_date {
+  padding-left: 1.25rem;
+}
+
+.header_subject {
+  padding-left: 0.5rem;
+}
+
+.header_row2 {
+  display: flex;
+  justify-content: flex-start;
+  width: 37.5%;
+}
+
+.row1 {
+  display: flex;
+  gap: 2rem;
+  width: 65%;
+  justify-content: flex-start;
+}
+
+.row2 {
+  display: flex;
+  justify-content: flex-start;
+  width: 35%;
+}
+
+.message_text {
+  font-size: 1.1rem;
+}
+
 .action_div {
   display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 0 6rem 0 0;
+  justify-content: flex-end;
+  gap: 2rem;
 }
 
-/* Trash and reply icon styles */
-.trash_icon,
-.reply_icon {
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Panel content to wrap text properly */
-.accordion_panel {
-  padding: 10px; /* Add some padding for better readability */
-  width: 100%; /* Match the accordion width */
-}
-
-/* Ensure text wraps within the panel */
-.accordion_panel p {
-  margin: 0;
-  word-wrap: break-word;
-  white-space: normal;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 1200px) {
-  .accordion {
-    width: 80vw;
+@media (max-width: 1025px) {
+  .messages_container {
+    width: 75vw;
+    margin: 1.5rem 0;
   }
 }
 
 @media (max-width: 767px) {
-  .accordion {
-    width: 98vw;
+  .messages_container {
+    width: 90vw;
+    margin: 1rem 0;
+  }
+  .messages_title {
+    font-size: 1rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .accordion_labels {
+    display: none;
+  }
+
+  .accordion_header {
+    flex-direction: column;
+    font-size: 0.75rem;
+  }
+
+  .row1 {
+    width: 100%;
+    gap: 0;
+    justify-content: space-between;
+  }
+
+  .row2 {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action_div {
+    justify-content: center;
+  }
+
+  .message_text {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
   }
 }

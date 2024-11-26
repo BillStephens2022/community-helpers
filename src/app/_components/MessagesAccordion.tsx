@@ -148,59 +148,72 @@ const MessagesAccordion = ({
       : user?.sentMessages;
 
   return (
-    <>
-      <h2 className={styles.profile_accordion_title}>
+    <div className={styles.messages_container}>
+      <h2 className={styles.messages_title}>
         {messageDirection} Messages ({messages?.length || 0})
       </h2>
       {messages && messages.length > 0 ? (
         <div className={styles.accordion}>
-          <Accordion bg="transparent">
-            {/* Column Labels */}
+          <Accordion
+            bg="transparent"
+            styles={{
+              chevron: {
+                color: "white", // Change this to your desired color
+              },
+            }}
+          >
+            {/* Header Labels */}
             <div className={styles.accordion_labels}>
-              <span>Date</span>
-              <span>{messageDirection === "Received" ? "From" : "To"}</span>
-              <span>Subject</span>
-              <span>Actions</span>
+              <div className={styles.header_row1}>
+                <span className={styles.header_date}>Date</span>
+                <span className={styles.message_direction}>{messageDirection === "Received" ? "From" : "To"}</span>
+              </div>
+              <div className={styles.header_row2}>
+                <span className={styles.header_subject}>Subject</span>
+              </div>
             </div>
             {messages.map((message) => (
-              <AccordionItem key={message._id} value={message._id}>
-                {/* <div className={styles.accordion_header}> */}
+              <AccordionItem
+                key={message._id}
+                value={message._id}
+                className={styles.accordion_item}
+              >
                 <Accordion.Control>
-                  <div
-                    className={styles.accordion_header}
-                    style={{ color: "whitesmoke", fontWeight: "700" }}
-                  >
-                    <span>
-                      {new Date(message.createdAt).toLocaleDateString()}
-                    </span>
-                    <span>
-                      {messageDirection === "Received"
-                        ? `${message.from.firstName} ${message.from.lastName}`
-                        : `${message.to.firstName} ${message.to.lastName}`}
-                    </span>
-                    <span>{message.messageSubject}</span>
-                    <div className={styles.action_div}>
-                      <FaRegTrashCan
-                        onClick={() => handleDeleteMessage(message._id)}
-                        className={styles.trash_icon}
-                      />
-                      <FaReply
-                        className={styles.reply_icon}
-                        onClick={() => openReplyModal(message)}
-                      />
-                      <IoDocumentTextOutline
-                        className={styles.document_icon}
-                        onClick={() => openContractModal(message)}
-                      />
+                  <div className={styles.accordion_header}>
+                    <div className={styles.row1}>
+                      <span className={styles.date}>
+                        {new Date(message.createdAt).toLocaleDateString()}
+                      </span>
+                      <span className={styles.sender}>
+                        {messageDirection === "Received"
+                          ? `${message.from.firstName} ${message.from.lastName}`
+                          : `${message.to.firstName} ${message.to.lastName}`}
+                      </span>
+                    </div>
+                    <div className={styles.row2}>
+                      <span className={styles.subject}>
+                        {message.messageSubject}
+                      </span>
                     </div>
                   </div>
                 </Accordion.Control>
-                {/* </div> */}
-                <div className={styles.accordion_panel}>
-                  <Accordion.Panel>
-                    <p>{message.messageText}</p>
-                  </Accordion.Panel>
-                </div>
+                <Accordion.Panel>
+                  <p className={styles.message_text}>{message.messageText}</p>
+                  <div className={styles.action_div}>
+                    <FaReply
+                      className={styles.reply_icon}
+                      onClick={() => openReplyModal(message)}
+                    />
+                    <FaRegTrashCan
+                      onClick={() => handleDeleteMessage(message._id)}
+                      className={styles.trash_icon}
+                    />
+                    <IoDocumentTextOutline
+                      className={styles.document_icon}
+                      onClick={() => openContractModal(message)}
+                    />
+                  </div>
+                </Accordion.Panel>
               </AccordionItem>
             ))}
           </Accordion>
@@ -246,7 +259,7 @@ const MessagesAccordion = ({
       ) : (
         <p className={styles.no_messages_p}>No messages sent.</p>
       )}
-    </>
+    </div>
   );
 };
 
