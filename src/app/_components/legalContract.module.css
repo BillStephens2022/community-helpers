@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem;
     line-height: 1.8;
+    width: 40vw;
 }
 
 .legalContract_h1 {
@@ -18,10 +19,10 @@
 .legalContract_body {
     display: flex;
     flex-direction: column;
-    width: 80%;
 }
 
 .legalContract_p {
     font-size: 1.25rem;
-
+    line-height: 1.8;
+    color: black;
 }
