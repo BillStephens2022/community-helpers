@@ -1,48 +1,270 @@
-.navbar {
+.nav_checkbox {
+  display: none;
+}
+
+.nav_button {
+  background: transparent;
+  height: 4.5rem;
+  width: 4.5rem;
+  position: fixed;
+  top: 0.5rem;
+  right: 1rem;
+  border-radius: 50%;
+  z-index: 2000;
+  box-shadow: 0 1rem 3rem rgba(black, 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.nav_background {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 0.5rem;
+  right: 1rem;
+  background: var(--lightblue-primary);
+  z-index: 1000;
+  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.navbar_nav {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1500;
+  opacity: 0;
+  width: 0;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav_items {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+  width: 100%;
+}
+
+.container {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: 0.5rem 0;
-  background-color: #3498db;
-  box-shadow: 5px 2px 5px #333;
+  align-items: center;
+  max-height: 5rem;
 }
 
-.navbar_ul {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  list-style: none;
+.image {
+  padding: 0.5rem;
 }
 
-.navbar_link {
-  font-size: 1.15rem;
-  font-weight: 700;
+.nav_item {
+  margin: 0.75rem;
+}
+
+.nav_link:link,
+.nav_link:visited {
+  display: inline-block;
+  font-size: 2.5rem;
+  font-family: "Aclonica", sans-serif;
+  padding: 1rem 2rem;
   color: white;
-  letter-spacing: 3px;
-  text-transform: capitalize;
+  text-decoration: none;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    120deg,
+    transparent 0%,
+    transparent 50%,
+    var(--yellow-primary) 50%
+  );
+  background-size: 250%;
+  transition: all 0.4s;
+}
+
+.active {
+  padding-bottom: 0.25rem;
+  border-bottom: 3px solid var(--yellow-primary);
+}
+
+/* Functionality */
+
+/* Checkbox styles */
+.nav_checkbox:checked ~ .nav_background {
+  transform: scale(80);
+}
+
+.nav_checkbox:checked ~ .navbar_nav {
+  opacity: 1;
+  width: 100%;
+}
+
+/* Icon styles */
+.nav_icon {
+  position: relative;
+  margin-top: 2.33rem;
+  width: 2.5rem;
+  height: 2px;
+  background-color: var(--yellow-primary);
+  display: inline-block;
+  position: relative;
+}
+
+.nav_icon::before,
+.nav_icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  background-color: var(--yellow-primary);
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.nav_icon::before {
+  top: -0.6rem;
+}
+
+.nav_icon::after {
+  top: 0.6rem;
+}
+
+.nav_link:hover,
+.nav_link:active {
+  background-position: 100%;
+  color: white;
+  transform: translateX(1rem);
+}
+
+/* Icon hover styles */
+.nav_button:hover .nav_icon::before {
+  top: -1rem;
+}
+
+.nav_button:hover .nav_icon::after {
+  top: 1rem;
+}
+
+/* Checkbox checked styles */
+.nav_checkbox:checked + .nav_button .nav_icon {
+  background-color: transparent;
+}
+
+.nav_checkbox:checked + .nav_button .nav_icon::before {
+  top: 0;
+  transform: rotate(135deg);
+}
+
+.nav_checkbox:checked + .nav_button .nav_icon::after {
+  top: 0;
+  transform: rotate(-135deg);
+}
+
+.nav_logout_button {
+  margin-top: 2rem;
 }
 
 .navbar_login,
 .navbar_logout {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 2.5rem;
   color: white;
   background-color: transparent;
   cursor: pointer;
   border: none;
-  text-transform: capitalize;
+  text-transform: uppercase;
   letter-spacing: 3px;
 }
 
-@media (max-width: 767px) {
-  .navbar_link {
-    font-size: 1rem;
-    text-transform: capitalize;
+@media only screen and (max-width: 1500px) {
+  .nav_link:link,
+  .nav_link:visited {
+    font-size: 2rem;
+    padding: 1rem 1rem;
+  }
+
+  .nav_item {
+    margin: 0.5rem;
   }
 
   .navbar_login,
   .navbar_logout {
-    font-size: 1rem;
-    text-transform: capitalize;
+    font-size: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .nav_link:link,
+  .nav_link:visited {
+    font-size: 2rem;
+    padding: 1rem 1rem;
+  }
+
+  .nav_item {
+    margin: 0.75rem;
+  }
+
+  .navbar_login,
+  .navbar_logout {
+    font-size: 2rem;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .nav_button {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .nav_background {
+    height: 2.67rem;
+    width: 2.67rem;
+  }
+
+  .nav_icon {
+    margin-top: 1.5rem;
+  }
+
+  .nav_icon,
+  .nav_icon::before,
+  .nav_icon::after {
+    width: 1.875rem;
+  }
+
+  .nav_link:link,
+  .nav_link:visited {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav_items {
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav_item {
+    margin: 0.5rem;
+  }
+
+  .nav_icon::before {
+    top: -0.5rem;
+  }
+
+  .nav_icon::after {
+    top: 0.5rem;
+  }
+
+  .nav_button:hover .nav_icon::before {
+    top: -0.6rem;
+  }
+
+  .nav_button:hover .nav_icon::after {
+    top: 0.6rem;
+  }
+
+  .navbar_login,
+  .navbar_logout {
+    font-size: 1.5rem;
   }
 }

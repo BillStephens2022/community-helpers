@@ -37,6 +37,7 @@
   .header_div {
     display: flex;
     align-items: center;
+    margin-top: 2rem;
   }
 
   .header_link {
