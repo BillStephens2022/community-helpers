@@ -33,9 +33,9 @@ const LegalContract: React.FC<LegalContractProps> = ({ contract }) => {
         <strong>{formattedDate}</strong>, the following binding agreement has been executed with
         the utmost seriousness (and just a hint of bureaucratic flair) between the honorable{" "}
         <strong>{worker.firstName} {worker.lastName}</strong>, hereinafter referred to as
-        "The Esteemed Worker," and the illustrious{" "}
-        <strong>{client.firstName} {client.lastName}</strong>, henceforth known as "The Noble
-        Client."
+        &quot;The Esteemed Worker,&quot; and the illustrious{" "}
+        <strong>{client.firstName} {client.lastName}</strong>, henceforth known as &quot;The Noble
+        Client.&quot;
       </p>
       <p className={styles.legalContract_p}>
         <strong>Whereas:</strong> The Worker possesses skills in the realm of{" "}
