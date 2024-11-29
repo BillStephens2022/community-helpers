@@ -94,7 +94,7 @@
   border-radius: 5px;
   border: 2px solid white;
   font-size: 1.25rem;
-  font-weight: 700;   
+  font-weight: 700;
   letter-spacing: 0.2rem;
   box-shadow: 2px 2px 5px #a59c9c;
   transition: all 0.3s;
@@ -105,7 +105,7 @@
   color: var(--lightblue-primary);
   border: 2px solid var(--lightblue-primary);
   box-shadow: 2px 2px 5px var(--lightblue-primary);
-} 
+}
 
 .welcome_message {
   color: navy;
@@ -120,6 +120,9 @@
 }
 
 @media (max-width: 1366px) {
+  .home_main {
+    width: 95%;
+  }
   .home_left {
     width: 100%;
     padding: 1rem;
@@ -133,12 +136,26 @@
     width: 75%;
     height: 75%;
   }
+  .home_h4 {
+    font-size: 1.25rem;
+    letter-spacing: normal;
+  }
+  .home_ul {
+    padding-left: 0;
+  }
+  .home_li {
+    font-size: 1rem;
+  }
+  .welcome_message {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
 }
 
-
 @media (max-width: 767px) {
-  .main {
+  .home_main {
     flex-direction: column;
+    width: 95%;
   }
   .home_left {
     padding: 0;
@@ -152,13 +169,17 @@
     margin: 0;
   }
   .home_h4 {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     letter-spacing: normal;
     text-align: center;
   }
   .home_li {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0.125rem 0;
     padding: 0.125rem;
+  }
+  .welcome_message {
+    font-size: 1rem;
+    padding: 0.5rem 0;
   }
 }
