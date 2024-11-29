@@ -36,6 +36,13 @@ export default function Navigation() {
       <div className={styles.nav_background}></div>
     <nav className={styles.navbar_nav}>
       <ul className={styles.nav_items}>
+      <li className={styles.nav_item}>
+          <Link href="/" className={`${styles.nav_item} ${styles.nav_link} ${
+                  pathname === "/" ? styles.active : ""
+                }`} onClick={handleLinkClick}>
+            Home
+          </Link>
+        </li>
         <li className={styles.nav_item}>
           <Link href="/about" className={`${styles.nav_item} ${styles.nav_link} ${
                   pathname === "/about" ? styles.active : ""
