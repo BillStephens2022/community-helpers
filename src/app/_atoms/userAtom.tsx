@@ -15,3 +15,9 @@ export const userContractsState = atom<ContractBody[]>({
   key: "userContractsState",
   default: [],  
 });
+
+export const usersLoadingState = atom({
+  key: "usersLoadingState",
+  default: false,
+});
+
