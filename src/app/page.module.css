@@ -78,7 +78,7 @@
 .home_li:hover {
   font-size: 1.6rem;
   text-shadow: 2px 2px 5px #fff;
-  background-color: #ffc107;
+  background-color: var(--yellow-primary);
   border-radius: 5px;
 }
 
@@ -89,27 +89,40 @@
   width: 10rem;
   height: 3rem;
   padding: 8px 8px;
-  background-color: #3498db;
-  color: #ffc107;
-  
+  background-color: var(--lightblue-primary);
+  color: var(--yellow-primary);
   border-radius: 5px;
   border: 2px solid white;
   font-size: 1.25rem;
-  font-weight: 700;   
+  font-weight: 700;
   letter-spacing: 0.2rem;
   box-shadow: 2px 2px 5px #a59c9c;
   transition: all 0.3s;
 }
 
 .get_started_link:hover {
-  background-color: #ffc107;
-  color: #3498db;
-  border: 2px solid #3498db;
-  box-shadow: 2px 2px 5px #3498db;
-} 
+  background-color: var(--yellow-primary);
+  color: var(--lightblue-primary);
+  border: 2px solid var(--lightblue-primary);
+  box-shadow: 2px 2px 5px var(--lightblue-primary);
+}
 
+.welcome_message {
+  color: navy;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  width: 75%;
+  padding: 1rem 0;
+  background-color: var(--yellow-primary);
+  box-shadow: 2px 2px 5px #333;
+}
 
 @media (max-width: 1366px) {
+  .home_main {
+    width: 95%;
+  }
   .home_left {
     width: 100%;
     padding: 1rem;
@@ -123,12 +136,26 @@
     width: 75%;
     height: 75%;
   }
+  .home_h4 {
+    font-size: 1.25rem;
+    letter-spacing: normal;
+  }
+  .home_ul {
+    padding-left: 0;
+  }
+  .home_li {
+    font-size: 1rem;
+  }
+  .welcome_message {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
 }
 
-
 @media (max-width: 767px) {
-  .main {
+  .home_main {
     flex-direction: column;
+    width: 95%;
   }
   .home_left {
     padding: 0;
@@ -142,13 +169,17 @@
     margin: 0;
   }
   .home_h4 {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     letter-spacing: normal;
     text-align: center;
   }
   .home_li {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0.125rem 0;
     padding: 0.125rem;
+  }
+  .welcome_message {
+    font-size: 1rem;
+    padding: 0.5rem 0;
   }
 }

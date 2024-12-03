@@ -1,9 +1,16 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./page.module.css";
+import { useSession } from "next-auth/react";
 import chlogo from "./images/chlogo.jpeg";
+import styles from "./page.module.css";
 
 export default function Home() {
+  const { data: session } = useSession();
+  console.log(session);
+  const user = session?.user?.name;
+
   return (
     <div className={styles.home_content}>
     <h2 className={styles.home_subheader}>Need a job done?</h2>
@@ -17,9 +24,9 @@ export default function Home() {
           height={425}
           priority
         />
-        <Link href="/login" className={styles.get_started_link}>
+        {session ? (<h2 className={styles.welcome_message}>Welcome back, {user}!</h2>) : (<Link href="/login" className={styles.get_started_link}>
           Let&apos;s Go!
-        </Link>
+        </Link>)}
       </div>
       <div className={styles.home_right}>
         <h4 className={styles.home_h4}>
