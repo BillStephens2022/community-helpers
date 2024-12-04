@@ -67,7 +67,7 @@
 .nav_link:link,
 .nav_link:visited {
   display: inline-block;
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   font-family: "Aclonica", sans-serif;
   padding: 1rem 2rem;
   color: white;
@@ -168,7 +168,7 @@
 
 .navbar_login,
 .navbar_logout {
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   color: white;
   background-color: transparent;
   cursor: pointer;
@@ -180,34 +180,21 @@
 @media only screen and (max-width: 1500px) {
   .nav_link:link,
   .nav_link:visited {
-    font-size: 2rem;
     padding: 1rem 1rem;
   }
-
   .nav_item {
     margin: 0.5rem;
-  }
-
-  .navbar_login,
-  .navbar_logout {
-    font-size: 2rem;
   }
 }
 
 @media only screen and (max-width: 1024px) {
   .nav_link:link,
   .nav_link:visited {
-    font-size: 2rem;
     padding: 1rem 1rem;
   }
 
   .nav_item {
     margin: 0.75rem;
-  }
-
-  .navbar_login,
-  .navbar_logout {
-    font-size: 2rem;
   }
 }
 
@@ -234,7 +221,6 @@
 
   .nav_link:link,
   .nav_link:visited {
-    font-size: 1.5rem;
     padding: 0.5rem 1rem;
   }
 
@@ -261,10 +247,5 @@
 
   .nav_button:hover .nav_icon::after {
     top: 0.6rem;
-  }
-
-  .navbar_login,
-  .navbar_logout {
-    font-size: 1.5rem;
   }
 }

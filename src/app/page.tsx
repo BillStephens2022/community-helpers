@@ -20,8 +20,8 @@ export default function Home() {
           className={styles.logo}
           src={chlogo}
           alt="Community Helpers logo"
-          width={425}
-          height={425}
+          width={275}
+          height={275}
           priority
         />
         {session ? (<h2 className={styles.welcome_message}>Welcome back, {user}!</h2>) : (<Link href="/login" className={styles.get_started_link}>

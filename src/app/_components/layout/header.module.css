@@ -11,7 +11,7 @@
 .header_h1 {
   color: var(--yellow-primary);
   transition: 0.3s ease-int;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 900;
   letter-spacing: 1rem;
   text-shadow: 5px 5px 5px #000;

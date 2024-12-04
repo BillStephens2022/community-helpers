@@ -6,7 +6,7 @@
 
 .home_subheader {
   color: white;
-  margin: 1rem 0 2rem 0;
+  margin: 0 0 2rem 0;
   letter-spacing: 0.25rem;
   font-weight: 900;
   text-shadow: 1px 1px 2px black;
@@ -54,7 +54,7 @@
 .home_h4 {
   color: var(--yellow-primary);
   text-shadow: 1px 1px 2px black;
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 900;
   letter-spacing: 0.15rem;
   margin: 0.5rem 0;
@@ -66,7 +66,7 @@
 
 .home_li {
   color: rgb(37, 37, 156);
-  font-size: 1.25rem;
+  font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.15rem;
   text-shadow: 1px 1px 2px lightblue;
@@ -76,7 +76,7 @@
 }
 
 .home_li:hover {
-  font-size: 1.6rem;
+  font-size: 0.9rem;
   text-shadow: 2px 2px 5px #fff;
   background-color: var(--yellow-primary);
   border-radius: 5px;
@@ -109,12 +109,12 @@
 
 .welcome_message {
   color: navy;
-  font-size: 1.15rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-align: center;
-  width: 75%;
-  padding: 1rem 0;
+  width: 270px;
+  padding: 0.75rem 0;
   background-color: var(--yellow-primary);
   box-shadow: 2px 2px 5px #333;
 }
