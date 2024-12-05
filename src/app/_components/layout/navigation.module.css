@@ -182,7 +182,7 @@
   .nav_link:visited {
     padding: 1rem 1rem;
   }
-  .nav_item {
+  .nav_item, .navbar_login, .navbar_logout {
     margin: 0.5rem;
   }
 }
@@ -193,8 +193,16 @@
     padding: 1rem 1rem;
   }
 
-  .nav_item {
-    margin: 0.75rem;
+  .nav_items {
+    margin-top: 6rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
+  }
+
+  .nav_item, .navbar_login, .navbar_logout {
+    margin: 0.5rem;
   }
 }
 
@@ -224,12 +232,7 @@
     padding: 0.5rem 1rem;
   }
 
-  .nav_items {
-    margin: 0;
-    padding: 0;
-  }
-
-  .nav_item {
+  .nav_item, .navbar_login, .navbar_logout {
     margin: 0.5rem;
   }
 

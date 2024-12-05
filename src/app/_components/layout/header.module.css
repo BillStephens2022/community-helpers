@@ -27,9 +27,9 @@
   transform: skew(-15deg);
 }
 
-@media (max-width: 1366px) {
+@media (max-width: 1025px) {
   .header_link {
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
 }
 
