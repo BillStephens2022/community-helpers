@@ -1,12 +1,14 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
-import { FaRegMessage } from "react-icons/fa6";
+import { FaRegMessage, FaUser, FaArrowRight } from "react-icons/fa6";
+import Link from "next/link";
 import { User } from "../_lib/types";
 import Modal from "./ui/Modal";
 import CardButton from "./ui/CardButton";
 import SendMessageForm from "./forms/SendMessageForm";
 import styles from "./communityCard.module.css";
+
 
 interface CommunityCardProps {
   user: User;
@@ -96,15 +98,23 @@ const CommunityCard = ({
                 </li>
               ))}
             </ul>
+       
           </div>
+          
         </div>
       )}
       <div className={styles.profile_card_footer}>
-        <CardButton type="button" onClick={() => showOtherSide()}>
-          {isOtherSide ? "back..." : "about..."}
+      
+        <CardButton type="button" onClick={() => showOtherSide()} title="Flip Card">
+          {isOtherSide ? "back..." : "more..."}
         </CardButton>
+        <CardButton type="button" onClick={()=>console.log("view profile")} title="Profile Page"><Link href={`/neighbors/${user._id}`} className={styles.profile_link}>
+              <FaUser size={16} /><FaArrowRight size={16} /> 
+            </Link>
+            </CardButton>
         <CardButton
           type="button"
+          title="Send Message"
           onClick={() =>
             openModal(
               "Send Message",

@@ -20,11 +20,21 @@ export default function Header() {
     "/community": "My Community",
   };
 
-  // Update the title based on pathname when the component mounts
-  useEffect(() => {
-    const newTitle = routeTitles[pathname] || "Community Helpers"; // Default title
-    setHeaderTitle(newTitle); // Update the header title in the atom
-  }, [pathname, setHeaderTitle]);
+ // Update the title based on pathname
+ useEffect(() => {
+  let newTitle = "Community Helpers"; // Default title
+
+  // Check for exact matches
+  if (routeTitles[pathname]) {
+    newTitle = routeTitles[pathname];
+  } 
+  // Check for dynamic routes like /neighbors/[id]
+  else if (pathname.startsWith("/neighbors/")) {
+    newTitle = "Neighbor Profile";
+  }
+
+  setHeaderTitle(newTitle);
+}, [pathname, setHeaderTitle]);
 
   const headerTitle = useRecoilValue(headerTitleState);
 
