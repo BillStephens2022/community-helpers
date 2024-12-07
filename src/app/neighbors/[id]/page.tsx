@@ -27,7 +27,26 @@ export default function Neighbors() {
 
   return (
     <div className={styles.neighbor_page}>
-      <ProfileCard user={neighbor} isEditMode={false} />
+      <h2 className={styles.section_header} style={{textAlign:"center", background: "white", padding: "1rem"}}>*** This page is a Work in Progress ***</h2>
+      <div className={styles.profile_and_pricing}>
+        <ProfileCard user={neighbor} isEditMode={false} />
+        <div className={styles.pricing}>
+          <h2 className={styles.section_header}>Pricing</h2>
+          <ul>
+            <li>Placeholder item 1: $25.00</li>
+            <li>Placeholder item 2: $50.00</li>
+            <li>Placeholder item 3: $75.00</li>
+          </ul>
+        </div>
+      </div>
+      <div className={styles.testimonials}>
+      <h2 className={styles.section_header}>Testimonials</h2>
+      <ul>
+        <li>Testimonial 1</li>
+        <li>Testimonial 2</li>
+        <li>Testimonial 3</li>
+      </ul>
+      </div>
     </div>
   );
 }
