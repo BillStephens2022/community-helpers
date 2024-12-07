@@ -1,16 +1,15 @@
 "use client";
 
 import { useRecoilValue } from "recoil";
+import { useParams } from "next/navigation";
 import {
   userState,
   usersState,
   usersLoadingState,
 } from "../../_atoms/userAtom";
 import Loader from "../../_components/ui/Loader";
-import { CldImage } from "next-cloudinary";
+import ProfileCard from "../../_components/ProfileCard";
 import styles from "./neighbors.module.css";
-import { useParams } from "next/navigation";
-import ProfileCard from "@/app/_components/ProfileCard";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
