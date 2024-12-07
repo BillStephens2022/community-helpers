@@ -1,26 +1,5 @@
 .neighbor_page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.neighbor_header_div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    width: 100%;
-    padding: 1rem;
-}
-
-.neighbor_header {
-    font-size: 1.5rem;
-    color: white;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.neighbor_wip {
-    color: black;
-    text-shadow: 2px 2px 5px darkgray;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }

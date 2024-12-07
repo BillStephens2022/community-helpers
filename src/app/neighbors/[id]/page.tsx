@@ -10,6 +10,7 @@ import Loader from "../../_components/ui/Loader";
 import { CldImage } from "next-cloudinary";
 import styles from "./neighbors.module.css";
 import { useParams } from "next/navigation";
+import ProfileCard from "@/app/_components/ProfileCard";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
@@ -26,27 +27,7 @@ export default function Neighbors() {
 
   return (
     <div className={styles.neighbor_page}>
-      <div className={styles.neighbor_header_div}>
-        <div className={styles.neighbor_image_div}>
-          {neighbor.profileImage && (
-            <CldImage
-              src={neighbor.profileImage}
-              alt="sample image"
-              width={120}
-              height={120}
-              crop={{
-                type: "auto", // Transform the image: auto-crop to square aspect_ratio
-                source: true,
-              }}
-              radius={150}
-            />
-          )}
-        </div>
-        <h1 className={styles.neighbor_header}>
-          {neighbor.firstName} {neighbor.lastName}
-        </h1>
-      </div>
-      <h2 className={styles.neighbor_wip}>*** This Page is a work in Progress ***</h2>
+      <ProfileCard user={neighbor} isEditMode={false} />
     </div>
   );
 }

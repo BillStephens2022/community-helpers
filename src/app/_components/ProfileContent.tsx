@@ -95,7 +95,7 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
           />
         </div>
       </div>
-      <ProfileCard user={user} isEditMode={isEditMode} />
+      <ProfileCard user={user} isEditMode={isEditMode} isProfilePage={true} />
       <div className={styles.profile_edit_buttons}>
         <Button type="button" onClick={() => setIsEditMode(!isEditMode)}>
           {isEditMode ? "Cancel" : "Edit Profile"}

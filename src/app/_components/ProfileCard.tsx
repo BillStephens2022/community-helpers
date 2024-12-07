@@ -18,9 +18,10 @@ import styles from "./profileCard.module.css";
 interface ProfileCardProps {
   user: User;
   isEditMode?: boolean;
+  isProfilePage?: boolean;
 }
 
-const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
+const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: ProfileCardProps) => {
   const { data: session } = useSession();
   const setUser = useSetRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,7 +100,7 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
   return (
     <>
       <div className={`${styles.profile_card} ${isEditMode ? styles.no_hover : ""}`}>
-        <Switch
+        {isProfilePage ? (<Switch
           size="md"
           checked={isWorker}
           onChange={toggleIsWorker}
@@ -109,7 +110,7 @@ const ProfileCard = ({ user, isEditMode = false }: ProfileCardProps) => {
           offLabel="No"
           labelPosition="left"
           className={styles.profile_switch}
-        />
+        />) : isWorker ? (<p className={styles.profile_switch}>Available For Work ✅</p>) : (<p className={styles.profile_switch}>Available For Work ❌</p>)}
         <div className={styles.profile_header_div}>
           <div className={styles.profile_image_div}>
             {profileImage && (
