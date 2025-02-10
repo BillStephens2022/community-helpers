@@ -135,3 +135,56 @@ export async function DELETE(
     );
   }
 }
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
+  try {
+    await dbConnect();
+    
+    // Parse request body to get update fields
+    const body = await req.json();
+    
+    // Find the user
+    const user = await User.findById(id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Add new services
+    if (body.addServices && Array.isArray(body.addServices)) {
+      user.services.push(...body.addServices);
+    }
+
+    // Remove services by name (or ID if applicable)
+    if (body.removeServices && Array.isArray(body.removeServices)) {
+      user.services = user.services.filter(
+        (service: { name: string }) => !body.removeServices.includes(service.name)
+      );
+    }
+
+    // Update other fields dynamically (excluding `addServices` & `removeServices`)
+    Object.keys(body).forEach((key) => {
+      if (key !== "addServices" && key !== "removeServices") {
+        user[key] = body[key];
+      }
+    });
+
+    // Save the updated user
+    await user.save();
+
+    return NextResponse.json(
+      { message: "User updated successfully", user },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
+  }
+}

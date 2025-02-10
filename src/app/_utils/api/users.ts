@@ -183,3 +183,38 @@ export const updateWalletBalance = async (
     };
   }
 };
+
+// Add a new service for a user
+export const addUserService = async (userId: string, service: string) => {
+  const res = await fetch(`/api/users/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ service }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message || "Failed to add service.");
+  }
+
+  return await res.json();
+};
+
+// Delete a service from a user
+export const deleteUserService = async (userId: string, service: string) => {
+  const res = await fetch(`/api/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ service }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete service.");
+  }
+
+  return await res.json();
+};

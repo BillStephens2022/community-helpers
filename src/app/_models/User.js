@@ -56,6 +56,11 @@ const userSchema = new Schema({
   sentMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   receivedMessages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   contracts: [{ type: Schema.Types.ObjectId, ref: 'Contract' }],
+  services: [{
+    service: { type: String, required: true, trim: true },
+    price: { type: Number, required: true, min: 0 },
+    rateType: { type: String, required: true, enum: ['flat', 'hourly'] },
+  }],
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
