@@ -185,13 +185,13 @@ export const updateWalletBalance = async (
 };
 
 // Add a new service for a user
-export const addUserService = async (userId: string, service: string) => {
+export const addUserService = async (userId: string, serviceData: { service: string; price: number; rateType: string }) => {
   const res = await fetch(`/api/users/${userId}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ service }),
+    body: JSON.stringify({ addService: serviceData }),  // Sending a single service object
   });
 
   if (!res.ok) {
@@ -199,17 +199,17 @@ export const addUserService = async (userId: string, service: string) => {
     throw new Error(errorData.message || "Failed to add service.");
   }
 
-  return await res.json();
+  return await res.json(); // Returns updated user data
 };
 
 // Delete a service from a user
 export const deleteUserService = async (userId: string, service: string) => {
   const res = await fetch(`/api/users/${userId}`, {
-    method: "DELETE",
+    method: "PATCH",  // Use PATCH instead of DELETE to be consistent with adding services
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ service }),
+    body: JSON.stringify({ removeService: service }),  // Sending a single service name as string
   });
 
   if (!res.ok) {

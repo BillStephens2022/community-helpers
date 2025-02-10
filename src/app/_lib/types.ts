@@ -14,7 +14,8 @@ export interface User {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sentMessages: any[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  contracts: any[]
+  contracts: any[],
+  services?: { service: string; price: number, rateType: string }[];
 }
 
 export interface MessageBody {

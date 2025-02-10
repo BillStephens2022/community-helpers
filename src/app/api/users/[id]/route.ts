@@ -28,6 +28,7 @@ export async function GET(
         path: "contracts",
         populate: { path: "worker", select: "_id firstName lastName email profileImage" }, // Populate the 'worker' field of contracts
       });
+    
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
@@ -46,6 +47,7 @@ export async function GET(
         receivedMessages: user.receivedMessages || [], 
         sentMessages: user.sentMessages || [], 
         contracts: user.contracts || [],
+        services: user.services || [],
       },
       { status: 200 }
     );
@@ -155,20 +157,21 @@ export async function PATCH(
     }
 
     // Add new services
-    if (body.addServices && Array.isArray(body.addServices)) {
-      user.services.push(...body.addServices);
+    if (body.addService) {
+      const service = body.addService;
+      user.services.push(service);
     }
 
-    // Remove services by name (or ID if applicable)
-    if (body.removeServices && Array.isArray(body.removeServices)) {
+     // Remove service by name (single service string)
+     if (body.removeService) {
       user.services = user.services.filter(
-        (service: { name: string }) => !body.removeServices.includes(service.name)
+        (service: { service: string }) => service.service !== body.removeService
       );
     }
 
-    // Update other fields dynamically (excluding `addServices` & `removeServices`)
+    // Update other fields dynamically (excluding `addService` & `removeService`)
     Object.keys(body).forEach((key) => {
-      if (key !== "addServices" && key !== "removeServices") {
+      if (key !== "addService" && key !== "removeService") {
         user[key] = body[key];
       }
     });

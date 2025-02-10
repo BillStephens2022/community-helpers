@@ -12,7 +12,8 @@ import Modal from "../_components/ui/Modal";
 import EditSkillsetForm from "./forms/EditSkillsetForm";
 import EditAboutTextForm from "./forms/EditAboutTextForm";
 import AddSkillForm from "./forms/AddSkillForm";
-import { deleteUserSkill, updateIsWorkerStatus } from "../_utils/api/users";
+import AddServiceForm from "./forms/AddServiceForm";
+import { deleteUserSkill, updateIsWorkerStatus, deleteUserService } from "../_utils/api/users";
 import styles from "./profileCard.module.css";
 
 interface ProfileCardProps {
@@ -51,6 +52,7 @@ const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: Profil
     lastName,
     skillset,
     skills,
+    services,
     aboutText,
     profileImage,
     isWorker,
@@ -96,6 +98,37 @@ const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: Profil
       }
     }
   };
+
+  const handleDeleteService = async (serviceToDelete: { service: string }) => {
+    try {
+      const userId = user?._id;  // Get user ID from the user object
+      if (!userId) {
+        console.error("User ID is not available.");
+        return;
+      }
+  
+      // Call the API to delete the service
+      await deleteUserService(userId, serviceToDelete.service);
+  
+      // Update Recoil state to remove the deleted service
+      setUser((prevUser) => {
+        if (!prevUser || !prevUser.services) return prevUser;  // Guard clause
+        return {
+          ...prevUser,
+          services: prevUser.services.filter((service) => service.service !== serviceToDelete.service),  // Remove the deleted service
+        };
+      });
+  
+      console.log("Service deleted successfully");
+    } catch (error) {
+      console.error("Error deleting service:", error);
+    }
+  };
+
+  console.log("User from Profile Card:", user);
+  console.log("services", services);
+
+
 
   return (
     <>
@@ -199,6 +232,40 @@ const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: Profil
             </div>
           )}
         </div>
+        <div className={styles.profile_skills}>
+          <div className={styles.profile_skills_header}>
+            <h3 className={styles.profile_h3}>Services</h3>
+          </div>
+          <ul className={styles.profile_ul}>
+          {services?.map((service) => (
+            console.log("services", services),
+              <li key={service.service} className={styles.profile_li}>
+                <span className={styles.skillset_text}>{service.service}{" "}</span>
+                {isEditMode && (
+                  <FaRegTrashCan
+                    color="white"
+                    className={styles.profile_trashIcon}
+                    onClick={() => handleDeleteService(service)}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+          {isEditMode && (
+            <div className={styles.profile_add_skill_div}>
+              <IoMdAddCircleOutline
+                className={styles.profile_addSkillIcon}
+                onClick={() =>
+                  openModal(
+                    "Add Service",
+                    <AddServiceForm closeModal={closeModal} user={user} />
+                  )
+                }
+              />
+              <span className={styles.profile_add_skill_span}>Add Service</span>
+            </div>
+          )}
+          </div>
       </div>
       {isModalOpen && (
         <Modal onClose={closeModal} title={modalTitle} content={modalContent} />
