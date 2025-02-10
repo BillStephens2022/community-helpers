@@ -22,7 +22,7 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
   const [error, setError] = useState("");
   const setUser = useSetRecoilState(userState);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setNewService((prevService) => ({
       ...prevService,
@@ -110,15 +110,17 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
           <label htmlFor="rateType" className={styles.label}>
             Rate Type
           </label>
-          <input
-            type="text"
+          <select
             name="rateType"
-            placeholder="Rate Type"
             className={styles.input}
             id="rateType"
             onChange={handleChange}
-            value={newService.rateType} // Bind input value to newService state
-          />
+            value={newService.rateType}
+          >
+            <option value="">Select Rate Type</option>
+            <option value="hourly">Hourly</option>
+            <option value="flat">Flat Fee</option>
+          </select>
         </div>
         {/* If error, display the error message */}
         {error && <p className={styles.error}>{error}</p>}{" "}

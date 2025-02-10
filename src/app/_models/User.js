@@ -61,6 +61,10 @@ const userSchema = new Schema({
     price: { type: Number, required: true, min: 0 },
     rateType: { type: String, required: true, enum: ['flat', 'hourly'] },
   }],
+  reviews: [{
+    reviewText: { type: String, required: true, trim: true },
+    reviewRating: { type: Number, required: true, min: 1, max: 5 },
+  }]
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
