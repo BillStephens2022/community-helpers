@@ -125,11 +125,6 @@ const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: Profil
     }
   };
 
-  console.log("User from Profile Card:", user);
-  console.log("services", services);
-
-
-
   return (
     <>
       <div className={`${styles.profile_card} ${isEditMode ? styles.no_hover : ""}`}>
@@ -238,9 +233,10 @@ const ProfileCard = ({ user, isEditMode = false, isProfilePage = false }: Profil
           </div>
           <ul className={styles.profile_ul}>
           {services?.map((service) => (
-            console.log("services", services),
               <li key={service.service} className={styles.profile_li}>
-                <span className={styles.skillset_text}>{service.service}{" "}</span>
+                <span className={styles.skillset_text}>{service.service}:{" "}</span>
+                <span className={styles.skillset_text}>${service.price}{" "}</span>
+                <span className={styles.skillset_text}>{service.rateType === "hourly" ? " / hour" : " flat fee"}{" "}</span>
                 {isEditMode && (
                   <FaRegTrashCan
                     color="white"
