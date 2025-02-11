@@ -22,14 +22,9 @@
   font-weight: 900;
 }
 
-.section_subheader_1 {
+.section_subheader {
   color: white;
   font-size: 1.1rem;
-}
-
-.section_subheader_2 {
-  color: white;
-  font-size: 1rem;
 }
 
 .reviews {
@@ -92,4 +87,15 @@
 .review_reviewText {
   color: white;
   letter-spacing: 1px;
+}
+
+.no_reviews_yet {
+  margin-top: 1rem;
+  color: white;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 4px lightslategray;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px black;
+  padding: 0.25rem 1rem;
 }

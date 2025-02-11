@@ -72,8 +72,7 @@ export default function Neighbors() {
         <ProfileCard user={neighbor} isEditMode={false} />
         <div className={styles.reviews}>
           <h2 className={styles.section_header}>Reviews</h2>
-          <h3 className={styles.section_subheader_1}>Write a Review about {neighbor.firstName}&apos;s work</h3>
-          <h4 className={styles.section_subheader_2}>
+          <h4 className={styles.section_subheader}>
             <IoMdAddCircleOutline
               size={24}
               onClick={() => setShowReviewForm(!showReviewForm)}
@@ -120,7 +119,7 @@ export default function Neighbors() {
             </form>
           )}
           <ul className={styles.reviews_list}>
-            {neighbor.reviews?.map((review, index) => (
+            {neighbor.reviews && neighbor.reviews?.length > 0 ? neighbor.reviews.map((review, index) => (
               <li key={index} className={styles.review_li}>
                 <p className={styles.review_rating}>{Array.from({ length: 5 }, (_, i) => (
                   <span
@@ -136,7 +135,7 @@ export default function Neighbors() {
                 <p className={styles.review_reviewText}>{review.reviewText}</p>
                 
               </li>
-            ))}
+            )) : <p className={styles.no_reviews_yet}>No reviews yet, be the first to review {neighbor.firstName}'s work!</p>}
           </ul>
         </div>
       </div>
