@@ -191,8 +191,14 @@ export async function PATCH(
     // Save the updated user
     await user.save();
 
+     // Fetch the updated user with populated reviewer fields
+     const updatedUser = await User.findById(id).populate({
+      path: 'reviews',
+      populate: { path: 'reviewer', select: '_id firstName lastName email profileImage' },
+    });
+
     return NextResponse.json(
-      { message: "User updated successfully", user },
+      { message: "User updated successfully", user: updatedUser },
       { status: 200 }
     );
   } catch (error) {

@@ -99,3 +99,9 @@
   box-shadow: 1px 1px 3px black;
   padding: 0.25rem 1rem;
 }
+
+.form_error {
+  color: red;
+  font-size: 0.8rem;
+  text-align: center;
+}

@@ -57,6 +57,9 @@ export default function Neighbors() {
         throw new Error("Failed to update reviews.");
       }
 
+      console.log("Updated user ID:", updatedUser._id);
+      console.log("Neighbor ID:", neighborId);
+
       // Update state with the new user data from API response
       setUsers((prevUsers) =>
         prevUsers.map((user) => (user._id === neighborId ? updatedUser : user))
@@ -72,7 +75,7 @@ export default function Neighbors() {
       setError("An error occurred while updating the user.");
     }
   };
-  
+
   console.log("reviews with populated reviewer: ", neighbor.reviews);
   console.log("neighbors: ", neighbors);
 
@@ -131,6 +134,7 @@ export default function Neighbors() {
                   </span>
                 ))}
               </div>
+              <div className={styles.form_error}>{error}</div>
               <Button type="submit">Submit</Button>
             </form>
           )}
@@ -152,13 +156,14 @@ export default function Neighbors() {
                     ))}
                   </p>
                   <p className={styles.review_reviewText}>
-                    {review.reviewText} - {review.reviewer?.firstName} {review.reviewer?.lastName.slice(0,1)}.
+                    {review.reviewText} - {review.reviewer?.firstName}{" "}
+                    {review.reviewer?.lastName?.slice(0, 1)}.
                   </p>
                 </li>
               ))
             ) : (
               <p className={styles.no_reviews_yet}>
-                No reviews yet, be the first to review {neighbor.firstName}'s
+                No reviews yet, be the first to review {neighbor.firstName}&apos;s
                 work!
               </p>
             )}

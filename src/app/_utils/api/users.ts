@@ -195,7 +195,7 @@ export const addUserService = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ addService: serviceData }), // Sending a single service object
+    body: JSON.stringify({ addService: serviceData }),
   });
 
   if (!res.ok) {
@@ -209,11 +209,11 @@ export const addUserService = async (
 // Delete a service from a user
 export const deleteUserService = async (userId: string, service: string) => {
   const res = await fetch(`/api/users/${userId}`, {
-    method: "PATCH", // Use PATCH instead of DELETE to be consistent with adding services
+    method: "PATCH", 
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ removeService: service }), // Sending a single service name as string
+    body: JSON.stringify({ removeService: service }), 
   });
 
   if (!res.ok) {
@@ -234,15 +234,16 @@ export const addUserReview = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ addReview: reviewData }), // Sending a single service object
+      body: JSON.stringify({ addReview: reviewData }),
     });
 
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to add service.");
+      throw new Error(errorData.message || "Failed to add review.");
     }
-
-    return await res.json(); // Returns updated user data
+    const responseData = await res.json();
+    console.log("API response data USER:", responseData);
+    return responseData.user; // Returns updated user data
   } catch (error) {
     console.error("API error:", error);
     throw new Error("Network error: Unable to add review.");

@@ -10,22 +10,26 @@ export interface User {
   profileImage?: string;
   walletBalance: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  receivedMessages: any[],
+  receivedMessages: any[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sentMessages: any[],
+  sentMessages: any[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  contracts: any[],
-  services?: { service: string; price: number, rateType: string }[];
-  reviews?: any[];
+  contracts: any[];
+  services?: { service: string; price: number; rateType: string }[];
+  reviews?: {
+    reviewText: string;
+    reviewRating: number;
+    reviewer: { _id: string; firstName: string; lastName: string, email: string, profileImage?: string };
+  }[];
 }
- 
+
 export interface MessageBody {
   _id: string;
   createdAt: string;
   to: {
     _id: string;
     firstName: string;
-    lastName: string; 
+    lastName: string;
     profileImage?: string;
   };
   from: {
@@ -33,7 +37,7 @@ export interface MessageBody {
     firstName: string;
     lastName: string;
     profileImage?: string;
-  }
+  };
   messageSubject: string;
   messageText: string;
 }
@@ -43,7 +47,7 @@ export interface ContractBody {
   worker: {
     _id: string;
     firstName: string;
-    lastName: string; 
+    lastName: string;
     profileImage?: string;
   };
   client: {
@@ -51,7 +55,7 @@ export interface ContractBody {
     firstName: string;
     lastName: string;
     profileImage?: string;
-  }
+  };
   jobCategory: string;
   jobDescription: string;
   feeType: string;
