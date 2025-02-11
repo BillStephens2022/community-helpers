@@ -6,7 +6,11 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const users = await User.find({});
+    const users = await User.find({})
+    .populate({
+      path: 'reviews.reviewer', // Directly populating the nested field
+      select: '_id firstName lastName email profileImage'
+    });
     if (users.length === 0) {
       return NextResponse.json({ message: "No users found." }, { status: 404 });
     }

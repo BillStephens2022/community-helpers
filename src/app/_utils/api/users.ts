@@ -162,7 +162,8 @@ export const updateWalletBalance = async (
 
     const currentBalance = userData.walletBalance;
 
-    const newBalance = operation === "add" ? currentBalance+amount : currentBalance-amount;
+    const newBalance =
+      operation === "add" ? currentBalance + amount : currentBalance - amount;
     const res = await fetch(`/api/users/${userId}`, {
       method: "PUT",
       headers: {
@@ -185,13 +186,16 @@ export const updateWalletBalance = async (
 };
 
 // Add a new service for a user
-export const addUserService = async (userId: string, serviceData: { service: string; price: number; rateType: string }) => {
+export const addUserService = async (
+  userId: string,
+  serviceData: { service: string; price: number; rateType: string }
+) => {
   const res = await fetch(`/api/users/${userId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ addService: serviceData }),  // Sending a single service object
+    body: JSON.stringify({ addService: serviceData }), // Sending a single service object
   });
 
   if (!res.ok) {
@@ -205,11 +209,11 @@ export const addUserService = async (userId: string, serviceData: { service: str
 // Delete a service from a user
 export const deleteUserService = async (userId: string, service: string) => {
   const res = await fetch(`/api/users/${userId}`, {
-    method: "PATCH",  // Use PATCH instead of DELETE to be consistent with adding services
+    method: "PATCH", // Use PATCH instead of DELETE to be consistent with adding services
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ removeService: service }),  // Sending a single service name as string
+    body: JSON.stringify({ removeService: service }), // Sending a single service name as string
   });
 
   if (!res.ok) {
@@ -217,4 +221,30 @@ export const deleteUserService = async (userId: string, service: string) => {
   }
 
   return await res.json();
+};
+
+// Add a new service for a user
+export const addUserReview = async (
+  userId: string,
+  reviewData: { reviewText: string; reviewRating: number; reviewer: string }
+) => {
+  try {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ addReview: reviewData }), // Sending a single service object
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to add service.");
+    }
+
+    return await res.json(); // Returns updated user data
+  } catch (error) {
+    console.error("API error:", error);
+    throw new Error("Network error: Unable to add review.");
+  }
 };

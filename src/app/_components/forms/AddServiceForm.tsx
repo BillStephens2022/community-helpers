@@ -39,7 +39,7 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
       return;
     }
 
-    // Convert price to number (if it's not already)
+    // Convert price to number
     const price = parseFloat(newService.price);
     if (isNaN(price)) {
       setError("Price must be a valid number.");

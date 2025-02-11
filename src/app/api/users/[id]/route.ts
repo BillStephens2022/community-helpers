@@ -27,6 +27,10 @@ export async function GET(
       .populate({
         path: "contracts",
         populate: { path: "worker", select: "_id firstName lastName email profileImage" }, // Populate the 'worker' field of contracts
+      })
+      .populate({
+        path: 'reviews',
+        populate: { path: 'reviewer', select: '_id firstName lastName email profileImage' } // Populate the 'reviewer' field of reviews
       });
     
     if (!user) {
@@ -48,6 +52,7 @@ export async function GET(
         sentMessages: user.sentMessages || [], 
         contracts: user.contracts || [],
         services: user.services || [],
+        reviews: user.reviews || [],
       },
       { status: 200 }
     );
@@ -169,9 +174,16 @@ export async function PATCH(
       );
     }
 
+    // Add review
+    if (body.addReview) {
+      console.log("Adding review to user:", body.addReview);
+      const review = body.addReview;
+      user.reviews.push(review);
+    }
+
     // Update other fields dynamically (excluding `addService` & `removeService`)
     Object.keys(body).forEach((key) => {
-      if (key !== "addService" && key !== "removeService") {
+      if (key !== "addService" && key !== "removeService" && key !== "addReview") {
         user[key] = body[key];
       }
     });

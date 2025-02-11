@@ -13,6 +13,7 @@ import Loader from "../../_components/ui/Loader";
 import ProfileCard from "../../_components/ProfileCard";
 import styles from "./neighbors.module.css";
 import Button from "@/app/_components/ui/Button";
+import { addUserReview } from "@/app/_utils/api/users";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
@@ -24,6 +25,7 @@ export default function Neighbors() {
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [error, setError] = useState("");
 
   const neighbor = neighbors?.find((user) => user._id === neighborId);
 
@@ -32,10 +34,10 @@ export default function Neighbors() {
   if (!loggedInUser) return <div>Access Denied</div>;
   if (!neighbor) return <div>Neighbor not found</div>;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!reviewText.trim() || reviewRating === 0) {
+    if (!reviewText.trim() || reviewRating === 0 || !loggedInUser) {
       alert("Please provide a review and select a rating.");
       return;
     }
@@ -43,22 +45,36 @@ export default function Neighbors() {
     const newReview = {
       reviewText,
       reviewRating,
+      reviewer: loggedInUser._id,
     };
 
-    // Simulating saving to Recoil (in real case, you'd send it to an API)
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user._id === neighborId
-          ? { ...user, reviews: [...(user.reviews || []), newReview] }
-          : user
-      )
-    );
+    try {
+      console.log("Updated service being sent to api:", newReview);
+      // Send the updated reviews array to the server to update the user in database
+      const updatedUser = await addUserReview(neighbor._id, newReview);
+      console.log("Updated user from API response:", updatedUser);
+      if (!updatedUser) {
+        throw new Error("Failed to update reviews.");
+      }
 
-    // Reset form
-    setReviewText("");
-    setReviewRating(0);
-    setShowReviewForm(false);
+      // Update state with the new user data from API response
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user._id === neighborId ? updatedUser : user))
+      );
+
+      // Reset form
+      setReviewText("");
+      setReviewRating(0);
+      setShowReviewForm(false);
+      setError("");
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setError("An error occurred while updating the user.");
+    }
   };
+  
+  console.log("reviews with populated reviewer: ", neighbor.reviews);
+  console.log("neighbors: ", neighbors);
 
   return (
     <div className={styles.neighbor_page}>
@@ -119,23 +135,33 @@ export default function Neighbors() {
             </form>
           )}
           <ul className={styles.reviews_list}>
-            {neighbor.reviews && neighbor.reviews?.length > 0 ? neighbor.reviews.map((review, index) => (
-              <li key={index} className={styles.review_li}>
-                <p className={styles.review_rating}>{Array.from({ length: 5 }, (_, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      color: i < review.reviewRating ? "#FFD700" : "#ccc",
-                      fontSize: "20px",
-                    }}
-                  >
-                    ★
-                  </span>
-                ))}</p>
-                <p className={styles.review_reviewText}>{review.reviewText}</p>
-                
-              </li>
-            )) : <p className={styles.no_reviews_yet}>No reviews yet, be the first to review {neighbor.firstName}'s work!</p>}
+            {neighbor.reviews && neighbor.reviews?.length > 0 ? (
+              neighbor.reviews.map((review, index) => (
+                <li key={index} className={styles.review_li}>
+                  <p className={styles.review_rating}>
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          color: i < review.reviewRating ? "#FFD700" : "#ccc",
+                          fontSize: "20px",
+                        }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </p>
+                  <p className={styles.review_reviewText}>
+                    {review.reviewText} - {review.reviewer?.firstName} {review.reviewer?.lastName.slice(0,1)}.
+                  </p>
+                </li>
+              ))
+            ) : (
+              <p className={styles.no_reviews_yet}>
+                No reviews yet, be the first to review {neighbor.firstName}'s
+                work!
+              </p>
+            )}
           </ul>
         </div>
       </div>

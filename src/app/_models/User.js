@@ -64,6 +64,7 @@ const userSchema = new Schema({
   reviews: [{
     reviewText: { type: String, required: true, trim: true },
     reviewRating: { type: Number, required: true, min: 1, max: 5 },
+    reviewer: { type: Schema.Types.ObjectId, ref: 'User' }
   }]
 }, { timestamps: true });
 
