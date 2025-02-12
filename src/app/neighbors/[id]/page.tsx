@@ -3,6 +3,7 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { CldImage } from "next-cloudinary";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import {
   userState,
@@ -14,7 +15,6 @@ import ProfileCard from "../../_components/ProfileCard";
 import styles from "./neighbors.module.css";
 import Button from "@/app/_components/ui/Button";
 import { addUserReview } from "@/app/_utils/api/users";
-import { CldImage } from "next-cloudinary";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
@@ -127,7 +127,15 @@ export default function Neighbors() {
                 ))}
               </div>
               <div className={styles.form_error}>{error}</div>
-              <Button type="submit">Submit</Button>
+              <div className={styles.buttons_div}>
+                <Button type="submit">Submit</Button>
+                <Button
+                  type="button"
+                  onClick={() => setShowReviewForm(!showReviewForm)}
+                >
+                  Cancel
+                </Button>
+              </div>
             </form>
           )}
           <ul className={styles.reviews_list}>
@@ -162,7 +170,6 @@ export default function Neighbors() {
                     )}
                     {review.reviewer?.firstName}{" "}
                     {review.reviewer?.lastName?.slice(0, 1)}.
-                   
                   </p>
                 </li>
               ))
