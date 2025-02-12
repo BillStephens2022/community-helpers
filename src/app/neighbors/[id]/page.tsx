@@ -14,6 +14,7 @@ import ProfileCard from "../../_components/ProfileCard";
 import styles from "./neighbors.module.css";
 import Button from "@/app/_components/ui/Button";
 import { addUserReview } from "@/app/_utils/api/users";
+import { CldImage } from "next-cloudinary";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
@@ -76,17 +77,8 @@ export default function Neighbors() {
     }
   };
 
-  console.log("reviews with populated reviewer: ", neighbor.reviews);
-  console.log("neighbors: ", neighbors);
-
   return (
     <div className={styles.neighbor_page}>
-      <h2
-        className={styles.section_header}
-        style={{ textAlign: "center", background: "white", padding: "1rem" }}
-      >
-        *** This page is a Work in Progress ***
-      </h2>
       <div className={styles.profile_and_testimonials}>
         <ProfileCard user={neighbor} isEditMode={false} />
         <div className={styles.reviews}>
@@ -156,15 +148,28 @@ export default function Neighbors() {
                     ))}
                   </p>
                   <p className={styles.review_reviewText}>
-                    {review.reviewText} - {review.reviewer?.firstName}{" "}
+                    {review.reviewText} -
+                    {review.reviewer.profileImage && (
+                      <CldImage
+                        src={review.reviewer?.profileImage}
+                        alt="user's profile image"
+                        radius={50}
+                        width={25}
+                        height={25}
+                        crop={{ type: "thumb", gravity: "face" }}
+                        className={styles.profileImage}
+                      />
+                    )}
+                    {review.reviewer?.firstName}{" "}
                     {review.reviewer?.lastName?.slice(0, 1)}.
+                   
                   </p>
                 </li>
               ))
             ) : (
               <p className={styles.no_reviews_yet}>
-                No reviews yet, be the first to review {neighbor.firstName}&apos;s
-                work!
+                No reviews yet, be the first to review {neighbor.firstName}
+                &apos;s work!
               </p>
             )}
           </ul>
