@@ -3,7 +3,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { CldImage } from "next-cloudinary";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import {
   userState,
