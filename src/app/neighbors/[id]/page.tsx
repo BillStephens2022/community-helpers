@@ -15,6 +15,7 @@ import ProfileCard from "../../_components/ProfileCard";
 import styles from "./neighbors.module.css";
 import Button from "@/app/_components/ui/Button";
 import { addUserReview } from "@/app/_utils/api/users";
+import ReviewsList from "@/app/_components/ReviewsList";
 
 export default function Neighbors() {
   const { id: neighborId } = useParams();
@@ -57,9 +58,6 @@ export default function Neighbors() {
       if (!updatedUser) {
         throw new Error("Failed to update reviews.");
       }
-
-      console.log("Updated user ID:", updatedUser._id);
-      console.log("Neighbor ID:", neighborId);
 
       // Update state with the new user data from API response
       setUsers((prevUsers) =>
@@ -138,48 +136,7 @@ export default function Neighbors() {
               </div>
             </form>
           )}
-          <ul className={styles.reviews_list}>
-            {neighbor.reviews && neighbor.reviews?.length > 0 ? (
-              neighbor.reviews.map((review, index) => (
-                <li key={index} className={styles.review_li}>
-                  <p className={styles.review_rating}>
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          color: i < review.reviewRating ? "#FFD700" : "#ccc",
-                          fontSize: "20px",
-                        }}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </p>
-                  <p className={styles.review_reviewText}>
-                    {review.reviewText} -
-                    {review.reviewer.profileImage && (
-                      <CldImage
-                        src={review.reviewer?.profileImage}
-                        alt="user's profile image"
-                        radius={50}
-                        width={25}
-                        height={25}
-                        crop={{ type: "thumb", gravity: "face" }}
-                        className={styles.profileImage}
-                      />
-                    )}
-                    {review.reviewer?.firstName}{" "}
-                    {review.reviewer?.lastName?.slice(0, 1)}.
-                  </p>
-                </li>
-              ))
-            ) : (
-              <p className={styles.no_reviews_yet}>
-                No reviews yet, be the first to review {neighbor.firstName}
-                &apos;s work!
-              </p>
-            )}
-          </ul>
+          <ReviewsList reviews={neighbor.reviews || []} neighborName={neighbor.firstName} />
         </div>
       </div>
     </div>

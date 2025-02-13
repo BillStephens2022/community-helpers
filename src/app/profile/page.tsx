@@ -8,6 +8,7 @@ import ProfileContent from "../_components/ProfileContent";
 import MessagesAccordion from "../_components/MessagesAccordion";
 import ContractContent from "../_components/ContractsContent";
 import styles from "./profile.module.css";
+import ReviewsList from "../_components/ReviewsList";
 
 
 export default function Profile() {
@@ -49,6 +50,14 @@ export default function Profile() {
         >
           Contracts <span className={styles.count_span}>{contracts.length || 0}</span>
         </button>
+        <button
+          className={`${styles.view_button} ${
+            view === "reviews" ? styles.active : ""
+          }`}
+          onClick={() => setView("reviews")}
+        >
+          Reviews <span className={styles.count_span}>{(user.reviews?.length) || 0}</span>
+        </button>
       </div>
       {view === "profile" && <ProfileContent user={user} />}
       {view === "messages" && (
@@ -58,6 +67,7 @@ export default function Profile() {
         </>
       )}
       {view === "contracts" && <ContractContent />}
+      {view === "reviews" && <ReviewsList reviews = {user.reviews || []} neighborName={user.firstName} />}
     </div>
   );
 }

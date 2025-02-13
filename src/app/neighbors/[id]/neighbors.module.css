@@ -62,55 +62,7 @@
   border: 1px solid darkslateblue;
 }
 
-.reviews_list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  gap: 1rem;
-}
 
-.review_li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.25rem 1rem;
-  box-shadow: 1px 1px 3px black;
-  border-radius: 5px;
-  background-image: linear-gradient(to bottom, darkslateblue, steelblue);  
-  width: 500px;
-}
-
-.review_rating {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0;
-}
-
-.review_reviewText {
-  color: white;
-  letter-spacing: 1px;
-  line-height: 1.5;
-}
-
-.profileImage {
-  border-radius: 50%;
-  display: inline-block;
-  vertical-align: middle;
-  margin: auto 0.5rem;
-  transform: translateY(-2px);
-}
-
-.no_reviews_yet {
-  margin-top: 1rem;
-  color: white;
-  font-size: 1.5rem;
-  text-shadow: 2px 2px 4px lightslategray;
-  background-color: transparent;
-  border-radius: 10px;
-  box-shadow: 1px 1px 3px black;
-  padding: 0.25rem 1rem;
-}
 
 .form_error {
   color: red;
