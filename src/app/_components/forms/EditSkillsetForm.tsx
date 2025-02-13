@@ -63,7 +63,7 @@ const EditSkillsetForm = ({ closeModal, user }: EditSkillsetFormProps) => {
   return (
     <>
       <form className={styles.form}>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="skillset" className={styles.label}>
             Skillset
           </label>

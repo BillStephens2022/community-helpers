@@ -60,7 +60,7 @@ const EditAboutTextForm = ({ closeModal, user }: EditAboutTextFormProps) => {
   return (
     <>
       <form className={styles.form}>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="aboutText" className={styles.label}>
             About me
           </label>

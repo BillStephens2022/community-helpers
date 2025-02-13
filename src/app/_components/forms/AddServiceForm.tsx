@@ -78,7 +78,7 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="service" className={styles.label}>
             Service Name
           </label>
@@ -92,7 +92,7 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
             value={newService.service} // Bind input value to newService state
           />
         </div>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="price" className={styles.label}>
             Price
           </label>
@@ -106,7 +106,7 @@ const AddServiceForm = ({ closeModal, user }: AddServiceFormProps) => {
             value={newService.price} // Bind input value to newService state
           />
         </div>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="rateType" className={styles.label}>
             Rate Type
           </label>

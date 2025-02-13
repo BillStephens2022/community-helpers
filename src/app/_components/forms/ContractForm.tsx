@@ -400,7 +400,7 @@ const ContractForm = ({
         </div>
         <div className={styles.button_div}>
           <Button type="submit" onClick={handleSubmit}>
-            {contract ? "Submit Changes" : "Create Contract"}
+            Submit
           </Button>
         </div>
       </form>

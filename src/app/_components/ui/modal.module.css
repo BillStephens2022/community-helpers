@@ -27,15 +27,16 @@
   }
   
   .titleBar {
-    position: relative;
+    /* position: relative; */
     height: 3rem;
     background-color: #3498db;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    gap: 0.25rem;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     align-content: center;
+    padding: 0.75rem;
   }
   
   .title {
@@ -48,11 +49,18 @@
     padding: 0.75rem 0;
     align-items: center;
   }
+
+  .title_right_group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-around;
+  }
   
   .closeButton {
-    position: absolute;
+    /* position: absolute;
     top: 10px;
-    right: 10px;
+    right: 10px; */
     border: none;
     background: none;
     font-size: 20px;
@@ -64,6 +72,31 @@
     border-radius: 50%;
     margin-left: 1rem;
   }
+
+  /* For Webkit-based browsers (Chrome, Edge, Safari) */
+.modal::-webkit-scrollbar {
+  width: 6px; /* Adjust width for vertical scrollbar */
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light background */
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color on hover */
+}
+
+/* For Firefox */
+.modal {
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
+}
   
   @media (max-width: 1024px) {
   
@@ -78,6 +111,12 @@
     .titleBar {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
+      padding: 0.5rem;
+      line-height: 1;
+    }
+    .title {
+      letter-spacing: 1px;
+      font-size: 0.9rem;
     }
     .modalOverlay {
       padding: 0;

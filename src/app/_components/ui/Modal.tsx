@@ -15,13 +15,12 @@ const Modal: React.FC<ModalProps> = ({
   title,
   profileImage,
 }) => {
-
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.titleBar}>
-          <h2 className={styles.title}>
-            {title}
+          <h2 className={styles.title}>{title}</h2>
+          <div className={styles.title_right_group}>
             {profileImage && (
               <CldImage
                 src={profileImage}
@@ -33,10 +32,10 @@ const Modal: React.FC<ModalProps> = ({
                 className={styles.profileImage}
               />
             )}
-          </h2>
-          <button className={styles.closeButton} onClick={onClose}>
-            &times;
-          </button>
+            <button className={styles.closeButton} onClick={onClose}>
+              &times;
+            </button>
+          </div>
         </div>
         <div className={styles.modalContent}>{content}</div>
       </div>

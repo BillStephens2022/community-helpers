@@ -125,7 +125,7 @@ const SendMessageForm = ({
         </div>
         <div className={styles.button_div}>
           <Button onClick={handleSubmit} type="submit">
-            Send Message
+            Send
           </Button>
         </div>
       </form>

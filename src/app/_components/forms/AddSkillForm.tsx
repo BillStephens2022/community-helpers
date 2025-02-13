@@ -56,7 +56,7 @@ const AddSkillForm = ({ closeModal, user }: AddSkillFormProps) => {
   return (
     <>
       <form className={styles.form}>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="aboutText" className={styles.label}>
             Add Skill
           </label>
